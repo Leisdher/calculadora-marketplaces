@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titan ERP SaaS 2026 - Master V42</title>
+    <title>Titan ERP SaaS 2026 - Master V43</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -22,43 +22,44 @@
         
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            @apply bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100;
             overflow-x: hidden;
         }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-thumb { @apply bg-slate-300 dark:bg-slate-700 rounded-full; }
-
-        /* ========================================== */
-        /* ARQUITETURA VISUAL DO SAAS                 */
-        /* ========================================== */
-        .card-titan { 
-            @apply bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-sm transition-all duration-300 hover:shadow-xl; 
+        /* Estilização da Barra de Rolagem */
+        ::-webkit-scrollbar { 
+            width: 8px; 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background-color: #cbd5e1; 
+            border-radius: 10px; 
+        }
+        html.dark ::-webkit-scrollbar-thumb {
+            background-color: #334155;
         }
 
-        .input-titan { 
-            @apply w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-xs focus:border-indigo-500 dark:text-white outline-none transition-all; 
-        }
-
+        /* ========================================== */
+        /* COMPONENTES CUSTOMIZADOS                   */
+        /* ========================================== */
         .chart-box { 
             position: relative; 
             height: 250px; 
             width: 100%; 
         }
 
-        /* Switch Toggle Customizado para Simulação Manual */
+        /* Switch Toggle (Modo Simulação Manual) */
         .toggle-checkbox:checked { 
-            @apply right-0 border-indigo-500; 
             right: 0; 
             border-color: #6366f1; 
         }
         .toggle-checkbox:checked + .toggle-label { 
-            @apply bg-indigo-500; 
             background-color: #6366f1; 
         }
         
         /* Animações e Range Slider */
-        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        .fade-in { 
+            animation: fadeIn 0.3s ease-out forwards; 
+        }
+        
         @keyframes fadeIn { 
             from { opacity: 0; transform: translateY(5px); } 
             to { opacity: 1; transform: translateY(0); } 
@@ -83,15 +84,19 @@
             width: 100%; 
             height: 6px; 
             cursor: pointer; 
-            @apply bg-slate-200 dark:bg-slate-700; 
+            background-color: #e2e8f0; 
             border-radius: 4px; 
+        }
+        html.dark input[type=range]::-webkit-slider-runnable-track {
+            background-color: #334155;
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300 antialiased">
+    
     <div id="app" class="min-h-screen flex flex-col">
         
-        <header class="bg-slate-900 text-white shadow-xl sticky top-0 z-50 border-b border-slate-800 print:hidden transition-colors duration-300">
+        <header class="bg-slate-900 dark:bg-slate-950 text-white shadow-xl sticky top-0 z-50 border-b border-slate-800 print:hidden transition-colors duration-300">
             <div class="max-w-[1800px] mx-auto px-4 md:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
                 
                 <div class="flex items-center space-x-4 w-full md:w-auto justify-between md:justify-start">
@@ -101,30 +106,43 @@
                         </div>
                         <div>
                             <h1 class="text-base font-black tracking-tight uppercase leading-none text-indigo-100">
-                                Titan SaaS <span class="text-emerald-400">V42.0</span>
+                                Titan SaaS <span class="text-emerald-400">V43.0</span>
                             </h1>
                             <p class="text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] mt-1.5">
-                                Código Expandido & Dark Mode Corrigido
+                                UI Flawless & Dark Mode 100% Nativo
                             </p>
                         </div>
                     </div>
                     
-                    <button @click="toggleDarkMode" class="md:hidden text-slate-400 hover:text-white p-2 text-xl transition-all">
+                    <button 
+                        @click="toggleDarkMode" 
+                        class="md:hidden text-slate-400 hover:text-white p-2 text-xl transition-all"
+                    >
                         <i class="fas" :class="isDarkMode ? 'fa-sun text-amber-400' : 'fa-moon'"></i>
                     </button>
                 </div>
 
                 <div class="flex items-center space-x-6 w-full md:w-auto justify-between md:justify-end">
-                    <button @click="toggleDarkMode" class="hidden md:block text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl border border-slate-700 hover:bg-slate-800 transition-all shadow-inner">
+                    
+                    <button 
+                        @click="toggleDarkMode" 
+                        class="hidden md:block text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl border border-slate-700 hover:bg-slate-800 transition-all shadow-inner"
+                    >
                         <i class="fas mr-2" :class="isDarkMode ? 'fa-sun text-amber-400' : 'fa-moon'"></i> 
                         {{ isDarkMode ? 'Modo Claro' : 'Modo Escuro' }}
                     </button>
                     
-                    <button @click="resetarTudo" class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest px-2">
+                    <button 
+                        @click="resetarTudo" 
+                        class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest px-2"
+                    >
                         Zerar Tudo
                     </button>
                     
-                    <button onclick="window.print()" class="bg-white text-slate-900 px-5 py-2.5 rounded-xl text-[10px] font-black transition-all active:scale-95 uppercase tracking-widest shadow-xl hover:bg-indigo-50">
+                    <button 
+                        onclick="window.print()" 
+                        class="bg-white text-slate-900 px-5 py-2.5 rounded-xl text-[10px] font-black transition-all active:scale-95 uppercase tracking-widest shadow-xl hover:bg-indigo-50"
+                    >
                         Exportar PDF
                     </button>
                 </div>
@@ -135,7 +153,7 @@
             
             <div class="lg:col-span-3 space-y-4 print:hidden">
                 
-                <div class="bg-indigo-600 dark:bg-indigo-900 p-6 md:p-8 rounded-[2rem] shadow-xl text-white relative overflow-hidden transition-colors duration-300">
+                <div class="bg-indigo-600 dark:bg-indigo-900/80 p-6 md:p-8 rounded-[2rem] shadow-xl text-white relative overflow-hidden transition-colors duration-300 border border-indigo-500/20">
                     <div class="absolute -right-8 -bottom-8 opacity-10 text-[180px] rotate-12">
                         <i class="fas fa-bullseye"></i>
                     </div>
@@ -145,28 +163,50 @@
                             <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-200 mb-2">
                                 1. Meta de Lucro (%)
                             </label>
-                            <input type="text" v-model="inputs.alvo" @input="syncAll" class="w-full bg-indigo-500/50 dark:bg-indigo-800/50 border-2 border-indigo-400 dark:border-indigo-500 rounded-3xl p-4 text-5xl font-black text-white focus:outline-none focus:border-emerald-400 text-center shadow-inner transition-colors">
+                            <input 
+                                type="text" 
+                                v-model="inputs.alvo" 
+                                @input="syncAll" 
+                                class="w-full bg-indigo-500/50 dark:bg-indigo-950/50 border-2 border-indigo-400 dark:border-indigo-700 rounded-3xl p-4 text-5xl font-black text-white focus:outline-none focus:border-emerald-400 dark:focus:border-emerald-500 text-center shadow-inner transition-colors"
+                            >
                         </div>
 
-                        <div class="pt-6 border-t border-indigo-500/50">
+                        <div class="pt-6 border-t border-indigo-500/50 dark:border-indigo-700/50">
                             <div class="flex items-center justify-between mb-4">
                                 <label class="text-[9px] font-black uppercase tracking-widest text-indigo-200">
                                     2. Modo Simulação Manual
                                 </label>
                                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                                    <input type="checkbox" name="toggle" id="toggle" v-model="ui.modoManual" @change="toggleModoManual" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
-                                    <label for="toggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-indigo-400/50 cursor-pointer"></label>
+                                    <input 
+                                        type="checkbox" 
+                                        name="toggle" 
+                                        id="toggle" 
+                                        v-model="ui.modoManual" 
+                                        @change="toggleModoManual" 
+                                        class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
+                                    />
+                                    <label 
+                                        for="toggle" 
+                                        class="toggle-label block overflow-hidden h-5 rounded-full bg-indigo-400/50 cursor-pointer"
+                                    ></label>
                                 </div>
                             </div>
                             
                             <div v-if="ui.modoManual" class="fade-in">
-                                <input type="text" v-model="inputs.precoVenda" @input="syncAll" class="w-full bg-indigo-900/40 border-2 border-indigo-300 dark:border-indigo-500 p-3 text-2xl font-black text-white rounded-2xl focus:outline-none text-center shadow-lg placeholder-indigo-300" placeholder="R$ 0,00">
-                                <p class="text-[8px] text-indigo-300 mt-2 font-black uppercase tracking-widest text-center">
+                                <input 
+                                    type="text" 
+                                    v-model="inputs.precoVenda" 
+                                    @input="syncAll" 
+                                    class="w-full bg-indigo-900/40 dark:bg-indigo-950/60 border-2 border-indigo-300 dark:border-indigo-600 p-3 text-2xl font-black text-white rounded-2xl focus:outline-none text-center shadow-lg placeholder-indigo-300 dark:placeholder-indigo-500" 
+                                    placeholder="R$ 0,00"
+                                >
+                                <p class="text-[8px] text-indigo-300 dark:text-indigo-400 mt-2 font-black uppercase tracking-widest text-center">
                                     Testando o lucro deste preço.
                                 </p>
                             </div>
-                            <div v-else class="text-center p-3 bg-indigo-500/20 rounded-2xl border border-indigo-500/30">
-                                <p class="text-[9px] text-indigo-200 font-bold uppercase tracking-widest">
+                            
+                            <div v-else class="text-center p-3 bg-indigo-500/20 dark:bg-indigo-950/40 rounded-2xl border border-indigo-500/30 dark:border-indigo-800/50">
+                                <p class="text-[9px] text-indigo-200 dark:text-indigo-300 font-bold uppercase tracking-widest">
                                     <i class="fas fa-robot mr-2"></i> Preço Ideal Automático
                                 </p>
                             </div>
@@ -177,7 +217,10 @@
                 <div class="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden transition-colors duration-300">
                     
                     <div class="border-b border-slate-100 dark:border-slate-700">
-                        <button @click="toggleAccordion('produto')" class="w-full px-6 py-5 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                        <button 
+                            @click="toggleAccordion('produto')" 
+                            class="w-full px-6 py-5 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                        >
                             <h2 class="text-[11px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest flex items-center">
                                 <i class="fas fa-box-open mr-3 text-indigo-500"></i> Custos Unitários
                             </h2>
@@ -185,16 +228,32 @@
                         </button>
                         
                         <div v-show="accordions.produto" class="p-6 space-y-5 fade-in bg-white dark:bg-slate-800 border-l-4 border-indigo-500 transition-colors">
-                            <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-titan" placeholder="Descrição do Item">
+                            <input 
+                                type="text" 
+                                v-model="inputs.nomeProd" 
+                                @input="salvar" 
+                                class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-xs focus:border-indigo-500 outline-none transition-all dark:text-white" 
+                                placeholder="Descrição do Item"
+                            >
                             
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Custo Compra</label>
-                                    <input type="text" v-model="inputs.custo" @input="syncAll" class="input-titan">
+                                    <label class="block text-[9px] font-bold text-slate-400 dark:text-slate-400 uppercase mb-1.5 ml-1">Custo Compra</label>
+                                    <input 
+                                        type="text" 
+                                        v-model="inputs.custo" 
+                                        @input="syncAll" 
+                                        class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-xs focus:border-indigo-500 outline-none transition-all dark:text-white"
+                                    >
                                 </div>
                                 <div>
-                                    <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Embalagem</label>
-                                    <input type="text" v-model="inputs.embalagem" @input="syncAll" class="input-titan">
+                                    <label class="block text-[9px] font-bold text-slate-400 dark:text-slate-400 uppercase mb-1.5 ml-1">Embalagem</label>
+                                    <input 
+                                        type="text" 
+                                        v-model="inputs.embalagem" 
+                                        @input="syncAll" 
+                                        class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-xs focus:border-indigo-500 outline-none transition-all dark:text-white"
+                                    >
                                 </div>
                             </div>
                             
@@ -202,23 +261,32 @@
                                 <label class="block text-[9px] font-black text-indigo-700 dark:text-indigo-400 uppercase mb-2 tracking-widest flex items-center cursor-help" title="Use este campo para adicionar um valor fixo de lucro ou custo direto por peça.">
                                     Adicional Operacional (R$) <i class="fas fa-question-circle ml-2 opacity-50"></i>
                                 </label>
-                                <input type="text" v-model="inputs.custoFixoDireto" @input="syncAll" class="input-titan !bg-white dark:!bg-slate-900 border-indigo-200 dark:border-indigo-700" placeholder="Ex: R$ 10,00">
+                                <input 
+                                    type="text" 
+                                    v-model="inputs.custoFixoDireto" 
+                                    @input="syncAll" 
+                                    class="w-full p-3 bg-white dark:bg-slate-950 border border-indigo-200 dark:border-indigo-700 rounded-xl font-bold text-xs focus:border-indigo-500 outline-none transition-all dark:text-white" 
+                                    placeholder="Ex: R$ 10,00"
+                                >
                             </div>
                             
-                            <div class="p-4 bg-slate-900 rounded-xl flex justify-between items-center text-white shadow-inner">
-                                <span class="text-[9px] font-black uppercase tracking-widest">CMV Base Final:</span>
-                                <span class="font-black text-lg">R$ {{ totalCustoDiretoUnidade.toFixed(2) }}</span>
+                            <div class="p-4 bg-slate-900 dark:bg-slate-950 rounded-xl flex justify-between items-center text-white shadow-inner border border-slate-800">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-slate-300">CMV Base Final:</span>
+                                <span class="font-black text-lg text-emerald-400">R$ {{ totalCustoDiretoUnidade.toFixed(2) }}</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="border-b border-slate-100 dark:border-slate-700">
-                        <button @click="toggleAccordion('volume')" class="w-full px-6 py-5 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                        <button 
+                            @click="toggleAccordion('volume')" 
+                            class="w-full px-6 py-5 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                        >
                             <h2 class="text-[11px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest flex items-center">
                                 <i class="fas fa-chart-pie mr-3 text-amber-500"></i> Despesas Fixas
                             </h2>
                             <div class="flex items-center space-x-3">
-                                <span class="text-[9px] font-black bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-lg">
+                                <span class="text-[9px] font-black bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-lg border border-amber-200 dark:border-amber-500/30">
                                     R$ {{ totalFixas.toFixed(2) }}
                                 </span>
                                 <i class="fas fa-chevron-down text-slate-400" :class="{'rotate-180': accordions.volume}"></i>
@@ -226,37 +294,59 @@
                         </button>
                         
                         <div v-show="accordions.volume" class="p-6 space-y-6 fade-in bg-white dark:bg-slate-800 border-l-4 border-amber-500 transition-colors">
-                            <div class="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-5 border border-amber-100 dark:border-amber-800/50">
+                            <div class="bg-amber-50 dark:bg-amber-900/10 rounded-2xl p-5 border border-amber-100 dark:border-amber-900/50">
                                 <div class="flex justify-between items-end mb-4">
-                                    <label class="text-[10px] font-black text-amber-800 dark:text-amber-400 uppercase tracking-widest cursor-help" title="Deslize para ver o impacto do volume no custo de cada peça.">
-                                        Vendas Estimadas (Mês) <i class="fas fa-question-circle opacity-50"></i>
+                                    <label class="text-[10px] font-black text-amber-800 dark:text-amber-500 uppercase tracking-widest cursor-help" title="Quantas peças sua empresa vende por mês.">
+                                        Vendas Estimadas <i class="fas fa-question-circle opacity-50"></i>
                                     </label>
-                                    <input type="text" v-model="inputs.volume" @input="syncAll" class="w-20 p-2 border-2 border-amber-200 dark:border-amber-700 rounded-xl text-xs text-center font-black bg-white dark:bg-slate-900 dark:text-white outline-none">
+                                    <input 
+                                        type="text" 
+                                        v-model="inputs.volume" 
+                                        @input="syncAll" 
+                                        class="w-20 p-2 border-2 border-amber-200 dark:border-amber-700/50 rounded-xl text-xs text-center font-black bg-white dark:bg-slate-900 dark:text-white outline-none focus:border-amber-400 dark:focus:border-amber-500"
+                                    >
                                 </div>
                                 <input type="range" min="1" max="5000" step="10" v-model="inputs.volume" @input="syncAll">
-                                <div class="mt-4 pt-4 border-t border-amber-200/50 dark:border-amber-800/50 flex justify-between items-center">
-                                    <span class="text-[9px] font-black text-amber-700 dark:text-amber-500 uppercase tracking-widest">Rateio por Peça:</span>
+                                <div class="mt-4 pt-4 border-t border-amber-200/50 dark:border-amber-800/30 flex justify-between items-center">
+                                    <span class="text-[9px] font-black text-amber-700 dark:text-amber-600 uppercase tracking-widest">Rateio por Peça:</span>
                                     <span class="text-lg font-black text-amber-900 dark:text-amber-400 tracking-tighter">R$ {{ rateio.toFixed(2) }}</span>
                                 </div>
                             </div>
                             
                             <div class="space-y-2 max-h-40 overflow-y-auto pr-1">
                                 <div v-for="(d, i) in despesas" :key="i" class="flex items-center space-x-2">
-                                    <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-2.5 text-[10px] border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900 dark:text-white font-bold" placeholder="Nome da Conta">
-                                    <input type="text" v-model="d.valor" @input="syncAll" class="w-16 p-2.5 text-[10px] border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900 dark:text-white font-black text-right">
+                                    <input 
+                                        type="text" 
+                                        v-model="d.nome" 
+                                        @input="salvar" 
+                                        class="flex-grow p-2.5 text-[10px] border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900 dark:text-white font-bold outline-none focus:border-amber-500" 
+                                        placeholder="Nome da Conta"
+                                    >
+                                    <input 
+                                        type="text" 
+                                        v-model="d.valor" 
+                                        @input="syncAll" 
+                                        class="w-16 p-2.5 text-[10px] border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900 dark:text-white font-black text-right outline-none focus:border-amber-500"
+                                    >
                                     <button @click="removerDespesa(i)" class="text-slate-400 hover:text-red-500 p-1 transition-colors">
                                         <i class="fas fa-trash-can"></i>
                                     </button>
                                 </div>
                             </div>
-                            <button @click="adicionarDespesa" class="w-full py-2.5 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl text-[9px] font-black text-slate-500 dark:text-slate-400 hover:text-amber-600 transition-colors uppercase tracking-widest">
-                                + Adicionar Nova Conta
+                            <button 
+                                @click="adicionarDespesa" 
+                                class="w-full py-2.5 border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-xl text-[9px] font-black text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors uppercase tracking-widest"
+                            >
+                                + Adicionar Conta
                             </button>
                         </div>
                     </div>
 
                     <div>
-                        <button @click="toggleAccordion('impostos')" class="w-full px-6 py-5 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                        <button 
+                            @click="toggleAccordion('impostos')" 
+                            class="w-full px-6 py-5 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                        >
                             <h2 class="text-[11px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest flex items-center">
                                 <i class="fas fa-landmark mr-3 text-blue-500"></i> Tributos & Perdas
                             </h2>
@@ -268,19 +358,32 @@
                                 <h2 class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest cursor-help" title="Alíquota aplicada sobre o Faturamento Bruto (Simples Nacional).">
                                     Imposto NF-e (%) <i class="fas fa-question-circle opacity-50 ml-1"></i>
                                 </h2>
-                                <input type="text" v-model="inputs.imposto" @input="syncAll" class="input-titan !w-20 !text-right">
+                                <input 
+                                    type="text" 
+                                    v-model="inputs.imposto" 
+                                    @input="syncAll" 
+                                    class="w-20 p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-right font-black dark:text-white outline-none focus:border-blue-500"
+                                >
                             </div>
                             <div class="flex items-center justify-between">
-                                <h2 class="text-[10px] font-black text-orange-500 uppercase tracking-widest cursor-help" title="Margem provisionada para devoluções, roubos de carga ou avarias.">
+                                <h2 class="text-[10px] font-black text-orange-500 uppercase tracking-widest cursor-help" title="Margem provisionada para devoluções e roubos de carga.">
                                     Perdas (%) <i class="fas fa-question-circle opacity-50 ml-1"></i>
                                 </h2>
-                                <input type="text" v-model="inputs.perdas" @input="syncAll" class="input-titan !w-20 !text-right !text-orange-600">
+                                <input 
+                                    type="text" 
+                                    v-model="inputs.perdas" 
+                                    @input="syncAll" 
+                                    class="w-20 p-2.5 bg-slate-50 dark:bg-slate-900 border border-orange-200 dark:border-orange-900/50 rounded-xl text-xs text-right font-black text-orange-600 dark:text-orange-400 outline-none focus:border-orange-500"
+                                >
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <button @click="salvarNoBanco" class="w-full py-5 bg-slate-900 dark:bg-indigo-600 hover:bg-black dark:hover:bg-indigo-500 text-white rounded-[2rem] font-black text-[11px] shadow-2xl transition-all active:scale-95 uppercase tracking-[0.2em] print:hidden">
+                <button 
+                    @click="salvarNoBanco" 
+                    class="w-full py-5 bg-slate-900 dark:bg-indigo-600 hover:bg-black dark:hover:bg-indigo-500 text-white rounded-[2rem] font-black text-[11px] shadow-2xl transition-all active:scale-95 uppercase tracking-[0.2em] print:hidden"
+                >
                     <i class="fas fa-save mr-3 text-emerald-400"></i> Arquivar Precificação
                 </button>
             </div>
@@ -288,7 +391,7 @@
             <div class="lg:col-span-9 space-y-6 md:space-y-8">
                 
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8">
-                    <div class="xl:col-span-8 card-titan p-6 md:p-8 shadow-lg">
+                    <div class="xl:col-span-8 bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-sm p-6 md:p-8 transition-colors duration-300 hover:shadow-xl">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-[11px] md:text-[12px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] flex items-center">
                                 <i class="fas fa-chart-line mr-3 text-indigo-500 text-lg"></i> Monitor Omnichannel
@@ -299,10 +402,10 @@
                         </div>
                     </div>
 
-                    <div class="xl:col-span-4 card-titan overflow-hidden hidden md:block">
+                    <div class="xl:col-span-4 bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden hidden md:block transition-colors duration-300">
                         <table class="w-full text-left text-[11px] border-collapse">
                             <thead>
-                                <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 font-black uppercase tracking-widest border-b dark:border-slate-700">
+                                <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 font-black uppercase tracking-widest border-b border-slate-100 dark:border-slate-700">
                                     <th class="py-4 px-6">Plataforma</th>
                                     <th class="text-right px-6">Preço Ideal</th>
                                 </tr>
@@ -323,11 +426,22 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 md:gap-8">
-                    <div v-for="mkp in marketplaces" :key="mkp.id" class="card-titan relative overflow-hidden flex flex-col group transition-all" :class="{'simulando-ativo dark:!border-indigo-500/50 dark:bg-slate-800': sNum(inputs.precoVenda) > 0 && ui.modoManual}">
+                    
+                    <div v-for="mkp in marketplaces" :key="mkp.id" 
+                         class="bg-white dark:bg-slate-800 rounded-[2rem] border shadow-sm relative overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-xl" 
+                         :class="[
+                            sNum(inputs.precoVenda) > 0 && ui.modoManual 
+                                ? 'border-blue-200 dark:border-indigo-500/50 dark:bg-slate-800/80 shadow-lg' 
+                                : 'border-slate-100 dark:border-slate-700'
+                         ]"
+                    >
                         
-                        <div class="absolute left-0 top-0 bottom-0 w-2.5 transition-all duration-700 shadow-xl" :class="calcLucro(mkp) >= 0 ? 'bg-emerald-500' : 'bg-red-500'"></div>
+                        <div 
+                            class="absolute left-0 top-0 bottom-0 w-2.5 transition-all duration-700 shadow-xl" 
+                            :class="calcLucro(mkp) >= 0 ? 'bg-emerald-500' : 'bg-red-500'"
+                        ></div>
                         
-                        <div v-if="mkp.id === bestMarketplaceId" class="absolute top-0 right-8 bg-emerald-500 text-white text-[8px] font-black px-3 py-1 rounded-b-lg shadow-md uppercase tracking-widest flex items-center animate-fade-in">
+                        <div v-if="mkp.id === bestMarketplaceId" class="absolute top-0 right-8 bg-emerald-500 dark:bg-emerald-600 text-white text-[8px] font-black px-3 py-1 rounded-b-lg shadow-md uppercase tracking-widest flex items-center animate-fade-in">
                             <i class="fas fa-crown mr-1"></i> Melhor Margem
                         </div>
 
@@ -337,44 +451,69 @@
                                     <i :class="mkp.icon" :style="{color: mkp.corIcone}" class="text-xl"></i>
                                 </div>
                                 <div class="flex flex-col">
-                                    <h3 class="font-black text-sm uppercase tracking-widest leading-none dark:text-slate-200">
+                                    <h3 class="font-black text-sm uppercase tracking-widest leading-none text-slate-800 dark:text-slate-200">
                                         {{ mkp.nome.split(' ')[0] }}
                                     </h3>
                                     <div class="flex flex-wrap gap-1 mt-1.5">
                                         
-                                        <span v-if="mkp.id === 2" class="text-[7px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-tighter" :class="getSmartFees(mkp, (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp))).log === 0 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400' : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300'">
+                                        <span v-if="mkp.id === 2" class="text-[7px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-tighter" 
+                                              :class="getSmartFees(mkp, (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp))).log === 0 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400' : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300'">
                                             {{ getSmartFees(mkp, (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp))).log === 0 ? 'Taxa Fixa ML' : 'Frete ML Ativo' }}
                                         </span>
                                         
                                         <span v-if="mkp.id === 1" class="text-[7px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-tighter bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-400">
-                                            Fixo TIER: R$ {{ getSmartFees(mkp, (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp))).fix.toFixed(2) }}
+                                            Tier: R$ {{ getSmartFees(mkp, (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp))).fix.toFixed(2) }}
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <button @click="mkp.edit = !mkp.edit" class="text-[9px] font-black bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-3 py-1.5 rounded-lg shadow-sm hover:shadow-md transition uppercase dark:text-slate-300">
+                            <button @click="mkp.edit = !mkp.edit" class="text-[9px] font-black bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-3 py-1.5 rounded-lg shadow-sm hover:shadow-md transition uppercase text-slate-700 dark:text-slate-300">
                                 <i class="fas fa-cog"></i> Taxas
                             </button>
                         </div>
 
                         <div v-show="mkp.edit" class="p-6 bg-slate-50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-700 grid grid-cols-2 gap-4 animate-fade-in transition-colors">
+                            
                             <div>
-                                <label class="text-[9px] font-black text-slate-400 uppercase block mb-1">Comissão Base %</label>
-                                <input type="text" v-model="mkp.com" @input="syncAll" class="input-titan !p-2">
+                                <label class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase block mb-1">Comissão Base %</label>
+                                <input 
+                                    type="text" 
+                                    v-model="mkp.com" 
+                                    @input="syncAll" 
+                                    class="w-full p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-xs focus:border-indigo-500 outline-none transition-all dark:text-white"
+                                >
                             </div>
+                            
                             <div>
                                 <label class="text-[9px] font-black text-blue-500 uppercase block mb-1">Invest. Ads %</label>
-                                <input type="text" v-model="mkp.ads" @input="syncAll" class="input-titan !p-2 dark:!bg-blue-900/20">
+                                <input 
+                                    type="text" 
+                                    v-model="mkp.ads" 
+                                    @input="syncAll" 
+                                    class="w-full p-2 bg-blue-50 dark:bg-blue-900/20 border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-xs focus:border-blue-500 outline-none transition-all dark:text-white"
+                                >
                             </div>
+                            
                             <div>
                                 <label class="text-[9px] font-black text-purple-600 uppercase block mb-1">Afiliados %</label>
-                                <input type="text" v-model="mkp.afi" @input="syncAll" class="input-titan !p-2 dark:!bg-purple-900/20">
+                                <input 
+                                    type="text" 
+                                    v-model="mkp.afi" 
+                                    @input="syncAll" 
+                                    class="w-full p-2 bg-purple-50 dark:bg-purple-900/20 border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-xs focus:border-purple-500 outline-none transition-all dark:text-white"
+                                >
                             </div>
+                            
                             <div>
                                 <label class="text-[9px] font-black text-amber-600 uppercase block mb-1 cursor-help" title="Bancário: Calculada sobre o valor LÍQUIDO repassado pela plataforma.">
                                     Antecipação % <i class="fas fa-question-circle opacity-50"></i>
                                 </label>
-                                <input type="text" v-model="mkp.ant" @input="syncAll" class="input-titan !p-2 dark:!bg-amber-900/20">
+                                <input 
+                                    type="text" 
+                                    v-model="mkp.ant" 
+                                    @input="syncAll" 
+                                    class="w-full p-2 bg-amber-50 dark:bg-amber-900/20 border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-xs focus:border-amber-500 outline-none transition-all dark:text-white"
+                                >
                             </div>
                             
                             <div v-if="mkp.id === 3" class="col-span-2 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 flex items-center justify-between">
@@ -385,15 +524,26 @@
                             </div>
 
                             <div class="relative">
-                                <label class="text-[9px] font-black text-slate-400 uppercase block mb-1">Taxa Fixa R$</label>
-                                <input type="text" v-model="mkp.fixo" @input="syncAll" class="input-titan !p-2">
+                                <label class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase block mb-1">Taxa Fixa R$</label>
+                                <input 
+                                    type="text" 
+                                    v-model="mkp.fixo" 
+                                    @input="syncAll" 
+                                    class="w-full p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-xs focus:border-indigo-500 outline-none transition-all dark:text-white"
+                                >
                                 <div v-if="mkp.id === 2 && (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp)) >= 79" class="absolute inset-x-0 bottom-0 top-[20px] bg-slate-100/90 dark:bg-slate-800/90 rounded-xl flex items-center justify-center text-[7px] font-black text-slate-500 uppercase backdrop-blur-sm">
                                     Isento (>79)
                                 </div>
                             </div>
+                            
                             <div class="relative">
-                                <label class="text-[9px] font-black text-slate-400 uppercase block mb-1">Frete Fixo R$</label>
-                                <input type="text" v-model="mkp.log" @input="syncAll" class="input-titan !p-2">
+                                <label class="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase block mb-1">Frete Fixo R$</label>
+                                <input 
+                                    type="text" 
+                                    v-model="mkp.log" 
+                                    @input="syncAll" 
+                                    class="w-full p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-xs focus:border-indigo-500 outline-none transition-all dark:text-white"
+                                >
                                 <div v-if="mkp.id === 2 && (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp)) < 79" class="absolute inset-x-0 bottom-0 top-[20px] bg-slate-100/90 dark:bg-slate-800/90 rounded-xl flex items-center justify-center text-[7px] font-black text-slate-500 uppercase backdrop-blur-sm">
                                     Isento (<79)
                                 </div>
@@ -402,13 +552,19 @@
 
                         <div class="p-8 flex-grow flex flex-col space-y-8">
                             
-                            <div class="p-8 border border-slate-100 dark:border-slate-700 rounded-[2rem] text-center shadow-inner relative overflow-hidden transition-all duration-500" :class="{'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800': !ui.modoManual, 'bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800': ui.modoManual}">
-                                <p class="text-[11px] font-black uppercase mb-3 tracking-[0.3em]" :class="ui.modoManual ? 'text-blue-600 dark:text-blue-400' : 'text-emerald-600 dark:text-emerald-400'">
+                            <div class="p-8 border rounded-[2rem] text-center shadow-inner relative overflow-hidden transition-all duration-500" 
+                                 :class="{'bg-emerald-50 dark:bg-emerald-900/10 border-emerald-100 dark:border-emerald-800/50': !ui.modoManual, 'bg-blue-50 dark:bg-blue-900/10 border-blue-100 dark:border-blue-800/50': ui.modoManual}">
+                                
+                                <p class="text-[11px] font-black uppercase mb-3 tracking-[0.3em]" 
+                                   :class="ui.modoManual ? 'text-blue-600 dark:text-blue-400' : 'text-emerald-600 dark:text-emerald-400'">
                                     {{ ui.modoManual ? 'Simulação Manual' : 'Preço Ideal Sugerido' }}
                                 </p>
-                                <p class="text-6xl font-black tracking-tighter leading-none" :class="ui.modoManual ? 'text-blue-900 dark:text-blue-100' : 'text-emerald-900 dark:text-emerald-100'">
+                                
+                                <p class="text-6xl font-black tracking-tighter leading-none" 
+                                   :class="ui.modoManual ? 'text-blue-900 dark:text-blue-200' : 'text-emerald-900 dark:text-emerald-200'">
                                     R$ {{ ui.modoManual && sNum(inputs.precoVenda) > 0 ? sNum(inputs.precoVenda).toFixed(2) : calcPrecoIdeal(mkp).toFixed(2) }}
                                 </p>
+                                
                                 <div class="mt-4 text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                                     {{ ui.modoManual ? 'Preço P/ Meta Exata: R$ ' + calcPrecoIdeal(mkp).toFixed(2) : 'Atinge exatos ' + sNum(inputs.alvo) + '% lucro' }}
                                 </div>
@@ -419,19 +575,21 @@
                                     <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center">
                                         Lucro Líquido <i :class="ui.modoManual ? 'fas fa-hand-pointer ml-2 text-blue-500' : 'fas fa-robot ml-2 text-emerald-500'"></i>
                                     </p>
-                                    <p class="text-4xl font-black leading-none tracking-tighter" :class="calcLucro(mkp) >= 0 ? 'text-slate-900 dark:text-white' : 'text-red-600 dark:text-red-400'">
+                                    <p class="text-4xl font-black leading-none tracking-tighter" 
+                                       :class="calcLucro(mkp) >= 0 ? 'text-slate-900 dark:text-white' : 'text-red-600 dark:text-red-400'">
                                         R$ {{ calcLucro(mkp).toFixed(2) }}
                                     </p>
                                 </div>
                                 <div class="text-right space-y-2">
                                     <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Margem Final</p>
-                                    <p class="text-3xl font-black leading-none mt-1" :class="calcLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-400'">
+                                    <p class="text-3xl font-black leading-none mt-1" 
+                                       :class="calcLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-400'">
                                         {{ calcMargem(mkp).toFixed(1) }}%
                                     </p>
                                 </div>
                             </div>
 
-                            <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3 overflow-hidden shadow-inner">
+                            <div class="w-full bg-slate-100 dark:bg-slate-700/50 rounded-full h-3 overflow-hidden shadow-inner">
                                 <div class="h-full transition-all duration-1000 rounded-full" 
                                      :class="calcMargem(mkp) >= sNum(inputs.alvo) ? 'bg-emerald-500' : (calcMargem(mkp) > 0 ? 'bg-amber-400' : 'bg-red-500')" 
                                      :style="{ width: Math.min(Math.max((calcMargem(mkp)/sNum(inputs.alvo))*100, 0), 100) + '%' }">
@@ -501,7 +659,7 @@
                         alvo: '15,0' 
                     },
                     
-                    // Despesas Fixas em Formato Expandido
+                    // Despesas Fixas em Formato Expandido para Auditoria
                     despesas: [
                         { 
                             nome: 'Aluguel do Galpão', 
@@ -521,7 +679,7 @@
                         }
                     ],
                     
-                    // Estrutura de Marketplaces Expandida para Auditoria Clara (+80 linhas)
+                    // Estrutura de Marketplaces Expandida (Segurança contra perdas de código)
                     marketplaces: [
                         { 
                             id: 1, 
@@ -665,15 +823,16 @@
             watch: {
                 // Monitora a troca de Tema Claro/Escuro
                 isDarkMode(newVal) { 
-                    localStorage.setItem('v42_darkmode', newVal);
+                    localStorage.setItem('v43_darkmode', newVal);
                     
-                    // CORREÇÃO: Aplica a classe diretamente na raiz do HTML para o Tailwind reconhecer
+                    // O SEGREDO DO DARK MODE: Adiciona a classe dark na tag HTML principal do site
                     if(newVal) {
                         document.documentElement.classList.add('dark');
                     } else {
                         document.documentElement.classList.remove('dark');
                     }
                     
+                    // Atualiza cores do gráfico
                     this.updateChart(); 
                 }
             },
@@ -694,7 +853,7 @@
                     this.syncAll(); 
                 },
                 
-                // Conversão de Máscara de Moeda
+                // Conversão de Máscara de Moeda Segura
                 sNum(v) { 
                     if (!v) return 0; 
                     const clean = v.toString().replace(',', '.').replace(/[^\d.-]/g, ''); 
@@ -715,10 +874,10 @@
                     this.syncAll(); 
                 },
                 salvar() { 
-                    localStorage.setItem('v42_inputs', JSON.stringify(this.inputs)); 
-                    localStorage.setItem('v42_despesas', JSON.stringify(this.despesas)); 
-                    localStorage.setItem('v42_marketplaces', JSON.stringify(this.marketplaces)); 
-                    localStorage.setItem('v42_ui', JSON.stringify(this.ui)); 
+                    localStorage.setItem('v43_inputs', JSON.stringify(this.inputs)); 
+                    localStorage.setItem('v43_despesas', JSON.stringify(this.despesas)); 
+                    localStorage.setItem('v43_marketplaces', JSON.stringify(this.marketplaces)); 
+                    localStorage.setItem('v43_ui', JSON.stringify(this.ui)); 
                 },
                 
                 // ========================================== //
@@ -792,7 +951,7 @@
                         
                         let totalPercRetenção = percGross + percAntEffective;
                         
-                        // Passo 3: Custos Fixos na Plataforma (Frete Fixo + Taxa Fixa)
+                        // Passo 3: Adicionar custos fixos ao numerador da fórmula e descontar antecipação das taxas fixas da plataforma
                         let extraMoney = (fees.fix + fees.log) * (1 - (this.sNum(mkp.ant) / 100));
 
                         // Passo 4: Regra de Exceção TIKTOK SFP Limitada a R$ 50
@@ -805,7 +964,7 @@
                             }
                         }
                         
-                        // Proteção contra divisão por zero ou negativa
+                        // Previne erro matemático de divisão por zero (margens impossíveis)
                         if (totalPercRetenção >= 1) return 0;
                         
                         // Execução da Fórmula Final
@@ -879,8 +1038,8 @@
                     if(this.chart) { 
                         this.chart.data.datasets[0].data = this.marketplaces.map(m => this.calcPrecoIdeal(m)); 
                         
-                        // Força a atualização visual do gráfico quando o Dark Mode é ativado
-                        this.chart.options.scales.y.grid.color = this.isDarkMode ? '#334155' : '#f1f5f9';
+                        // Atualiza dinamicamente as cores do gráfico quando o usuário clica na LUA/SOL
+                        this.chart.options.scales.y.grid.color = this.isDarkMode ? '#1e293b' : '#f1f5f9';
                         this.chart.options.scales.y.ticks.color = this.isDarkMode ? '#94a3b8' : '#64748b';
                         this.chart.options.scales.x.ticks.color = this.isDarkMode ? '#94a3b8' : '#64748b';
                         
@@ -892,51 +1051,58 @@
                 // CONTROLE DE HISTÓRICO E ARQUIVAMENTO       //
                 // ========================================== //
                 salvarNoBanco() { 
-                    if(!this.inputs.nomeProd) { alert('Aviso: Informe o nome do produto para salvar!'); return; } 
+                    if(!this.inputs.nomeProd) { 
+                        alert('Aviso de Segurança: Informe o nome do produto para arquivar!'); 
+                        return; 
+                    } 
                     this.banco.unshift({ 
                         nome: this.inputs.nomeProd, 
                         venda: this.calcPrecoIdeal(this.marketplaces[0]).toFixed(2), 
                         alvo: this.inputs.alvo 
                     }); 
-                    localStorage.setItem('v42_banco', JSON.stringify(this.banco)); 
+                    localStorage.setItem('v43_banco', JSON.stringify(this.banco)); 
                 },
                 removerProduto(i) { 
                     this.banco.splice(i, 1); 
-                    localStorage.setItem('v42_banco', JSON.stringify(this.banco)); 
+                    localStorage.setItem('v43_banco', JSON.stringify(this.banco)); 
                 },
                 resetarTudo() { 
-                    if(confirm('Atenção: Isso vai apagar todas as contas e o histórico salvo. Deseja continuar?')) { 
+                    if(confirm('Atenção Crítica: Isso vai apagar todas as configurações e o histórico salvo. Deseja continuar?')) { 
                         localStorage.clear(); 
                         location.reload(); 
                     }
                 }
             },
             
-            // Evento disparado quando o app termina de carregar na tela
+            // Evento disparado quando o app é montado no navegador do usuário
             mounted() {
-                // Recupera a memória de trabalho do Titan
-                const i = localStorage.getItem('v42_inputs'); if (i) this.inputs = JSON.parse(i);
-                const d = localStorage.getItem('v42_despesas'); if (d) this.despesas = JSON.parse(d);
-                const m = localStorage.getItem('v42_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
-                const b = localStorage.getItem('v42_banco'); if (b) this.banco = JSON.parse(b);
-                const ui = localStorage.getItem('v42_ui'); if (ui) this.ui = JSON.parse(ui);
+                // 1. Recupera toda a memória de trabalho do Titan
+                const i = localStorage.getItem('v43_inputs'); if (i) this.inputs = JSON.parse(i);
+                const d = localStorage.getItem('v43_despesas'); if (d) this.despesas = JSON.parse(d);
+                const m = localStorage.getItem('v43_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
+                const b = localStorage.getItem('v43_banco'); if (b) this.banco = JSON.parse(b);
+                const ui = localStorage.getItem('v43_ui'); if (ui) this.ui = JSON.parse(ui);
                 
-                // Iniciação do Dark Mode nativo (Aplica classe na tag HTML raiz)
-                const dm = localStorage.getItem('v42_darkmode'); 
+                // 2. Iniciação Segura do Dark Mode nativo
+                const dm = localStorage.getItem('v43_darkmode'); 
                 if (dm !== null) { 
                     this.isDarkMode = JSON.parse(dm); 
+                    
+                    // Força a classe no documento HTML inteiro antes de renderizar
                     if(this.isDarkMode) {
                         document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
                     }
                 }
                 
-                // Proteção de Cache: Reseta os marketplaces se a versão antiga não tinha ícones
+                // 3. Proteção de Cache para Atualizações de Versão
                 if(!this.marketplaces[0].icon) { 
-                    localStorage.removeItem('v42_marketplaces'); 
+                    localStorage.removeItem('v43_marketplaces'); 
                     location.reload(); 
                 }
                 
-                // Renderiza o Gráfico com as cores corretas do tema
+                // 4. Renderiza os Gráficos
                 this.initChart();
             }
         }).mount('#app')
