@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Calculadora Marketplaces 2026 - Master V26</title>
+    <title>Super Calculadora Marketplaces 2026 - Master V27</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -13,7 +13,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
-        /* Reset e Base */
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: #f1f5f9; 
@@ -24,7 +23,7 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-        /* Dashboard UI Architecture */
+        /* Dashboard Master Architecture */
         .card-titan { 
             @apply bg-white rounded-[2rem] border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:-translate-y-1; 
         }
@@ -35,7 +34,7 @@
 
         .chart-box { 
             position: relative; 
-            height: 260px; 
+            height: 240px; 
             width: 100%; 
         }
 
@@ -44,10 +43,15 @@
         }
 
         .badge-rule { 
-            @apply text-[8px] font-black px-2 py-0.5 rounded-md uppercase tracking-tighter shadow-sm; 
+            @apply text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-tighter shadow-sm; 
         }
 
-        /* Animações */
+        /* Destaque de Simulação Manual */
+        .simulando-ativo {
+            background: linear-gradient(145deg, #ffffff 0%, #f0f9ff 100%);
+            border-color: #bae6fd !important;
+        }
+
         .fade-in { animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -56,21 +60,21 @@
     <div id="app" class="min-h-screen flex flex-col">
         
         <header class="bg-slate-900 text-white shadow-2xl sticky top-0 z-50 border-b border-slate-800 print:hidden">
-            <div class="max-w-[1800px] mx-auto px-8 py-3.5 flex flex-col md:flex-row justify-between items-center">
+            <div class="max-w-[1800px] mx-auto px-8 py-3 flex flex-col md:flex-row justify-between items-center">
                 
                 <div class="flex items-center space-x-4">
                     <div class="bg-indigo-500 p-2 rounded-xl shadow-lg rotate-3">
                         <i class="fas fa-microchip text-xl text-white"></i>
                     </div>
                     <div>
-                        <h1 class="text-base font-black tracking-tight uppercase leading-none text-indigo-100">Titan Dashboard <span class="text-emerald-400">V26.0</span></h1>
-                        <p class="text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] mt-1">Gestão de Margens & Inteligência Regulatória 2026</p>
+                        <h1 class="text-base font-black tracking-tight uppercase leading-none text-indigo-100">Titan Hero <span class="text-emerald-400">V27.0</span></h1>
+                        <p class="text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] mt-1">Sincronia de Simulação Manual & Auditoria Março/2026</p>
                     </div>
                 </div>
 
-                <div class="mt-3 md:mt-0 flex items-center space-x-5">
-                    <button @click="resetarTudo" class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest">Zerar Sistema</button>
-                    <button onclick="window.print()" class="bg-white text-slate-900 btn-titan shadow-lg hover:bg-indigo-50 border border-slate-200">Exportar Relatório</button>
+                <div class="mt-2 md:mt-0 flex items-center space-x-5">
+                    <button @click="resetarTudo" class="text-[9px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest">Zerar Sistema</button>
+                    <button onclick="window.print()" class="bg-white text-slate-900 btn-titan shadow-lg hover:bg-indigo-50 border border-slate-200">Exportar PDF</button>
                 </div>
             </div>
         </header>
@@ -81,77 +85,74 @@
                 
                 <div class="bg-indigo-600 p-8 rounded-[2.5rem] shadow-xl text-white relative overflow-hidden">
                     <div class="absolute -right-8 -bottom-8 opacity-10 text-[180px] rotate-12"><i class="fas fa-bullseye"></i></div>
+                    
                     <div class="relative z-10 space-y-6">
                         <div class="text-center">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-200 mb-3">Meta de Lucro Real (%)</label>
-                            <input type="text" v-model="inputs.alvo" @input="syncAll" class="w-full bg-indigo-500/50 border-2 border-indigo-400 rounded-3xl p-6 text-6xl font-black text-white focus:outline-none focus:border-emerald-400 text-center shadow-inner">
+                            <label class="block text-[9px] font-black uppercase tracking-widest text-indigo-200 mb-3">1. Meta de Lucro Alvo (%)</label>
+                            <input type="text" v-model="inputs.alvo" @input="syncAll" class="w-full bg-indigo-500/50 border-2 border-indigo-400 rounded-2xl p-4 text-5xl font-black text-white focus:outline-none focus:border-emerald-400 text-center shadow-inner">
+                            <p class="text-[8px] text-indigo-300 mt-3 font-bold uppercase italic">Sugere o melhor preço p/ este lucro.</p>
                         </div>
+
                         <div class="pt-6 border-t border-indigo-500/50 text-center">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-300 mb-2">Simular Manual (R$)</label>
-                            <input type="text" v-model="inputs.precoVenda" @input="syncAll" class="w-full bg-transparent text-2xl font-black text-white focus:outline-none text-center border-b-2 border-indigo-400 pb-2" placeholder="0,00">
-                            <p class="text-[8px] text-indigo-400 mt-2 font-black uppercase">Zere para usar o preço ideal.</p>
+                            <label class="block text-[9px] font-black uppercase tracking-widest text-indigo-300 mb-2">2. Simular Venda (Preço R$)</label>
+                            <input type="text" v-model="inputs.precoVenda" @input="syncAll" class="w-full bg-indigo-900/30 border-2 border-indigo-400 p-4 text-3xl font-black text-white rounded-2xl focus:outline-none text-center shadow-lg" placeholder="0,00">
+                            <p class="text-[8px] text-indigo-400 mt-2 font-black uppercase">Verifica se este preço dá lucro.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-titan p-6 border-l-[8px] border-indigo-500">
-                    <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-5 flex items-center">
-                        <i class="fas fa-tag mr-2 text-indigo-500 text-sm"></i> 1. Custos do Produto
+                <div class="card-titan p-5 border-l-[8px] border-indigo-500">
+                    <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center">
+                        <i class="fas fa-box mr-2 text-indigo-500"></i> 1. Custos do Produto (CMV)
                     </h2>
                     <div class="space-y-4">
-                        <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-titan" placeholder="Nome do Produto">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1 ml-1">Custo Compra</label>
-                                <input type="text" v-model="inputs.custo" @input="syncAll" class="input-titan">
-                            </div>
-                            <div>
-                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1 ml-1">Embalagem</label>
-                                <input type="text" v-model="inputs.embalagem" @input="syncAll" class="input-titan">
-                            </div>
+                        <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-titan" placeholder="Descrição do Item">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div><label class="text-[9px] font-bold text-slate-400 uppercase mb-1 block">Custo Unit.</label><input type="text" v-model="inputs.custo" @input="syncAll" class="input-titan"></div>
+                            <div><label class="text-[9px] font-bold text-slate-400 uppercase mb-1 block">Embalagem</label><input type="text" v-model="inputs.embalagem" @input="syncAll" class="input-titan"></div>
                         </div>
-                        <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center shadow-md">
-                            <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">CMV Final:</span>
-                            <span class="text-lg font-black text-white tracking-tighter">R$ {{ cmvTotal.toFixed(2) }}</span>
+                        <div class="p-3 bg-slate-900 rounded-2xl flex justify-between items-center shadow-md">
+                            <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Custo Real:</span>
+                            <span class="text-base font-black text-white tracking-tighter">R$ {{ cmvTotal.toFixed(2) }}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-titan p-6 border-l-[8px] border-amber-500">
-                    <div class="flex justify-between items-center mb-5">
-                        <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest">2. Custos Fixos</h2>
-                        <span class="text-[10px] font-black bg-amber-50 text-amber-600 px-3 py-1 rounded-xl border border-amber-100">R$ {{ totalFixas.toFixed(2) }}</span>
+                <div class="card-titan p-5 border-l-[8px] border-amber-500">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">2. Custos Fixos</h2>
+                        <span class="text-[9px] font-black bg-amber-50 text-amber-600 px-2 py-0.5 rounded border border-amber-100">R$ {{ totalFixas.toFixed(2) }}</span>
                     </div>
-                    <div class="space-y-2 mb-4 max-h-48 overflow-y-auto pr-1">
-                        <div v-for="(d, i) in despesas" :key="i" class="flex items-center space-x-3 group">
-                            <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-3 text-[10px] border border-slate-100 rounded-2xl bg-slate-50 font-bold focus:bg-white transition-all outline-none" placeholder="Item">
-                            <input type="text" v-model="d.valor" @input="syncAll" class="w-20 p-3 text-[10px] border border-slate-100 rounded-2xl bg-slate-50 font-black text-right">
-                            <button @click="removerDespesa(i)" class="text-slate-300 hover:text-red-500 transition-all p-1"><i class="fas fa-trash-can"></i></button>
+                    <div class="space-y-2 mb-4 max-h-40 overflow-y-auto pr-1">
+                        <div v-for="(d, i) in despesas" :key="i" class="flex items-center space-x-2 group">
+                            <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-2 text-[9px] border border-slate-100 rounded-xl bg-slate-50 font-bold focus:bg-white outline-none" placeholder="Item">
+                            <input type="text" v-model="d.valor" @input="syncAll" class="w-16 p-2 text-[9px] border border-slate-100 rounded-xl bg-slate-50 font-black text-right">
+                            <button @click="removerDespesa(i)" class="text-slate-300 hover:text-red-500 p-1"><i class="fas fa-trash-can"></i></button>
                         </div>
                     </div>
-                    <button @click="adicionarDespesa" class="w-full py-3.5 border-2 border-dashed border-slate-100 rounded-2xl text-[9px] font-black text-slate-400 hover:text-indigo-600 uppercase tracking-widest">+ Adicionar Conta</button>
-                    <div class="mt-6 pt-5 border-t border-slate-50">
-                        <div class="flex justify-between items-center mb-4">
-                            <label class="text-[10px] font-black text-slate-400 uppercase">Volume/Mês (Un)</label>
-                            <input type="text" v-model="inputs.volume" @input="syncAll" class="w-20 p-2.5 border border-slate-100 rounded-xl text-xs text-right font-black bg-slate-50">
+                    <button @click="adicionarDespesa" class="w-full py-2.5 border-2 border-dashed border-slate-100 rounded-xl text-[9px] font-black text-slate-400 hover:text-indigo-600 uppercase tracking-widest">+ Adicionar</button>
+                    <div class="mt-4 pt-4 border-t border-slate-50">
+                        <div class="flex justify-between items-center mb-3">
+                            <label class="text-[10px] font-black text-slate-400 uppercase">Volume/Mês</label>
+                            <input type="text" v-model="inputs.volume" @input="syncAll" class="w-20 p-2 border border-slate-100 rounded-lg text-xs text-right font-black bg-slate-50">
                         </div>
-                        <div class="p-4 bg-amber-50 rounded-2xl flex justify-between items-center">
-                            <span class="text-[9px] font-black text-amber-800 uppercase">Rateio:</span>
-                            <span class="text-base font-black text-amber-900">R$ {{ rateio.toFixed(2) }}</span>
+                        <div class="p-3 bg-amber-50 rounded-xl flex justify-between items-center shadow-inner">
+                            <span class="text-[9px] font-black text-amber-800 uppercase tracking-widest">Rateio:</span>
+                            <span class="text-sm font-black text-amber-900 tracking-tighter">R$ {{ rateio.toFixed(2) }}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-titan p-6 border-l-[8px] border-blue-500 space-y-4">
+                <div class="card-titan p-5 border-l-[8px] border-blue-500 space-y-4">
                     <div class="flex items-center justify-between">
-                        <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Imposto (%)</h2>
-                        <input type="text" v-model="inputs.imposto" @input="syncAll" class="w-20 p-2.5 border border-slate-100 rounded-xl text-xs text-right font-black bg-slate-50">
+                        <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center"><i class="fas fa-landmark mr-2"></i> Imposto %</h2>
+                        <input type="text" v-model="inputs.imposto" @input="syncAll" class="w-16 p-2 border border-slate-100 rounded-lg text-xs text-right font-black bg-slate-50">
                     </div>
                     <div class="flex items-center justify-between">
-                        <h2 class="text-[11px] font-black text-orange-500 uppercase tracking-widest">Perdas %</h2>
-                        <input type="text" v-model="inputs.perdas" @input="syncAll" class="w-20 p-2.5 border border-orange-100 rounded-xl text-xs text-right font-black bg-orange-50 text-orange-700">
+                        <h2 class="text-[10px] font-black text-orange-500 uppercase tracking-widest flex items-center"><i class="fas fa-shield-halved mr-2"></i> Perdas %</h2>
+                        <input type="text" v-model="inputs.perdas" @input="syncAll" class="w-16 p-2 border border-orange-100 rounded-lg text-xs text-right font-black bg-orange-50 text-orange-700">
                     </div>
-                    <button @click="salvarNoBanco" class="w-full py-4 bg-slate-900 hover:bg-black text-white rounded-3xl font-black text-[10px] shadow-xl transition-all active:scale-95 uppercase tracking-widest"><i class="fas fa-save mr-2 text-emerald-400"></i> Arquivar no Banco</button>
+                    <button @click="salvarNoBanco" class="w-full py-4 bg-slate-900 hover:bg-black text-white rounded-2xl font-black text-[9px] shadow-lg transition-all active:scale-95 uppercase tracking-widest"><i class="fas fa-save mr-2"></i> Arquivar no Banco</button>
                 </div>
             </div>
 
@@ -159,25 +160,20 @@
                 
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
                     <div class="xl:col-span-8 card-titan p-6 shadow-lg">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center"><i class="fas fa-chart-line mr-3 text-indigo-500"></i> Performance de Preço Ideal</h2>
-                            <span class="text-[10px] font-black bg-indigo-50 text-indigo-600 px-4 py-2 rounded-full uppercase tracking-widest">Meta: {{sNum(inputs.alvo)}}%</span>
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center"><i class="fas fa-chart-line mr-3 text-indigo-500"></i> Performance de Venda Omnichannel</h2>
+                            <span class="text-[9px] font-black bg-indigo-50 text-indigo-600 px-4 py-2 rounded-full uppercase tracking-widest">Alvo: {{sNum(inputs.alvo)}}%</span>
                         </div>
                         <div class="chart-box"><canvas id="priceChart"></canvas></div>
                     </div>
 
                     <div class="xl:col-span-4 card-titan overflow-hidden border border-slate-200">
-                        <table class="w-full text-left text-[11px] border-collapse">
-                            <thead>
-                                <tr class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b">
-                                    <th class="py-4 px-6">Plataforma</th>
-                                    <th class="text-right px-6">Preço Ideal</th>
-                                </tr>
-                            </thead>
+                        <table class="w-full text-left text-[10px] border-collapse">
+                            <thead><tr class="bg-slate-50/80 text-slate-400 font-black uppercase tracking-widest border-b"><th class="py-4 px-6">Plataforma</th><th class="text-right px-6">Preço Ideal</th></tr></thead>
                             <tbody class="divide-y divide-slate-50 font-bold">
                                 <tr v-for="mkp in marketplaces" :key="mkp.id" class="hover:bg-slate-50 transition-all">
                                     <td class="py-3 px-6" :class="mkp.corTexto">{{ mkp.nome.split(' ')[0] }}</td>
-                                    <td class="text-right px-6 font-black text-slate-900">R$ {{ calcPrecoIdeal(mkp).toFixed(2) }}</td>
+                                    <td class="text-right px-6 font-black text-slate-900 text-sm">R$ {{ calcPrecoIdeal(mkp).toFixed(2) }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -185,59 +181,70 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    <div v-for="mkp in marketplaces" :key="mkp.id" class="card-titan relative overflow-hidden flex flex-col group border-slate-200 shadow-md">
+                    <div v-for="mkp in marketplaces" :key="mkp.id" class="card-titan relative overflow-hidden flex flex-col group shadow-md" :class="{'simulando-ativo': sNum(inputs.precoVenda) > 0}">
                         
                         <div class="absolute left-0 top-0 bottom-0 w-2.5 transition-all duration-700 shadow-xl" :class="calcLucro(mkp) >= 0 ? 'bg-emerald-500' : 'bg-red-500'"></div>
                         
-                        <div class="p-5 px-8 flex justify-between items-center bg-slate-50/50 border-b border-slate-100">
-                            <div class="flex flex-col space-y-1">
+                        <div class="p-4 px-8 flex justify-between items-center bg-slate-50/30 border-b border-slate-100">
+                            <div class="flex flex-col">
                                 <h3 class="font-black text-sm uppercase tracking-widest leading-none" :class="mkp.corTexto">{{ mkp.nome }}</h3>
-                                <div class="flex flex-wrap gap-1">
-                                    <span v-if="mkp.id === 2" class="badge-smart" :class="calcPrecoIdeal(mkp) < 79 ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700'">
-                                        {{ calcPrecoIdeal(mkp) < 79 ? 'Regra Taxa Fixa' : 'Regra Frete Grátis' }}
-                                    </span>
-                                    <span v-if="mkp.id === 1" class="badge-smart bg-orange-100 text-orange-700">
-                                        Taxa: R$ {{ getSmartFees(mkp, calcPrecoIdeal(mkp)).fix.toFixed(2) }}
-                                    </span>
+                                <div class="flex flex-wrap gap-1 mt-1">
+                                    <span v-if="mkp.id === 2" class="badge-smart" :class="calcPrecoIdeal(mkp) < 79 ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700'">{{ calcPrecoIdeal(mkp) < 79 ? 'Taxa Fixa' : 'Frete Grátis' }}</span>
+                                    <span v-if="mkp.id === 1" class="badge-smart bg-orange-100 text-orange-700">Faixa: R$ {{ getSmartFees(mkp, calcPrecoIdeal(mkp)).fix.toFixed(2) }}</span>
                                 </div>
                             </div>
-                            <button @click="mkp.edit = !mkp.edit" class="text-[9px] font-black bg-white border border-slate-100 px-3.5 py-1.5 rounded-xl shadow-sm hover:shadow-md transition uppercase tracking-tighter">Taxas</button>
+                            <button @click="mkp.edit = !mkp.edit" class="text-[9px] font-black bg-white border border-slate-100 px-4 py-2 rounded-xl shadow-sm hover:shadow-md transition uppercase tracking-tighter">Taxas</button>
                         </div>
 
                         <div v-show="mkp.edit" class="p-8 bg-slate-50 border-b border-slate-100 grid grid-cols-2 gap-5 print:hidden animate-fade-in">
                             <div class="space-y-1"><label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Comissão %</label><input type="text" v-model="mkp.com" @input="syncAll" class="input-titan !p-2 shadow-inner"></div>
-                            <div class="space-y-1"><label class="text-[9px] font-black text-blue-500 uppercase tracking-widest block">Invest. ADS %</label><input type="text" v-model="mkp.ads" @input="syncAll" class="input-titan !p-2 !bg-blue-50 shadow-sm"></div>
+                            <div class="space-y-1"><label class="text-[9px] font-black text-blue-500 uppercase tracking-widest block">Ads %</label><input type="text" v-model="mkp.ads" @input="syncAll" class="input-titan !p-2 !bg-blue-50 shadow-sm"></div>
                             <div class="space-y-1"><label class="text-[9px] font-black text-purple-600 uppercase tracking-widest block">Afiliados %</label><input type="text" v-model="mkp.afi" @input="syncAll" class="input-titan !p-2 !bg-purple-50 shadow-sm"></div>
                             <div class="space-y-1"><label class="text-[9px] font-black text-amber-600 uppercase tracking-widest block">Antecip. %</label><input type="text" v-model="mkp.ant" @input="syncAll" class="input-titan !p-2 !bg-amber-50 shadow-sm"></div>
                             
                             <div v-if="mkp.id === 3" class="col-span-2 p-3 bg-emerald-50 rounded-2xl border-2 border-emerald-100 flex items-center justify-between shadow-inner">
-                                <label class="text-[9px] font-black text-emerald-800 uppercase flex items-center"><i class="fas fa-truck-fast mr-2"></i> Frete Grátis SFP (+6%)</label>
-                                <input type="checkbox" v-model="mkp.useSFP" @change="syncAll" class="w-5 h-5 rounded text-emerald-600 cursor-pointer transition-all">
+                                <label class="text-[9px] font-black text-emerald-800 uppercase flex items-center"><i class="fas fa-truck-fast mr-2"></i> Programa SFP (+6%)</label>
+                                <input type="checkbox" v-model="mkp.useSFP" @change="syncAll" class="w-5 h-5 rounded-lg text-emerald-600 cursor-pointer transition-all">
                             </div>
 
                             <div class="relative space-y-1"><label class="text-[9px] font-black text-slate-400 uppercase block tracking-widest">Taxa Fixa R$</label><input type="text" v-model="mkp.fixo" @input="syncAll" class="input-titan !p-2"><div v-if="mkp.id === 2 && calcPrecoIdeal(mkp) >= 79" class="absolute inset-x-0 bottom-0 top-[22px] bg-slate-100/70 rounded-xl flex items-center justify-center text-[7px] font-black text-slate-500 uppercase cursor-not-allowed">Isento</div></div>
                             <div class="relative space-y-1"><label class="text-[9px] font-black text-slate-400 uppercase block tracking-widest">Logística R$</label><input type="text" v-model="mkp.log" @input="syncAll" class="input-titan !p-2"><div v-if="mkp.id === 2 && calcPrecoIdeal(mkp) < 79" class="absolute inset-x-0 bottom-0 top-[22px] bg-slate-100/70 rounded-xl flex items-center justify-center text-[7px] font-black text-slate-500 uppercase cursor-not-allowed">Isento</div></div>
                         </div>
 
-                        <div class="p-8 flex-grow flex flex-col space-y-10">
-                            <div class="p-8 bg-emerald-50 border-2 border-emerald-100 rounded-[2.5rem] text-center shadow-inner relative group/price overflow-hidden">
-                                <p class="text-[11px] font-black text-emerald-600 uppercase mb-3 tracking-[0.3em] leading-none">Preço Ideal Titan</p>
-                                <p class="text-6xl font-black text-emerald-900 tracking-tighter leading-none">R$ {{ calcPrecoIdeal(mkp).toFixed(2) }}</p>
-                                <div class="absolute -right-6 -bottom-6 opacity-5 text-9xl transition-all group-hover/price:scale-110"><i class="fas fa-check-circle"></i></div>
+                        <div class="p-8 flex-grow flex flex-col space-y-8">
+                            <div class="p-8 bg-white border border-slate-100 rounded-[2.5rem] text-center shadow-inner relative group/price overflow-hidden" :class="{'!bg-emerald-50 !border-emerald-100': sNum(inputs.precoVenda) === 0, '!bg-blue-50 !border-blue-100': sNum(inputs.precoVenda) > 0}">
+                                
+                                <p class="text-[10px] font-black uppercase mb-3 tracking-[0.3em]" :class="sNum(inputs.precoVenda) > 0 ? 'text-blue-600' : 'text-emerald-600'">
+                                    {{ sNum(inputs.precoVenda) > 0 ? 'Resultado p/ Venda de' : 'Preço Ideal Sugerido' }}
+                                </p>
+                                
+                                <p class="text-6xl font-black tracking-tighter leading-none" :class="sNum(inputs.precoVenda) > 0 ? 'text-blue-900' : 'text-emerald-900'">
+                                    R$ {{ sNum(inputs.precoVenda) > 0 ? sNum(inputs.precoVenda).toFixed(2) : calcPrecoIdeal(mkp).toFixed(2) }}
+                                </p>
+                                
+                                <div class="mt-4 text-[9px] font-bold text-slate-400 uppercase">
+                                    {{ sNum(inputs.precoVenda) > 0 ? 'Para empatar, venda a R$ ' + calcPrecoIdeal(mkp).toFixed(2) : 'Atinge exatamente ' + sNum(inputs.alvo) + '% lucro' }}
+                                </div>
                             </div>
 
-                            <div class="pt-8 border-t border-slate-100 grid grid-cols-2 gap-8">
+                            <div class="pt-6 border-t border-slate-100 grid grid-cols-2 gap-8">
                                 <div class="space-y-2">
-                                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center">Lucro <i :class="sNum(inputs.precoVenda) > 0 ? 'fas fa-hand-pointer ml-2 text-indigo-400' : 'fas fa-robot ml-2 text-emerald-500'" class="text-sm"></i></p>
-                                    <p class="text-4xl font-black leading-none tracking-tighter" :class="calcLucro(mkp) >= 0 ? 'text-slate-800' : 'text-red-600'">R$ {{ calcLucro(mkp).toFixed(2) }}</p>
+                                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center">
+                                        Lucro <i :class="sNum(inputs.precoVenda) > 0 ? 'fas fa-hand-pointer ml-3 text-blue-500' : 'fas fa-robot ml-3 text-emerald-500'" class="text-sm"></i>
+                                    </p>
+                                    <p class="text-4xl font-black leading-none tracking-tighter" :class="calcLucro(mkp) >= 0 ? 'text-slate-900' : 'text-red-600'">
+                                        R$ {{ calcLucro(mkp).toFixed(2) }}
+                                    </p>
                                 </div>
                                 <div class="text-right space-y-2">
                                     <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Margem Real</p>
-                                    <p class="text-3xl font-black leading-none" :class="calcLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-400'">{{ calcMargem(mkp).toFixed(1) }}%</p>
+                                    <p class="text-3xl font-black leading-none mt-1" :class="calcLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-400'">
+                                        {{ calcMargem(mkp).toFixed(1) }}%
+                                    </p>
                                 </div>
                             </div>
 
-                            <div class="w-full bg-slate-100 rounded-full h-3.5 overflow-hidden shadow-inner border border-white">
+                            <div class="w-full bg-slate-100 rounded-full h-3.5 overflow-hidden shadow-inner border-2 border-white">
                                 <div class="h-full transition-all duration-1000 rounded-full shadow-lg" :class="calcMargem(mkp) >= sNum(inputs.alvo) ? 'bg-emerald-500' : (calcMargem(mkp) > 0 ? 'bg-amber-400' : 'bg-red-500')" :style="{ width: Math.min(Math.max((calcMargem(mkp)/sNum(inputs.alvo))*100, 0), 100) + '%' }"></div>
                             </div>
                         </div>
@@ -245,13 +252,13 @@
                 </div>
 
                 <div v-if="banco.length > 0" class="bg-slate-900 rounded-[4rem] p-16 shadow-2xl mt-12 border border-slate-800 animate-in">
-                    <h2 class="text-[14px] font-black text-emerald-400 uppercase tracking-[0.7em] mb-12 flex items-center"><i class="fas fa-layer-group mr-6 text-4xl text-emerald-500"></i> Banco de Precificações Titan</h2>
+                    <h2 class="text-[14px] font-black text-emerald-400 uppercase tracking-[0.8em] mb-12 flex items-center"><i class="fas fa-database mr-6 text-4xl text-emerald-500"></i> Banco de Precificações Titan</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div v-for="(b, i) in banco" :key="i" class="flex flex-col md:flex-row items-center justify-between p-10 bg-white/5 rounded-[3rem] border border-white/5 hover:bg-white/10 transition-all group">
                             <div>
                                 <h4 class="text-white font-extrabold text-2xl tracking-tight uppercase leading-none">{{ b.nome }}</h4>
                                 <div class="flex flex-wrap gap-8 mt-6">
-                                    <span class="text-[12px] font-black text-emerald-400 uppercase tracking-widest border-b border-emerald-900/50 pb-2">Preço: R$ {{ b.venda }}</span>
+                                    <span class="text-[12px] font-black text-emerald-400 uppercase tracking-widest border-b border-emerald-900/50 pb-2">Venda: R$ {{ b.venda }}</span>
                                     <span class="text-[12px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2">Meta: {{ b.alvo }}%</span>
                                 </div>
                             </div>
@@ -269,7 +276,7 @@
         createApp({
             data() {
                 return {
-                    // CONFIGURAÇÃO TÉCNICA V26 MASTER ERP
+                    // CONFIGURAÇÃO TÉCNICA V27 - SIMULATION SYNC
                     inputs: { nomeProd: '', precoVenda: '0,00', custo: '35,00', embalagem: '1,50', perdas: '1,5', volume: '300', imposto: '10,0', alvo: '15,0' },
                     despesas: [
                         { nome: 'Aluguel / Galpão', valor: '1200' }, { nome: 'Sistemas (Bling/Olist)', valor: '450' },
@@ -288,24 +295,25 @@
                     banco: [], chart: null
                 }
             },
+            
             computed: {
                 totalFixas() { return this.despesas.reduce((acc, cur) => acc + this.sNum(cur.valor), 0); },
                 rateio() { const v = this.sNum(this.inputs.volume); return v > 0 ? this.totalFixas / v : 0; },
                 cmvTotal() { return this.sNum(this.inputs.custo) + this.sNum(this.inputs.embalagem); }
             },
+            
             methods: {
-                // ENGINE TÉCNICO DE LIMPEZA DE NÚMEROS
                 sNum(v) { if (!v) return 0; const clean = v.toString().replace(',', '.').replace(/[^\d.-]/g, ''); return parseFloat(clean) || 0; },
                 syncAll() { this.salvar(); this.updateChart(); },
                 adicionarDespesa() { this.despesas.push({ nome: '', valor: '' }); this.salvar(); },
                 removerDespesa(i) { this.despesas.splice(i, 1); this.syncAll(); },
                 salvar() { 
-                    localStorage.setItem('v26_inputs', JSON.stringify(this.inputs));
-                    localStorage.setItem('v26_despesas', JSON.stringify(this.despesas));
-                    localStorage.setItem('v26_marketplaces', JSON.stringify(this.marketplaces));
+                    localStorage.setItem('v27_inputs', JSON.stringify(this.inputs));
+                    localStorage.setItem('v27_despesas', JSON.stringify(this.despesas));
+                    localStorage.setItem('v27_marketplaces', JSON.stringify(this.marketplaces));
                 },
                 
-                // --- LÓGICA RECURSIVA DE TAXAS 2026 (MARÇO) ---
+                // --- LÓGICA RECURSIVA DE TAXAS 2026 (REAJUSTE MARÇO) ---
                 getSmartFees(mkp, precoEstimado) {
                     let com = this.sNum(mkp.com); let fix = this.sNum(mkp.fixo); let log = this.sNum(mkp.log);
                     
@@ -326,7 +334,6 @@
 
                 calcPrecoIdeal(mkp) {
                     let finalPrice = 100;
-                    // Tripla iteração para garantir estabilidade em thresholds de frete grátis
                     for (let i = 0; i < 3; i++) {
                         let f = this.getSmartFees(mkp, finalPrice);
                         let percRet = (f.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.imposto) + this.sNum(this.inputs.perdas) + this.sNum(this.inputs.alvo)) / 100;
@@ -362,7 +369,7 @@
                         type: 'bar',
                         data: {
                             labels: this.marketplaces.map(m => m.nome.split(' ')[0]),
-                            datasets: [{ label: 'Preço Ideal (R$)', data: this.marketplaces.map(m => this.calcPrecoIdeal(m)), backgroundColor: '#6366f1', borderRadius: 15, barThickness: 45 }]
+                            datasets: [{ label: 'Preço Sugerido (R$)', data: this.marketplaces.map(m => this.calcPrecoIdeal(m)), backgroundColor: '#6366f1', borderRadius: 15, barThickness: 45 }]
                         },
                         options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 10, weight: 'bold' } } }, x: { grid: { display: false }, ticks: { font: { size: 10, weight: '900' } } } } }
                     });
@@ -371,16 +378,16 @@
                 salvarNoBanco() {
                     if(!this.inputs.nomeProd) { alert('Informe o nome do produto!'); return; }
                     this.banco.unshift({ nome: this.inputs.nomeProd, venda: this.calcPrecoIdeal(this.marketplaces[0]).toFixed(2), alvo: this.inputs.alvo });
-                    localStorage.setItem('v26_banco', JSON.stringify(this.banco));
+                    localStorage.setItem('v27_banco', JSON.stringify(this.banco));
                 },
-                removerProduto(i) { this.banco.splice(i, 1); localStorage.setItem('v26_banco', JSON.stringify(this.banco)); },
+                removerProduto(i) { this.banco.splice(i, 1); localStorage.setItem('v27_banco', JSON.stringify(this.banco)); },
                 resetarTudo() { if(confirm('⚠️ Zerar sistema completo?')) { localStorage.clear(); location.reload(); }}
             },
             mounted() {
-                const i = localStorage.getItem('v26_inputs'); if (i) this.inputs = JSON.parse(i);
-                const d = localStorage.getItem('v26_despesas'); if (d) this.despesas = JSON.parse(d);
-                const m = localStorage.getItem('v26_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
-                const b = localStorage.getItem('v26_banco'); if (b) this.banco = JSON.parse(b);
+                const i = localStorage.getItem('v27_inputs'); if (i) this.inputs = JSON.parse(i);
+                const d = localStorage.getItem('v27_despesas'); if (d) this.despesas = JSON.parse(d);
+                const m = localStorage.getItem('v27_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
+                const b = localStorage.getItem('v27_banco'); if (b) this.banco = JSON.parse(b);
                 this.initChart();
             }
         }).mount('#app')
