@@ -10,8 +10,12 @@
     <style>
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #c7c7cc; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* Esconder as setinhas chatas dos campos de número */
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"] { -moz-appearance: textfield; }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased">
@@ -20,18 +24,18 @@
         <header class="bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow-md sticky top-0 z-50 print:hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <i class="fas fa-calculator text-3xl text-emerald-400"></i>
+                    <i class="fas fa-rocket text-3xl text-emerald-400"></i>
                     <div>
                         <h1 class="text-xl font-bold tracking-tight">Super Calculadora Marketplaces 2026</h1>
-                        <p class="text-xs text-slate-300">Comando Financeiro para E-commerce Brasileiro</p>
+                        <p class="text-xs text-slate-300">Inteligência Financeira para E-commerce</p>
                     </div>
                 </div>
                 <div class="mt-4 md:mt-0 space-x-3 flex">
-                    <button @click="carregarCenarioConservador" class="bg-slate-700 hover:bg-slate-600 border border-slate-600 text-white px-4 py-2 rounded-lg shadow text-sm font-semibold transition flex items-center">
-                        <i class="fas fa-rotate-left mr-2"></i> Resetar Taxas Padrão
+                    <button @click="resetarSimulacao" class="bg-slate-700 hover:bg-slate-600 border border-slate-600 text-white px-4 py-2 rounded-lg shadow text-sm font-semibold transition flex items-center">
+                        <i class="fas fa-rotate-left mr-2"></i> Atualizar Regras
                     </button>
                     <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg shadow-lg shadow-emerald-500/30 text-sm font-semibold transition flex items-center">
-                        <i class="fas fa-print mr-2"></i> Imprimir Relatório
+                        <i class="fas fa-file-pdf mr-2"></i> Salvar Relatório
                     </button>
                 </div>
             </div>
@@ -43,153 +47,198 @@
                 
                 <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
-                    <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Preço de Venda Simulado</h2>
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider">Preço de Venda Simulado</h2>
+                        <i class="fas fa-tag text-emerald-200 text-xl"></i>
+                    </div>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-2xl font-bold text-slate-400">R$</span>
-                        <input type="number" step="1" v-model.number="produto.precoVenda" class="w-full pl-14 pr-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-xl text-3xl font-black text-slate-800 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition">
+                        <input type="number" step="any" v-model="inputs.precoVenda" class="w-full pl-14 pr-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-xl text-4xl font-black text-slate-800 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition">
                     </div>
-                    <p class="text-xs text-slate-400 mt-2"><i class="fas fa-info-circle"></i> Altere para ver o impacto nos lucros em tempo real.</p>
+                    <p class="text-xs text-slate-400 mt-2 flex items-center"><i class="fas fa-magic mr-1"></i> As regras de 2026 se adaptam automaticamente ao preço.</p>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                     <h2 class="text-md font-bold text-slate-800 mb-4 flex items-center"><i class="fas fa-box-open text-indigo-500 mr-2"></i> 1. Custos do Produto (CMV)</h2>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Custo/Fabricação</label>
-                            <div class="relative"><span class="absolute left-3 top-2 text-slate-400 text-sm">R$</span><input type="number" step="0.01" v-model.number="produto.custo" class="w-full pl-8 p-2 border rounded-lg text-sm bg-slate-50"></div>
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Custo/Fabricação</label>
+                            <div class="relative"><span class="absolute left-3 top-2 text-slate-400 text-sm">R$</span><input type="number" step="any" v-model="inputs.custo" class="w-full pl-8 p-2 border rounded-lg text-sm bg-slate-50 font-semibold text-slate-700"></div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Frete até Estoque</label>
-                            <div class="relative"><span class="absolute left-3 top-2 text-slate-400 text-sm">R$</span><input type="number" step="0.01" v-model.number="produto.freteIn" class="w-full pl-8 p-2 border rounded-lg text-sm bg-slate-50"></div>
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Frete Inbound</label>
+                            <div class="relative"><span class="absolute left-3 top-2 text-slate-400 text-sm">R$</span><input type="number" step="any" v-model="inputs.freteIn" class="w-full pl-8 p-2 border rounded-lg text-sm bg-slate-50 font-semibold text-slate-700"></div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Embalagem</label>
-                            <div class="relative"><span class="absolute left-3 top-2 text-slate-400 text-sm">R$</span><input type="number" step="0.01" v-model.number="produto.embalagem" class="w-full pl-8 p-2 border rounded-lg text-sm bg-slate-50"></div>
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Embalagem</label>
+                            <div class="relative"><span class="absolute left-3 top-2 text-slate-400 text-sm">R$</span><input type="number" step="any" v-model="inputs.embalagem" class="w-full pl-8 p-2 border rounded-lg text-sm bg-slate-50 font-semibold text-slate-700"></div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Devoluções (%)</label>
-                            <div class="relative"><input type="number" step="0.1" v-model.number="produto.taxaDevolucao" class="w-full pr-8 p-2 border rounded-lg text-sm text-right bg-slate-50"><span class="absolute right-3 top-2 text-slate-400 text-sm">%</span></div>
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Provisão Perdas</label>
+                            <div class="relative"><input type="number" step="any" v-model="inputs.taxaDevolucao" class="w-full pr-8 p-2 border rounded-lg text-sm bg-slate-50 text-right font-semibold text-slate-700"><span class="absolute right-3 top-2 text-slate-400 text-sm">%</span></div>
                         </div>
                     </div>
-                    <div class="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center">
-                        <span class="text-sm font-semibold text-slate-500">CMV Unitário Bruto:</span>
-                        <span class="text-lg font-bold text-slate-800">R$ {{ cmvTotal.toFixed(2) }}</span>
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center bg-indigo-50/50 p-3 rounded-lg">
+                        <span class="text-xs font-bold text-indigo-800">CMV Unitário:</span>
+                        <span class="text-sm font-bold text-indigo-900">R$ {{ cmvTotal.toFixed(2) }}</span>
                     </div>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                    <h2 class="text-md font-bold text-slate-800 mb-4 flex items-center"><i class="fas fa-building text-amber-500 mr-2"></i> 2. Despesas Fixas (Rateio)</h2>
+                    <h2 class="text-md font-bold text-slate-800 mb-4 flex items-center"><i class="fas fa-building text-amber-500 mr-2"></i> 2. Rateio Operacional</h2>
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
-                            <label class="text-xs font-semibold text-slate-600">Custos Fixos Totais/Mês</label>
-                            <div class="relative w-32"><span class="absolute left-3 top-2 text-slate-400 text-sm">R$</span><input type="number" step="1" v-model.number="fixas.total" class="w-full pl-8 p-2 border rounded-lg text-sm text-right bg-slate-50"></div>
+                            <label class="text-[11px] font-bold text-slate-500 uppercase">Despesas Fixas Totais/Mês</label>
+                            <div class="relative w-32"><span class="absolute left-3 top-2 text-slate-400 text-sm">R$</span><input type="number" step="any" v-model="inputs.fixasTotal" class="w-full pl-8 p-2 border rounded-lg text-sm text-right bg-slate-50 font-semibold text-slate-700"></div>
                         </div>
                         <div class="flex items-center justify-between">
-                            <label class="text-xs font-semibold text-slate-600">Volume Vendas/Mês (un)</label>
-                            <div class="relative w-32"><input type="number" step="1" v-model.number="fixas.volume" class="w-full p-2 border rounded-lg text-sm text-right bg-slate-50"></div>
+                            <label class="text-[11px] font-bold text-slate-500 uppercase">Volume de Vendas (Un/Mês)</label>
+                            <div class="relative w-32"><input type="number" step="any" v-model="inputs.fixasVolume" class="w-full p-2 border rounded-lg text-sm text-right bg-slate-50 font-semibold text-slate-700"></div>
                         </div>
                     </div>
-                    <div class="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center bg-amber-50 p-3 rounded-lg">
-                        <span class="text-xs font-bold text-amber-800">Rateio Fixo/Unidade:</span>
-                        <span class="text-sm font-bold text-amber-800">R$ {{ rateioFixoUnitario.toFixed(2) }}</span>
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center bg-amber-50/50 p-3 rounded-lg">
+                        <span class="text-xs font-bold text-amber-800">Rateio por Unidade:</span>
+                        <span class="text-sm font-bold text-amber-900">R$ {{ rateioFixoUnitario.toFixed(2) }}</span>
                     </div>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                    <h2 class="text-md font-bold text-slate-800 mb-4 flex items-center"><i class="fas fa-file-invoice-dollar text-blue-500 mr-2"></i> 3. Tributação & Meta</h2>
+                    <h2 class="text-md font-bold text-slate-800 mb-4 flex items-center"><i class="fas fa-chart-pie text-blue-500 mr-2"></i> 3. Tributos & Margem Alvo</h2>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Imposto sobre Venda (%)</label>
-                            <div class="relative"><input type="number" step="0.1" v-model.number="empresa.aliquota" class="w-full pr-8 p-2 border rounded-lg text-sm bg-slate-50 text-right"><span class="absolute right-3 top-2 text-slate-400 text-sm">%</span></div>
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Imposto sobre Venda (Nota Fiscal)</label>
+                            <div class="relative"><input type="number" step="any" v-model="inputs.aliquota" class="w-full pr-8 p-2 border rounded-lg text-sm bg-slate-50 text-right font-semibold text-slate-700"><span class="absolute right-3 top-2 text-slate-400 text-sm">%</span></div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Meta de Margem Líquida (%)</label>
-                            <div class="relative"><input type="number" step="1" v-model.number="empresa.margemAlvo" class="w-full pr-8 p-2 border rounded-lg text-sm bg-blue-50 border-blue-200 font-bold text-blue-800 text-right"><span class="absolute right-3 top-2 text-blue-400 text-sm">%</span></div>
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1 text-emerald-600">Sua Meta de Lucro Líquido</label>
+                            <div class="relative"><input type="number" step="any" v-model="inputs.margemAlvo" class="w-full pr-8 p-2 border-2 border-emerald-200 rounded-lg text-sm bg-emerald-50 text-right font-bold text-emerald-700 focus:ring-emerald-500"><span class="absolute right-3 top-2 text-emerald-500 text-sm font-bold">%</span></div>
                         </div>
                     </div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                    <h2 class="text-[11px] font-bold text-slate-500 uppercase border-b pb-2 mb-3">Configurações Especiais da Conta</h2>
+                    <label class="flex items-center space-x-3 cursor-pointer group">
+                        <input type="checkbox" v-model="configs.shopeeCpf" class="w-4 h-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500">
+                        <span class="text-xs font-semibold text-slate-600 group-hover:text-slate-900">Shopee: Vendedor CPF (Adicional R$ 3/item)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 cursor-pointer group">
+                        <input type="checkbox" v-model="configs.sheinNova" class="w-4 h-4 text-zinc-800 border-gray-300 rounded focus:ring-zinc-800">
+                        <span class="text-xs font-semibold text-slate-600 group-hover:text-slate-900">Shein: Conta Nova (Isenção 90 dias)</span>
+                    </label>
                 </div>
 
             </div>
 
             <div class="lg:col-span-8 space-y-6">
                 
-                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Ponto de Equilíbrio Geral</h3>
-                        <p class="text-sm text-slate-600 mb-1">Unidades/mês para pagar o fixo (Base: melhor cenário)</p>
-                        <div class="text-3xl font-black text-slate-800">{{ calcularPontoEquilibrio() }} <span class="text-sm font-normal text-slate-500">unidades</span></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 print:hidden">
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200 flex flex-col justify-center">
+                        <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"><i class="fas fa-balance-scale mr-1"></i> Ponto de Equilíbrio Geral</h3>
+                        <p class="text-xs text-slate-500 mb-2">Unidades p/ pagar os custos fixos (Base: Melhor MKP)</p>
+                        <div class="text-3xl font-black text-slate-800">{{ calcularPontoEquilibrio() }} <span class="text-sm font-normal text-slate-500">un/mês</span></div>
                     </div>
-                    <div>
-                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Ranking (Maior Lucro)</h3>
-                        <div v-if="marketplacesOrdenados.length > 0" class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold"><i class="fas fa-trophy"></i></div>
-                            <div>
-                                <p class="text-sm font-bold text-slate-800">{{ marketplacesOrdenados[0].nome }}</p>
-                                <p class="text-xs font-semibold text-emerald-600">Lucro: R$ {{ calcularLucro(marketplacesOrdenados[0]).toFixed(2) }} ({{ calcularMargem(marketplacesOrdenados[0]).toFixed(1) }}%)</p>
-                            </div>
+                    <div class="bg-gradient-to-br from-emerald-500 to-emerald-700 p-6 rounded-2xl shadow-md text-white flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-2xl backdrop-blur-sm"><i class="fas fa-trophy"></i></div>
+                        <div v-if="marketplacesOrdenados.length > 0">
+                            <h3 class="text-[10px] font-bold text-emerald-100 uppercase tracking-wider mb-1">Mais Lucrativo</h3>
+                            <p class="text-lg font-bold leading-tight">{{ marketplacesOrdenados[0].nome }}</p>
+                            <p class="text-sm font-medium text-emerald-100 mt-1">Margem Real: {{ calcularMargem(marketplacesOrdenados[0]).toFixed(1) }}%</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div v-for="(mkp, index) in marketplaces" :key="index" class="bg-white rounded-2xl shadow-sm border hover:shadow-lg transition" :class="calcularLucro(mkp) < 0 ? 'border-red-200' : 'border-slate-200'">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6">
+                    
+                    <div v-for="(mkp, index) in marketplaces" :key="index" class="bg-white rounded-2xl shadow-sm border transition-all duration-300 hover:shadow-lg relative overflow-hidden group" :class="calcularLucro(mkp) < 0 ? 'border-red-300' : 'border-slate-200'">
                         
-                        <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-2xl">
-                            <h3 class="text-lg font-bold" :class="mkp.color">{{ mkp.nome }}</h3>
-                            <button @click="mkp.showEdit = !mkp.showEdit" class="text-xs font-semibold text-slate-500 hover:text-indigo-600 bg-white px-3 py-1 rounded-full border shadow-sm print:hidden transition">
-                                <i class="fas fa-sliders-h mr-1"></i> Editar
+                        <div class="absolute left-0 top-0 bottom-0 w-1 transition-colors" :class="calcularMargem(mkp) >= sNum(inputs.margemAlvo) ? 'bg-emerald-500' : (calcularMargem(mkp) > 0 ? 'bg-amber-400' : 'bg-red-500')"></div>
+
+                        <div class="p-4 pl-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                            <h3 class="text-md font-black flex items-center" :class="mkp.corTexto">
+                                <i :class="mkp.icone + ' mr-2'"></i> {{ mkp.nome }}
+                            </h3>
+                            <button @click="mkp.mostrarEdicao = !mkp.mostrarEdicao" class="text-[10px] font-bold uppercase text-slate-400 hover:text-indigo-600 bg-white px-3 py-1.5 rounded-lg border shadow-sm print:hidden transition">
+                                <i class="fas fa-sliders-h mr-1"></i> Taxas
                             </button>
                         </div>
 
-                        <div v-show="mkp.showEdit" class="p-4 bg-slate-100 border-b border-slate-200 grid grid-cols-2 gap-3 print:hidden">
-                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Comissão (%)</label><input type="number" step="0.1" v-model.number="mkp.comissao" class="w-full p-1.5 text-sm border rounded"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Taxa Fixa (R$)</label><input type="number" step="0.1" v-model.number="mkp.taxaFixa" class="w-full p-1.5 text-sm border rounded"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Logística (R$)</label><input type="number" step="0.1" v-model.number="mkp.custoFreteMkp" class="w-full p-1.5 text-sm border rounded"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Antecipação (%)</label><input type="number" step="0.1" v-model.number="mkp.antecipacao" class="w-full p-1.5 text-sm border rounded"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Afiliados (%)</label><input type="number" step="0.1" v-model.number="mkp.afiliados" class="w-full p-1.5 text-sm border rounded"></div>
-                            <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Ads (%)</label><input type="number" step="0.1" v-model.number="mkp.ads" class="w-full p-1.5 text-sm border rounded"></div>
+                        <div v-show="mkp.mostrarEdicao" class="p-4 bg-slate-100 border-b border-slate-200 print:hidden shadow-inner">
+                            <p class="text-[10px] text-slate-500 mb-3"><i class="fas fa-info-circle"></i> O sistema calcula as taxas dinâmicas sozinho. Edite apenas se tiver contratos diferentes.</p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Comissão (%)</label><input type="number" step="any" v-model="mkp.comissaoOverride" class="w-full p-1.5 text-sm border rounded bg-white placeholder-slate-300" :placeholder="getRegrasDinamicas(mkp).comissao.toFixed(1)"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Taxa Fixa (R$)</label><input type="number" step="any" v-model="mkp.taxaFixaOverride" class="w-full p-1.5 text-sm border rounded bg-white placeholder-slate-300" :placeholder="getRegrasDinamicas(mkp).taxaFixa.toFixed(2)"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Seu Frete (R$)</label><input type="number" step="any" v-model="mkp.freteMkp" class="w-full p-1.5 text-sm border rounded bg-white" title="Valor que você paga do frete/motoboy"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Antecipação (%)</label><input type="number" step="any" v-model="mkp.antecipacao" class="w-full p-1.5 text-sm border rounded bg-white"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Afiliados/Ads (%)</label><input type="number" step="any" v-model="mkp.afiliadosAds" class="w-full p-1.5 text-sm border rounded bg-white"></div>
+                                
+                                <div v-if="mkp.id === 'tiktok'" class="col-span-2 mt-2">
+                                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-2 rounded border">
+                                        <input type="checkbox" v-model="mkp.ativoSFP" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                        <span class="text-xs font-semibold text-slate-700">Programa Frete SFP Ativo (+6% / Máx R$ 50)</span>
+                                    </label>
+                                </div>
+                                <div v-if="mkp.id === 'shopee'" class="col-span-2 mt-2">
+                                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-2 rounded border">
+                                        <input type="checkbox" v-model="mkp.shopeeAcelera" class="rounded text-orange-500 focus:ring-orange-500">
+                                        <span class="text-xs font-semibold text-slate-700">Shopee Acelera Ativo (+2,5%)</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="p-5 space-y-3">
-                            <div class="flex justify-between text-sm items-center">
-                                <span class="text-slate-500">Receita Bruta</span>
-                                <span class="font-semibold text-slate-800">R$ {{ (Number(produto.precoVenda)||0).toFixed(2) }}</span>
+                        <div class="p-5 pl-6 space-y-3">
+                            <div class="flex justify-between text-xs items-center text-slate-500 border-b border-dashed pb-2">
+                                <span>Receita Bruta</span>
+                                <span class="font-bold text-slate-800 text-sm">R$ {{ precoBase.toFixed(2) }}</span>
                             </div>
-                            <div class="flex justify-between text-sm items-center text-red-500">
-                                <span>- CMV + Rateio Fixo</span>
-                                <span>R$ {{ (cmvTotal + rateioFixoUnitario).toFixed(2) }}</span>
+                            
+                            <div class="flex justify-between text-xs items-center text-slate-600">
+                                <span>(-) Custos Totais (Produto + Fixo)</span>
+                                <span class="font-semibold">R$ {{ (cmvTotal + rateioFixoUnitario).toFixed(2) }}</span>
                             </div>
-                            <div class="flex justify-between text-sm items-center text-red-500">
-                                <span>- Taxas + Impostos</span>
-                                <span>R$ {{ (calcularDeducoesPercentuais(mkp) + (Number(mkp.taxaFixa)||0) + (Number(mkp.custoFreteMkp)||0)).toFixed(2) }}</span>
+                            
+                            <div class="flex justify-between text-xs items-center text-slate-600 group relative cursor-help">
+                                <span class="border-b border-dotted border-slate-300">(-) Descontos (Taxas + Frete + Imposto)</span>
+                                <span class="font-semibold text-red-500">R$ {{ descontosTotais(mkp).toFixed(2) }}</span>
+                                <div class="hidden group-hover:block absolute left-0 bottom-6 bg-slate-800 text-white text-[10px] p-3 rounded-lg w-56 z-10 shadow-xl leading-relaxed">
+                                    <p class="font-bold text-emerald-400 mb-1 border-b border-slate-600 pb-1">Radiografia das Taxas</p>
+                                    Comissão MKP: R$ {{ (precoBase * (getRegrasDinamicas(mkp).comissao/100)).toFixed(2) }} ({{getRegrasDinamicas(mkp).comissao}}%)<br>
+                                    Taxa Fixa MKP: R$ {{ getRegrasDinamicas(mkp).taxaFixa.toFixed(2) }}<br>
+                                    Impostos NFe: R$ {{ (precoBase * (sNum(inputs.aliquota)/100)).toFixed(2) }}<br>
+                                    Outros (Frete/Ads): R$ {{ (sNum(mkp.freteMkp) + precoBase*((sNum(mkp.antecipacao)+sNum(mkp.afiliadosAds)+getRegrasDinamicas(mkp).sfpPerc+getRegrasDinamicas(mkp).aceleraPerc)/100)).toFixed(2) }}
+                                </div>
                             </div>
 
-                            <hr class="border-slate-100 my-2">
-                            
-                            <div class="pt-2">
+                            <div class="pt-3 mt-1 border-t border-slate-100">
                                 <div class="flex justify-between items-end mb-1">
-                                    <span class="text-sm font-bold text-slate-700 uppercase">Lucro Líquido</span>
-                                    <span class="text-2xl font-black tracking-tight" :class="calcularLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-500'">
+                                    <span class="text-[11px] font-bold text-slate-500 uppercase">Lucro Líquido</span>
+                                    <span class="text-2xl font-black tracking-tighter" :class="calcularLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-500'">
                                         R$ {{ calcularLucro(mkp).toFixed(2) }}
                                     </span>
                                 </div>
-                                <div class="w-full bg-slate-100 rounded-full h-2.5 mb-1 mt-2">
-                                    <div class="h-2.5 rounded-full" :class="calcularMargem(mkp) >= (Number(empresa.margemAlvo)||0) ? 'bg-emerald-500' : (calcularMargem(mkp) > 0 ? 'bg-amber-400' : 'bg-red-500')" :style="{ width: Math.min(Math.max(calcularMargem(mkp), 0), 100) + '%' }"></div>
+                                <div class="flex justify-between text-[11px] font-bold mb-2">
+                                    <span class="text-slate-400">Margem: <span :class="calcularMargem(mkp) >= sNum(inputs.margemAlvo) ? 'text-emerald-600' : (calcularMargem(mkp) > 0 ? 'text-amber-500' : 'text-red-500')">{{ calcularMargem(mkp).toFixed(1) }}%</span></span>
+                                    <span class="text-slate-400">Meta: {{ sNum(inputs.margemAlvo) }}%</span>
                                 </div>
-                                <div class="flex justify-between text-xs font-semibold">
-                                    <span class="text-slate-500">Margem: <span :class="calcularMargem(mkp) >= (Number(empresa.margemAlvo)||0) ? 'text-emerald-600' : (calcularMargem(mkp) > 0 ? 'text-amber-600' : 'text-red-600')">{{ calcularMargem(mkp).toFixed(1) }}%</span></span>
-                                    <span class="text-slate-400">Meta: {{ Number(empresa.margemAlvo)||0 }}%</span>
+                                <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                                    <div class="h-1.5 rounded-full transition-all duration-500" :class="calcularMargem(mkp) >= sNum(inputs.margemAlvo) ? 'bg-emerald-500' : (calcularMargem(mkp) > 0 ? 'bg-amber-400' : 'bg-red-500')" :style="{ width: Math.min(Math.max((calcularMargem(mkp)/sNum(inputs.margemAlvo))*100, 0), 100) + '%' }"></div>
                                 </div>
                             </div>
 
-                            <div class="mt-4 p-3 rounded-xl border" :class="calcularMargem(mkp) >= (Number(empresa.margemAlvo)||0) ? 'bg-emerald-50 border-emerald-100' : 'bg-blue-50 border-blue-100'">
-                                <p class="text-[10px] font-bold uppercase text-center mb-1" :class="calcularMargem(mkp) >= (Number(empresa.margemAlvo)||0) ? 'text-emerald-600' : 'text-blue-600'">Preço p/ {{Number(empresa.margemAlvo)||0}}% Lucro</p>
-                                <p class="text-xl font-black text-center" :class="calcularMargem(mkp) >= (Number(empresa.margemAlvo)||0) ? 'text-emerald-700' : 'text-blue-800'">
-                                    {{ calcularPrecoIdeal(mkp) === 'Inválido' ? 'Operação Inviável' : 'R$ ' + calcularPrecoIdeal(mkp).toFixed(2) }}
+                            <div class="mt-4 p-3 rounded-xl border flex justify-between items-center bg-slate-50 border-slate-200">
+                                <div>
+                                    <p class="text-[9px] font-bold uppercase text-slate-500 leading-none">Preço Sugerido p/</p>
+                                    <p class="text-[11px] font-black text-slate-700 leading-none mt-1">{{sNum(inputs.margemAlvo)}}% de Margem</p>
+                                </div>
+                                <p class="text-lg font-black text-slate-800">
+                                    {{ calcularPrecoIdeal(mkp) === 'Inviável' ? 'Inviável' : 'R$ ' + calcularPrecoIdeal(mkp).toFixed(2) }}
                                 </p>
                             </div>
+
                         </div>
                     </div>
+
                 </div>
             </div>
         </main>
@@ -201,87 +250,157 @@
         createApp({
             data() {
                 return {
-                    empresa: { aliquota: 6.0, margemAlvo: 15.0 },
-                    produto: { custo: 35.00, freteIn: 2.00, embalagem: 1.50, taxaDevolucao: 1.5, precoVenda: 119.90 },
-                    fixas: { total: 2500, volume: 300 },
-                    marketplaces: []
+                    // Inputs do Usuário (String pura para aceitar apagar sem quebrar)
+                    inputs: {
+                        precoVenda: 119.90,
+                        custo: 35.00, freteIn: 2.00, embalagem: 1.50, taxaDevolucao: 1.5,
+                        fixasTotal: 2500, fixasVolume: 300,
+                        aliquota: 6.0, margemAlvo: 15.0
+                    },
+                    configs: {
+                        shopeeCpf: false,
+                        sheinNova: false
+                    },
+                    marketplaces: [
+                        { id: 'ml_classico', nome: 'Mercado Livre (Clássico)', icone: 'fas fa-handshake', corTexto: 'text-yellow-600', comissaoBase: 16, freteMkp: 0, antecipacao: 0, afiliadosAds: 0, mostrarEdicao: false, comissaoOverride: '', taxaFixaOverride: '' },
+                        { id: 'ml_premium', nome: 'Mercado Livre (Premium)', icone: 'fas fa-star', corTexto: 'text-yellow-700', comissaoBase: 21, freteMkp: 0, antecipacao: 0, afiliadosAds: 0, mostrarEdicao: false, comissaoOverride: '', taxaFixaOverride: '' },
+                        { id: 'shopee', nome: 'Shopee', icone: 'fas fa-shopping-bag', corTexto: 'text-orange-600', freteMkp: 0, antecipacao: 0, afiliadosAds: 0, shopeeAcelera: false, mostrarEdicao: false, comissaoOverride: '', taxaFixaOverride: '' },
+                        { id: 'tiktok', nome: 'TikTok Shop', icone: 'fab fa-tiktok', corTexto: 'text-zinc-900', comissaoBase: 6, freteMkp: 0, antecipacao: 0, afiliadosAds: 10, ativoSFP: true, mostrarEdicao: false, comissaoOverride: '', taxaFixaOverride: '' },
+                        { id: 'amazon', nome: 'Amazon (DBA/FBA)', icone: 'fab fa-amazon', corTexto: 'text-sky-700', comissaoBase: 14, freteMkp: 6.50, antecipacao: 0, afiliadosAds: 0, mostrarEdicao: false, comissaoOverride: '', taxaFixaOverride: '' },
+                        { id: 'shein', nome: 'Shein Brasil', icone: 'fas fa-tshirt', corTexto: 'text-zinc-800', comissaoBase: 16, freteMkp: 0, antecipacao: 0, afiliadosAds: 0, mostrarEdicao: false, comissaoOverride: '', taxaFixaOverride: '' },
+                        { id: 'temu', nome: 'Temu', icone: 'fas fa-globe', corTexto: 'text-red-600', comissaoBase: 18, freteMkp: 0, antecipacao: 0, afiliadosAds: 0, mostrarEdicao: false, comissaoOverride: '', taxaFixaOverride: '' },
+                        { id: 'magalu', nome: 'Magalu', icone: 'fas fa-store', corTexto: 'text-blue-600', comissaoBase: 16, freteMkp: 0, antecipacao: 0, afiliadosAds: 0, mostrarEdicao: false, comissaoOverride: '', taxaFixaOverride: '' },
+                        { id: 'netshoes', nome: 'Netshoes', icone: 'fas fa-running', corTexto: 'text-purple-700', comissaoBase: 18, freteMkp: 0, antecipacao: 0, afiliadosAds: 0, mostrarEdicao: false, comissaoOverride: '', taxaFixaOverride: '' }
+                    ]
                 }
             },
             computed: {
-                cmvTotal() {
-                    return (Number(this.produto.custo) || 0) + 
-                           (Number(this.produto.freteIn) || 0) + 
-                           (Number(this.produto.embalagem) || 0);
-                },
+                precoBase() { return this.sNum(this.inputs.precoVenda); },
+                cmvTotal() { return this.sNum(this.inputs.custo) + this.sNum(this.inputs.freteIn) + this.sNum(this.inputs.embalagem); },
                 rateioFixoUnitario() {
-                    const vol = Number(this.fixas.volume) || 0;
-                    const tot = Number(this.fixas.total) || 0;
-                    if(vol <= 0) return 0;
-                    return tot / vol;
+                    const vol = this.sNum(this.inputs.fixasVolume);
+                    return vol > 0 ? this.sNum(this.inputs.fixasTotal) / vol : 0;
                 },
                 marketplacesOrdenados() {
                     return [...this.marketplaces].sort((a, b) => this.calcularLucro(b) - this.calcularLucro(a));
                 }
             },
             methods: {
-                carregarCenarioConservador() {
-                    this.marketplaces = [
-                        { nome: 'Shopee (Padrão)', color: 'text-orange-500', comissao: 14, taxaFixa: 7.00, custoFreteMkp: 0, antecipacao: 0, afiliados: 0, ads: 2, showEdit: false },
-                        { nome: 'Shopee (SFP)', color: 'text-orange-600', comissao: 20, taxaFixa: 7.00, custoFreteMkp: 0, antecipacao: 0, afiliados: 5, ads: 2, showEdit: false },
-                        { nome: 'Mercado Livre (Clássico)', color: 'text-yellow-600', comissao: 19, taxaFixa: 6.00, custoFreteMkp: 0, antecipacao: 0, afiliados: 0, ads: 0, showEdit: false },
-                        { nome: 'Mercado Livre (Premium)', color: 'text-yellow-700', comissao: 21.5, taxaFixa: 6.00, custoFreteMkp: 0, antecipacao: 0, afiliados: 0, ads: 0, showEdit: false },
-                        { nome: 'TikTok Shop', color: 'text-slate-900', comissao: 6, taxaFixa: 4.00, custoFreteMkp: 0, antecipacao: 0, afiliados: 11, ads: 5, showEdit: false },
-                        { nome: 'Amazon (FBA)', color: 'text-blue-600', comissao: 15, taxaFixa: 0.00, custoFreteMkp: 14.50, antecipacao: 0, afiliados: 0, ads: 0, showEdit: false }
-                    ];
+                // BLINDAGEM: Converte qualquer entrada zoada (vírgulas, letras, vazio) em número perfeito
+                sNum(val) {
+                    if (val === null || val === undefined || val === '') return 0;
+                    if (typeof val === 'number') return val;
+                    const parsed = parseFloat(val.toString().replace(',', '.').replace(/[^\d.-]/g, ''));
+                    return isNaN(parsed) ? 0 : parsed;
                 },
-                somarPercentuais(mkp) {
-                    return (Number(mkp.comissao) || 0) + 
-                           (Number(mkp.ads) || 0) + 
-                           (Number(mkp.afiliados) || 0) + 
-                           (Number(mkp.antecipacao) || 0) + 
-                           (Number(this.empresa.aliquota) || 0) + 
-                           (Number(this.produto.taxaDevolucao) || 0);
-                },
-                calcularDeducoesPercentuais(mkp) {
-                    const totalPercentual = this.somarPercentuais(mkp) / 100;
-                    return (Number(this.produto.precoVenda) || 0) * totalPercentual;
-                },
-                calcularLucro(mkp) {
-                    const preco = Number(this.produto.precoVenda) || 0;
-                    const custosDiretos = this.cmvTotal + this.rateioFixoUnitario + (Number(mkp.taxaFixa) || 0) + (Number(mkp.custoFreteMkp) || 0);
-                    const custosVariaveis = this.calcularDeducoesPercentuais(mkp);
-                    return preco - custosDiretos - custosVariaveis;
-                },
-                calcularMargem(mkp) {
-                    const preco = Number(this.produto.precoVenda) || 0;
-                    if(preco <= 0) return 0;
-                    return (this.calcularLucro(mkp) / preco) * 100;
-                },
-                calcularPrecoIdeal(mkp) {
-                    const despesasPercentuais = this.somarPercentuais(mkp) / 100;
-                    const margemDesejada = (Number(this.empresa.margemAlvo) || 0) / 100;
-                    const indexador = 1 - (despesasPercentuais + margemDesejada);
-                    
-                    if (indexador <= 0) return 'Inválido'; 
 
-                    const custosFixosTotais = this.cmvTotal + this.rateioFixoUnitario + (Number(mkp.taxaFixa) || 0) + (Number(mkp.custoFreteMkp) || 0);
-                    return custosFixosTotais / indexador;
+                // O CÉREBRO: Regras dinâmicas oficiais 2026 para cada MKP
+                getRegrasDinamicas(mkp) {
+                    let comissao = this.sNum(mkp.comissaoOverride) || this.sNum(mkp.comissaoBase) || 0;
+                    let taxaFixa = this.sNum(mkp.taxaFixaOverride) || 0;
+                    let sfpPerc = 0; let aceleraPerc = 0;
+                    const preco = this.precoBase;
+
+                    // 1. Mercado Livre (Transição nos R$ 79)
+                    if (mkp.id.startsWith('ml_')) {
+                        if (!mkp.taxaFixaOverride) taxaFixa = preco < 79 ? 6.00 : 0;
+                    }
+                    // 2. Shopee (Degraus complexos 2026)
+                    else if (mkp.id === 'shopee') {
+                        if (!mkp.comissaoOverride) {
+                            comissao = preco < 80 ? 20 : (preco < 500 ? 14 : 8);
+                        }
+                        if (!mkp.taxaFixaOverride) {
+                            if (preco < 80) taxaFixa = 4;
+                            else if (preco < 100) taxaFixa = 16;
+                            else if (preco < 200) taxaFixa = 20;
+                            else if (preco < 500) taxaFixa = 26;
+                            else taxaFixa = 40;
+                        }
+                        if (this.configs.shopeeCpf) taxaFixa += 3;
+                        if (mkp.shopeeAcelera) aceleraPerc = 2.5;
+                        
+                        // Trava da Shopee: Comissão % não passa de R$ 100
+                        const valorComissaoPura = preco * (comissao / 100);
+                        if (valorComissaoPura > 100) { comissao = (100 / preco) * 100; }
+                    }
+                    // 3. TikTok (Novo R$ 4 Fixo + SFP Trava)
+                    else if (mkp.id === 'tiktok') {
+                        if (!mkp.taxaFixaOverride) taxaFixa = 4.00;
+                        if (mkp.ativoSFP) {
+                            const valorSFP = preco * 0.06;
+                            sfpPerc = valorSFP > 50 ? (50 / preco) * 100 : 6;
+                        }
+                    }
+                    // 4. Amazon (DBA vs FBA Isenção)
+                    else if (mkp.id === 'amazon') {
+                        if (!mkp.taxaFixaOverride) taxaFixa = 0; 
+                    }
+                    // 5. Shein (Isenção Conta Nova)
+                    else if (mkp.id === 'shein') {
+                        if (this.configs.sheinNova) comissao = 0;
+                    }
+                    // 6. Magalu (Abaixo de 10 não paga fixo)
+                    else if (mkp.id === 'magalu') {
+                        if (!mkp.taxaFixaOverride) taxaFixa = preco < 10 ? 0 : 3.00;
+                    }
+                    // 7. Netshoes
+                    else if (mkp.id === 'netshoes') {
+                        if (!mkp.taxaFixaOverride) taxaFixa = 5.00;
+                    }
+
+                    return { comissao, taxaFixa, sfpPerc, aceleraPerc };
                 },
+
+                descontosTotais(mkp) {
+                    const regras = this.getRegrasDinamicas(mkp);
+                    const percentuais = regras.comissao + regras.sfpPerc + regras.aceleraPerc + this.sNum(mkp.antecipacao) + this.sNum(mkp.afiliadosAds) + this.sNum(this.inputs.aliquota) + this.sNum(this.inputs.taxaDevolucao);
+                    const descontoValor = this.precoBase * (percentuais / 100);
+                    return descontoValor + regras.taxaFixa + this.sNum(mkp.freteMkp);
+                },
+
+                calcularLucro(mkp) {
+                    const custosIniciais = this.cmvTotal + this.rateioFixoUnitario;
+                    return this.precoBase - custosIniciais - this.descontosTotais(mkp);
+                },
+
+                calcularMargem(mkp) {
+                    if(this.precoBase <= 0) return 0;
+                    return (this.calcularLucro(mkp) / this.precoBase) * 100;
+                },
+
+                calcularPrecoIdeal(mkp) {
+                    const regras = this.getRegrasDinamicas(mkp);
+                    // Markup Reverso: Custo R$ / ( 1 - Percentuais Retidos )
+                    const retencoesPerc = (regras.comissao + regras.sfpPerc + regras.aceleraPerc + this.sNum(mkp.antecipacao) + this.sNum(mkp.afiliadosAds) + this.sNum(this.inputs.aliquota) + this.sNum(this.inputs.taxaDevolucao) + this.sNum(this.inputs.margemAlvo)) / 100;
+                    
+                    if (retencoesPerc >= 1) return 'Inviável'; 
+
+                    const custosEmDinheiro = this.cmvTotal + this.rateioFixoUnitario + regras.taxaFixa + this.sNum(mkp.freteMkp);
+                    return custosEmDinheiro / (1 - retencoesPerc);
+                },
+
                 calcularPontoEquilibrio() {
-                    const totalFixo = Number(this.fixas.total) || 0;
-                    const preco = Number(this.produto.precoVenda) || 0;
+                    const totalFixo = this.sNum(this.inputs.fixasTotal);
                     if (this.marketplacesOrdenados.length === 0 || totalFixo <= 0) return 0;
                     
                     const melhorMkp = this.marketplacesOrdenados[0];
-                    const varValor = this.calcularDeducoesPercentuais(melhorMkp) + (Number(melhorMkp.taxaFixa) || 0) + (Number(melhorMkp.custoFreteMkp) || 0) + this.cmvTotal;
-                    const margemContribuicao = preco - varValor;
+                    const descontosUnitarios = this.descontosTotais(melhorMkp) + this.cmvTotal; // Exclui o rateio aqui pois acharemos o volume
+                    const margemContribuicao = this.precoBase - descontosUnitarios;
 
-                    if (margemContribuicao <= 0) return '∞ (Prejuízo)';
+                    if (margemContribuicao <= 0) return '∞';
                     return Math.ceil(totalFixo / margemContribuicao);
+                },
+
+                resetarSimulacao() {
+                    this.inputs.precoVenda = 119.90;
+                    this.configs.shopeeCpf = false;
+                    this.configs.sheinNova = false;
+                    this.marketplaces.forEach(mkp => {
+                        mkp.comissaoOverride = '';
+                        mkp.taxaFixaOverride = '';
+                    });
                 }
-            },
-            mounted() {
-                this.carregarCenarioConservador();
             }
         }).mount('#app')
     </script>
