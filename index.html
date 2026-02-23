@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titan ERP Marketplace 2026 - Master V29</title>
+    <title>Titan ERP Enterprise 2026 - Master V31</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -23,7 +23,7 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-        /* Dashboard UI Architecture */
+        /* Dashboard UI Architecture - V31 */
         .card-titan { 
             @apply bg-white rounded-[2rem] border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:-translate-y-1; 
         }
@@ -34,19 +34,19 @@
 
         .chart-box { 
             position: relative; 
-            height: 250px; 
+            height: 260px; 
             width: 100%; 
-        }
-
-        .badge-rule { 
-            @apply text-[8px] font-black px-2 py-0.5 rounded-md uppercase tracking-tighter shadow-sm; 
         }
 
         .btn-titan { 
             @apply px-5 py-2.5 rounded-xl text-[10px] font-black transition-all active:scale-95 uppercase tracking-widest; 
         }
 
-        /* Destaque de Simulação Hero */
+        .badge-rule { 
+            @apply text-[8px] font-black px-2 py-0.5 rounded-md uppercase tracking-tighter shadow-sm border border-black/5; 
+        }
+
+        /* Estilo para Simulação Manual Hero */
         .simulando-ativo {
             background: linear-gradient(145deg, #ffffff 0%, #f0f9ff 100%);
             border-color: #bae6fd !important;
@@ -60,222 +60,299 @@
     <div id="app" class="min-h-screen flex flex-col">
         
         <header class="bg-slate-900 text-white shadow-2xl sticky top-0 z-50 border-b border-slate-800 print:hidden">
-            <div class="max-w-[1800px] mx-auto px-8 py-3.5 flex flex-col md:flex-row justify-between items-center">
+            <div class="max-w-[1800px] mx-auto px-8 py-4 flex flex-col md:flex-row justify-between items-center">
                 
-                <div class="flex items-center space-x-4">
-                    <div class="bg-indigo-500 p-2 rounded-xl shadow-lg rotate-3">
-                        <i class="fas fa-chart-line text-xl text-white"></i>
+                <div class="flex items-center space-x-5">
+                    <div class="bg-indigo-500 p-2.5 rounded-2xl shadow-lg rotate-3">
+                        <i class="fas fa-microchip text-xl text-white"></i>
                     </div>
                     <div>
-                        <h1 class="text-base font-black tracking-tight uppercase leading-none text-indigo-100">Titan ERP <span class="text-emerald-400">V29.0</span></h1>
-                        <p class="text-[8px] text-slate-400 font-bold uppercase tracking-[0.3em] mt-1">Gestão Híbrida & Inteligência Regulatória 2026</p>
+                        <h1 class="text-base font-black tracking-tight uppercase leading-none text-indigo-100">Titan Enterprise <span class="text-emerald-400">V31.0</span></h1>
+                        <p class="text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] mt-1.5">Inteligência Março/2026 & Auditoria de Margens</p>
                     </div>
                 </div>
 
-                <div class="mt-3 md:mt-0 flex items-center space-x-5">
-                    <button @click="resetarTudo" class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest">Resetar Banco</button>
-                    <button onclick="window.print()" class="bg-white text-slate-900 btn-titan shadow-lg hover:bg-indigo-50 border border-slate-200">Gerar PDF</button>
+                <div class="mt-4 md:mt-0 flex items-center space-x-6">
+                    <button @click="resetarTudo" class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest px-2">Zerar Sistema</button>
+                    <button onclick="window.print()" class="bg-white text-slate-900 btn-titan shadow-xl hover:bg-indigo-50 border border-slate-200">Exportar Relatório</button>
                 </div>
             </div>
         </header>
 
-        <main class="flex-grow max-w-[1800px] mx-auto w-full px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <main class="flex-grow max-w-[1800px] mx-auto w-full px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <div class="lg:col-span-3 space-y-6 print:hidden">
+            <div class="lg:col-span-3 space-y-8 print:hidden">
                 
                 <div class="bg-indigo-600 p-8 rounded-[2.5rem] shadow-xl text-white relative overflow-hidden">
                     <div class="absolute -right-8 -bottom-8 opacity-10 text-[180px] rotate-12"><i class="fas fa-bullseye"></i></div>
-                    <div class="relative z-10 space-y-6">
+                    
+                    <div class="relative z-10 space-y-7">
                         <div class="text-center">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-200 mb-3">1. Meta de Lucro Desejada (%)</label>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-200 mb-3">1. Meta de Lucro Alvo (%)</label>
                             <input type="text" v-model="inputs.alvo" @input="syncAll" class="w-full bg-indigo-500/50 border-2 border-indigo-400 rounded-3xl p-6 text-6xl font-black text-white focus:outline-none focus:border-emerald-400 text-center shadow-inner">
+                            <p class="text-[8px] text-indigo-300 mt-4 font-bold uppercase italic tracking-wider">Sugere o melhor preço p/ este lucro.</p>
                         </div>
-                        <div class="pt-6 border-t border-indigo-500/50 text-center">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-300 mb-2">2. Simular Venda Manual (R$)</label>
-                            <input type="text" v-model="inputs.precoVenda" @input="syncAll" class="w-full bg-indigo-900/30 border-2 border-indigo-400 p-3 text-3xl font-black text-white rounded-2xl focus:outline-none text-center shadow-lg" placeholder="0,00">
-                            <p class="text-[8px] text-indigo-400 mt-2 font-black uppercase tracking-wider">Zere para usar o Preço Sugerido.</p>
+
+                        <div class="pt-7 border-t border-indigo-500/50 text-center">
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-300 mb-2">2. Simular Venda (R$)</label>
+                            <input type="text" v-model="inputs.precoVenda" @input="syncAll" class="w-full bg-indigo-900/30 border-2 border-indigo-400 p-4 text-3xl font-black text-white rounded-2xl focus:outline-none text-center shadow-lg" placeholder="0,00">
+                            <p class="text-[8px] text-indigo-400 mt-2 font-black uppercase">Verifica o lucro deste preço manual.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-titan p-6 border-l-[8px] border-indigo-500">
-                    <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-5 flex items-center">
-                        <i class="fas fa-tag mr-2 text-indigo-500 text-sm"></i> 1. Custos do Produto
+                <div class="card-titan p-6 border-l-[10px] border-indigo-500">
+                    <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center">
+                        <i class="fas fa-box-open mr-2 text-indigo-500 text-sm"></i> 1. Custos Unitários
                     </h2>
-                    <div class="space-y-4">
-                        <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-titan" placeholder="Descrição do Item">
+                    
+                    <div class="space-y-5">
+                        <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-titan" placeholder="Descrição do Produto">
                         
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1 ml-1">Custo Compra</label>
+                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Custo Compra</label>
                                 <input type="text" v-model="inputs.custo" @input="syncAll" class="input-titan">
                             </div>
                             <div>
-                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1 ml-1">Embalagem</label>
+                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Embalagem</label>
                                 <input type="text" v-model="inputs.embalagem" @input="syncAll" class="input-titan">
                             </div>
                         </div>
 
                         <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100 shadow-inner">
-                            <label class="block text-[9px] font-black text-indigo-700 uppercase mb-1.5 tracking-widest flex items-center">
-                                Adicional Operacional (R$) <i class="fas fa-circle-info ml-2 opacity-50" title="Custo fixo direto por peça vendido."></i>
+                            <label class="block text-[9px] font-black text-indigo-700 uppercase mb-2 tracking-widest flex items-center">
+                                Adicional Operacional (R$) <i class="fas fa-info-circle ml-2 opacity-40"></i>
                             </label>
                             <input type="text" v-model="inputs.custoFixoDireto" @input="syncAll" class="input-titan !bg-white border-indigo-200" placeholder="Ex: 10,00">
-                            <p class="text-[7px] text-indigo-400 mt-2 uppercase font-bold italic">* Defina um valor se não tiver histórico de volume.</p>
+                            <p class="text-[7px] text-indigo-400 mt-2 uppercase font-bold italic">* Use se não tiver histórico de volume.</p>
                         </div>
 
                         <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center shadow-md">
-                            <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Custos Unitários:</span>
-                            <span class="text-xl font-black text-white tracking-tighter">R$ {{ cmvFinalCalculado.toFixed(2) }}</span>
+                            <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">CMV Final:</span>
+                            <span class="text-xl font-black text-white tracking-tighter">R$ {{ totalCustoDiretoUnidade.toFixed(2) }}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-titan p-6 border-l-[8px] border-amber-500">
-                    <div class="flex justify-between items-center mb-5">
+                <div class="card-titan p-6 border-l-[10px] border-amber-500">
+                    <div class="flex justify-between items-center mb-6">
                         <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest">2. Contas Mensais</h2>
-                        <span class="text-[10px] font-black bg-amber-50 text-amber-600 px-3 py-1 rounded-xl border border-amber-100 shadow-sm">Total: R$ {{ totalFixas.toFixed(2) }}</span>
+                        <span class="text-[10px] font-black bg-amber-50 text-amber-600 px-3 py-1 rounded-xl border border-amber-100">R$ {{ totalFixas.toFixed(2) }}</span>
                     </div>
+
                     <div class="space-y-2 mb-4 max-h-48 overflow-y-auto pr-1">
                         <div v-for="(d, i) in despesas" :key="i" class="flex items-center space-x-3 group">
-                            <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-bold focus:bg-white transition-all outline-none" placeholder="Item">
+                            <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-bold focus:bg-white outline-none transition-all" placeholder="Item">
                             <input type="text" v-model="d.valor" @input="syncAll" class="w-20 p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-black text-right">
                             <button @click="removerDespesa(i)" class="text-slate-300 hover:text-red-500 transition-all p-1"><i class="fas fa-trash-can"></i></button>
                         </div>
                     </div>
-                    <button @click="adicionarDespesa" class="w-full py-3.5 border-2 border-dashed border-slate-100 rounded-2xl text-[9px] font-black text-slate-400 hover:text-indigo-600 uppercase tracking-widest transition-all shadow-sm">+ Nova Conta</button>
-                    <div class="mt-6 pt-5 border-t border-slate-50">
+
+                    <button @click="adicionarDespesa" class="w-full py-3.5 border-2 border-dashed border-slate-100 rounded-2xl text-[9px] font-black text-slate-400 hover:text-indigo-600 uppercase tracking-widest transition-all">+ Nova Conta</button>
+
+                    <div class="mt-8 pt-6 border-t border-slate-50">
                         <div class="flex justify-between items-center mb-4">
-                            <label class="text-[10px] font-black text-slate-400 uppercase">Vendas p/ Mês (Un)</label>
-                            <input type="text" v-model="inputs.volume" @input="syncAll" class="w-20 p-2.5 border border-slate-100 rounded-xl text-xs text-right font-black bg-slate-50">
+                            <label class="text-[10px] font-black text-slate-400 uppercase leading-none">Volume Vendas (Un/Mês)</label>
+                            <input type="text" v-model="inputs.volume" @input="syncAll" class="w-24 p-3 border border-slate-100 rounded-xl text-xs text-right font-black bg-slate-50 outline-none">
                         </div>
+
                         <div class="p-4 bg-amber-50 rounded-2xl flex justify-between items-center shadow-inner">
                             <span class="text-[9px] font-black text-amber-800 uppercase tracking-widest">Rateio Calculado:</span>
-                            <span class="text-base font-black text-amber-900 tracking-tighter">R$ {{ rateio.toFixed(2) }}</span>
+                            <span class="text-lg font-black text-amber-900 tracking-tighter">R$ {{ rateio.toFixed(2) }}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-titan p-6 border-l-[8px] border-blue-500 space-y-4">
+                <div class="card-titan p-6 border-l-[10px] border-blue-500 space-y-6">
                     <div class="flex items-center justify-between">
-                        <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center"><i class="fas fa-building-columns mr-2 text-blue-500"></i> Imposto (%)</h2>
-                        <input type="text" v-model="inputs.imposto" @input="syncAll" class="w-20 p-2.5 border border-slate-100 rounded-xl text-xs text-right font-black bg-slate-50">
+                        <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center">
+                            <i class="fas fa-building-columns mr-2 text-blue-500"></i> Imposto NF-e (%)
+                        </h2>
+                        <input type="text" v-model="inputs.imposto" @input="syncAll" class="w-24 p-3 border border-slate-100 rounded-xl text-xs text-right font-black bg-slate-50">
                     </div>
+
                     <div class="flex items-center justify-between">
-                        <h2 class="text-[11px] font-black text-orange-500 uppercase tracking-widest flex items-center"><i class="fas fa-shield-virus mr-2 text-orange-500"></i> Perdas %</h2>
-                        <input type="text" v-model="inputs.perdas" @input="syncAll" class="w-20 p-2.5 border border-orange-100 rounded-xl text-xs text-right font-black bg-orange-50 text-orange-700">
+                        <h2 class="text-[11px] font-black text-orange-500 uppercase tracking-widest flex items-center">
+                            <i class="fas fa-shield-virus mr-2 text-orange-500"></i> Provisão Perdas %
+                        </h2>
+                        <input type="text" v-model="inputs.perdas" @input="syncAll" class="w-24 p-3 border border-orange-100 rounded-xl text-xs text-right font-black bg-orange-50 text-orange-700">
                     </div>
-                    <button @click="salvarNoBanco" class="w-full py-4 bg-slate-900 hover:bg-black text-white rounded-3xl font-black text-[10px] shadow-xl transition-all active:scale-95 uppercase tracking-widest"><i class="fas fa-save mr-2 text-emerald-400"></i> Arquivar no Banco</button>
+
+                    <button @click="salvarNoBanco" class="w-full py-5 bg-slate-900 hover:bg-black text-white rounded-3xl font-black text-[11px] shadow-2xl transition-all active:scale-95 uppercase tracking-[0.2em]">
+                        <i class="fas fa-database mr-3 text-emerald-400"></i> Arquivar no Banco
+                    </button>
                 </div>
             </div>
 
-            <div class="lg:col-span-9 space-y-6">
+            <div class="lg:col-span-9 space-y-8">
                 
-                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
-                    <div class="xl:col-span-8 card-titan p-6 shadow-lg">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center"><i class="fas fa-chart-line mr-3 text-indigo-500"></i> Comparativo de Preços Sugeridos</h2>
-                            <span class="text-[10px] font-black bg-indigo-50 text-indigo-600 px-4 py-2 rounded-full uppercase tracking-widest shadow-sm">Meta: {{sNum(inputs.alvo)}}% de Lucro</span>
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+                    
+                    <div class="xl:col-span-8 card-titan p-8 shadow-lg">
+                        <div class="flex justify-between items-center mb-8">
+                            <h2 class="text-[12px] font-black text-slate-400 uppercase tracking-[0.4em] flex items-center">
+                                <i class="fas fa-chart-line mr-4 text-indigo-500 text-xl"></i> Monitor de Precificação Omnichannel
+                            </h2>
+                            <span class="text-[10px] font-black bg-indigo-50 text-indigo-600 px-6 py-2 rounded-full uppercase tracking-widest shadow-sm">
+                                Margem Alvo: {{sNum(inputs.alvo)}}%
+                            </span>
                         </div>
-                        <div class="chart-box"><canvas id="priceChart"></canvas></div>
+                        <div class="chart-box">
+                            <canvas id="priceChart"></canvas>
+                        </div>
                     </div>
 
                     <div class="xl:col-span-4 card-titan overflow-hidden border border-slate-200">
                         <table class="w-full text-left text-[11px] border-collapse">
                             <thead>
                                 <tr class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b">
-                                    <th class="py-4 px-6">Plataforma</th>
-                                    <th class="text-right px-6">Preço Ideal</th>
+                                    <th class="py-5 px-6">Marketplace</th>
+                                    <th class="text-right px-6">Preço Sugerido</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-50 font-bold">
-                                <tr v-for="mkp in marketplaces" :key="mkp.id" class="hover:bg-slate-50 transition-all">
-                                    <td class="py-3 px-6" :class="mkp.corTexto">{{ mkp.nome.split(' ')[0] }}</td>
-                                    <td class="text-right px-6 font-black text-slate-900">R$ {{ calcPrecoIdeal(mkp).toFixed(2) }}</td>
+                                <tr v-for="mkp in marketplaces" :key="mkp.id" class="hover:bg-slate-50 transition-all group">
+                                    <td class="py-4 px-6" :class="mkp.corTexto">{{ mkp.nome.split(' ')[0] }}</td>
+                                    <td class="text-right px-6 font-black text-slate-900 text-sm">R$ {{ calcPrecoIdeal(mkp).toFixed(2) }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                     <div v-for="mkp in marketplaces" :key="mkp.id" class="card-titan relative overflow-hidden flex flex-col group border-slate-200 shadow-md" :class="{'simulando-ativo': sNum(inputs.precoVenda) > 0}">
                         
-                        <div class="absolute left-0 top-0 bottom-0 w-2.5 transition-all duration-700 shadow-xl" :class="calcLucro(mkp) >= 0 ? 'bg-emerald-500' : 'bg-red-500'"></div>
+                        <div class="absolute left-0 top-0 bottom-0 w-3 transition-all duration-700 shadow-xl" :class="calcLucro(mkp) >= 0 ? 'bg-emerald-500' : 'bg-red-500'"></div>
                         
-                        <div class="p-5 px-8 flex justify-between items-center bg-slate-50/50 border-b border-slate-100">
-                            <div class="flex flex-col space-y-1">
-                                <h3 class="font-black text-sm uppercase tracking-widest leading-none" :class="mkp.corTexto">{{ mkp.nome }}</h3>
-                                <div class="flex flex-wrap gap-1">
-                                    <span v-if="mkp.id === 2" class="badge-rule" :class="calcPrecoIdeal(mkp) < 79 ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700'">
-                                        {{ calcPrecoIdeal(mkp) < 79 ? 'Regra Taxa Fixa ML' : 'Regra Frete Grátis ML' }}
+                        <div class="p-6 px-10 flex justify-between items-center bg-slate-50/50 border-b border-slate-100">
+                            <div class="flex flex-col space-y-1.5">
+                                <h3 class="font-black text-base uppercase tracking-widest leading-none" :class="mkp.corTexto">{{ mkp.nome }}</h3>
+                                
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span v-if="mkp.id === 2" class="badge-rule" :class="getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).log === 0 ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700'">
+                                        {{ getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).log === 0 ? 'Regra Março/26: Taxa Fixa Ativa' : 'Regra Março/26: Frete Grátis Ativo' }}
                                     </span>
-                                    <span v-if="mkp.id === 1" class="badge-rule bg-orange-100 text-orange-700">
-                                        Taxa: R$ {{ getSmartFees(mkp, calcPrecoIdeal(mkp)).fix.toFixed(2) }}
+                                    
+                                    <span v-if="mkp.id === 1" class="badge-rule bg-orange-100 text-orange-700 shadow-orange-100/30">
+                                        Fixa Shopee: R$ {{ getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).fix.toFixed(2) }}
                                     </span>
                                 </div>
                             </div>
-                            <button @click="mkp.edit = !mkp.edit" class="text-[9px] font-black bg-white border border-slate-100 px-3.5 py-1.5 rounded-xl shadow-sm hover:shadow-md transition uppercase tracking-tighter">Taxas</button>
+                            <button @click="mkp.edit = !mkp.edit" class="text-[10px] font-black bg-white border border-slate-100 px-4 py-2 rounded-xl shadow-sm hover:shadow-lg transition uppercase tracking-tighter">Taxas</button>
                         </div>
 
-                        <div v-show="mkp.edit" class="p-8 bg-slate-50 border-b border-slate-100 grid grid-cols-2 gap-5 print:hidden animate-fade-in">
-                            <div class="space-y-1"><label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Comissão Base %</label><input type="text" v-model="mkp.com" @input="syncAll" class="input-titan !p-2 shadow-inner"></div>
-                            <div class="space-y-1"><label class="text-[9px] font-black text-blue-500 uppercase tracking-widest block">Invest. ADS %</label><input type="text" v-model="mkp.ads" @input="syncAll" class="input-titan !p-2 !bg-blue-50"></div>
-                            <div class="space-y-1"><label class="text-[9px] font-black text-purple-600 uppercase tracking-widest block">Afiliados %</label><input type="text" v-model="mkp.afi" @input="syncAll" class="input-titan !p-2 !bg-purple-50"></div>
-                            <div class="space-y-1"><label class="text-[9px] font-black text-amber-600 uppercase tracking-widest block">Antecip. %</label><input type="text" v-model="mkp.ant" @input="syncAll" class="input-titan !p-2 !bg-amber-50"></div>
+                        <div v-show="mkp.edit" class="p-10 bg-slate-50 border-b border-slate-100 grid grid-cols-2 gap-6 print:hidden animate-fade-in">
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Comissão Base %</label>
+                                <input type="text" v-model="mkp.com" @input="syncAll" class="input-titan !p-2.5 shadow-inner focus:border-indigo-500">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-blue-500 uppercase tracking-widest block">Investimento ADS %</label>
+                                <input type="text" v-model="mkp.ads" @input="syncAll" class="input-titan !p-2.5 !bg-blue-50 shadow-sm focus:border-blue-500">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-purple-600 uppercase tracking-widest block">Afiliados (%)</label>
+                                <input type="text" v-model="mkp.afi" @input="syncAll" class="input-titan !p-2.5 !bg-purple-50 shadow-sm focus:border-purple-500">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-amber-600 uppercase tracking-widest block">Antecipação (%)</label>
+                                <input type="text" v-model="mkp.ant" @input="syncAll" class="input-titan !p-2.5 !bg-amber-50 shadow-sm focus:border-amber-500">
+                            </div>
                             
-                            <div v-if="mkp.id === 3" class="col-span-2 p-3 bg-emerald-50 rounded-2xl border-2 border-emerald-100 flex items-center justify-between shadow-inner">
-                                <label class="text-[9px] font-black text-emerald-800 uppercase flex items-center"><i class="fas fa-truck-fast mr-2"></i> Frete Grátis SFP (+6%)</label>
-                                <input type="checkbox" v-model="mkp.useSFP" @change="syncAll" class="w-5 h-5 rounded-lg text-emerald-600 cursor-pointer shadow-md transition-all">
+                            <div v-if="mkp.id === 3" class="col-span-2 p-5 bg-emerald-50 rounded-2xl border-2 border-emerald-100 flex items-center justify-between shadow-inner">
+                                <div class="flex flex-col">
+                                    <label class="text-[10px] font-black text-emerald-800 uppercase flex items-center">
+                                        <i class="fas fa-truck-fast mr-3"></i> Programa Frete Grátis SFP
+                                    </label>
+                                    <p class="text-[8px] text-emerald-600 font-bold uppercase mt-1">Custo: 6% | Teto: R$ 50,00</p>
+                                </div>
+                                <input type="checkbox" v-model="mkp.useSFP" @change="syncAll" class="w-6 h-6 rounded text-emerald-600 focus:ring-emerald-500 transition-all cursor-pointer">
                             </div>
 
-                            <div class="relative space-y-1"><label class="text-[9px] font-black text-slate-400 uppercase block tracking-widest">Taxa Fixa R$</label><input type="text" v-model="mkp.fixo" @input="syncAll" class="input-titan !p-2"><div v-if="mkp.id === 2 && calcPrecoIdeal(mkp) >= 79" class="absolute inset-x-0 bottom-0 top-[22px] bg-slate-100/70 rounded-xl flex items-center justify-center text-[7px] font-black text-slate-500 uppercase cursor-not-allowed">Isento</div></div>
-                            <div class="relative space-y-1"><label class="text-[9px] font-black text-slate-400 uppercase block tracking-widest">Logística R$</label><input type="text" v-model="mkp.log" @input="syncAll" class="input-titan !p-2"><div v-if="mkp.id === 2 && calcPrecoIdeal(mkp) < 79" class="absolute inset-x-0 bottom-0 top-[22px] bg-slate-100/70 rounded-xl flex items-center justify-center text-[7px] font-black text-slate-500 uppercase cursor-not-allowed">Isento</div></div>
+                            <div class="relative space-y-1.5">
+                                <label class="text-[10px] font-black text-slate-400 uppercase block tracking-widest">Taxa Fixa R$</label>
+                                <input type="text" v-model="mkp.fixo" @input="syncAll" class="input-titan !p-2.5 shadow-inner">
+                                <div v-if="mkp.id === 2 && (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp)) >= 79" class="absolute inset-x-0 bottom-0 top-[26px] bg-slate-100/80 rounded-xl flex items-center justify-center text-[8px] font-black text-slate-500 uppercase cursor-not-allowed">Isento</div>
+                            </div>
+
+                            <div class="relative space-y-1.5">
+                                <label class="text-[10px] font-black text-slate-400 uppercase block tracking-widest">Logística R$</label>
+                                <input type="text" v-model="mkp.log" @input="syncAll" class="input-titan !p-2.5 shadow-inner">
+                                <div v-if="mkp.id === 2 && (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp)) < 79" class="absolute inset-x-0 bottom-0 top-[26px] bg-slate-100/80 rounded-xl flex items-center justify-center text-[8px] font-black text-slate-500 uppercase cursor-not-allowed">Isento</div>
+                            </div>
                         </div>
 
-                        <div class="p-8 flex-grow flex flex-col space-y-10">
-                            <div class="p-8 bg-white border border-slate-100 rounded-[2.5rem] text-center shadow-inner relative group/price overflow-hidden" :class="{'!bg-emerald-50 !border-emerald-100': sNum(inputs.precoVenda) === 0, '!bg-blue-50 !border-blue-100': sNum(inputs.precoVenda) > 0}">
-                                <p class="text-[10px] font-black uppercase mb-3 tracking-[0.3em]" :class="sNum(inputs.precoVenda) > 0 ? 'text-blue-600' : 'text-emerald-600'">
-                                    {{ sNum(inputs.precoVenda) > 0 ? 'Resultado p/ Venda Manual' : 'Preço Ideal Sugerido' }}
+                        <div class="p-10 flex-grow flex flex-col space-y-10">
+                            
+                            <div class="p-10 border border-slate-100 rounded-[3rem] text-center shadow-inner relative overflow-hidden group/price transition-all" :class="{'bg-emerald-50 border-emerald-100': sNum(inputs.precoVenda) === 0, 'bg-blue-50 border-blue-100': sNum(inputs.precoVenda) > 0}">
+                                
+                                <p class="text-[12px] font-black uppercase mb-4 tracking-[0.4em]" :class="sNum(inputs.precoVenda) > 0 ? 'text-blue-600' : 'text-emerald-600'">
+                                    {{ sNum(inputs.precoVenda) > 0 ? 'Resultado p/ Venda de' : 'Preço Ideal Sugerido' }}
                                 </p>
-                                <p class="text-6xl font-black tracking-tighter leading-none" :class="sNum(inputs.precoVenda) > 0 ? 'text-blue-900' : 'text-emerald-900'">
+                                
+                                <p class="text-7xl font-black tracking-tighter leading-none" :class="sNum(inputs.precoVenda) > 0 ? 'text-blue-900' : 'text-emerald-900'">
                                     R$ {{ sNum(inputs.precoVenda) > 0 ? sNum(inputs.precoVenda).toFixed(2) : calcPrecoIdeal(mkp).toFixed(2) }}
                                 </p>
-                                <div class="mt-4 text-[9px] font-bold text-slate-400 uppercase">
-                                    {{ sNum(inputs.precoVenda) > 0 ? 'Preço Ideal p/ Meta: R$ ' + calcPrecoIdeal(mkp).toFixed(2) : 'Atinge exatamente ' + sNum(inputs.alvo) + '% lucro' }}
+                                
+                                <div class="mt-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                    {{ sNum(inputs.precoVenda) > 0 ? 'Sugestão p/ Meta: R$ ' + calcPrecoIdeal(mkp).toFixed(2) : 'Alcança meta de ' + sNum(inputs.alvo) + '% de lucro' }}
+                                </div>
+                                <div class="absolute -right-8 -bottom-8 opacity-5 text-[150px] transition-all group-hover/price:scale-110"><i class="fas fa-check-circle"></i></div>
+                            </div>
+
+                            <div class="pt-10 border-t border-slate-100 grid grid-cols-2 gap-10">
+                                <div class="space-y-4">
+                                    <p class="text-[12px] font-black text-slate-400 uppercase tracking-widest flex items-center">
+                                        Lucro <i :class="sNum(inputs.precoVenda) > 0 ? 'fas fa-hand-pointer ml-3 text-blue-500' : 'fas fa-robot ml-3 text-emerald-500'" class="text-base"></i>
+                                    </p>
+                                    <p class="text-5xl font-black leading-none tracking-tighter" :class="calcLucro(mkp) >= 0 ? 'text-slate-900' : 'text-red-600'">
+                                        R$ {{ calcLucro(mkp).toFixed(2) }}
+                                    </p>
+                                    <p class="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em]">Cálculo {{ sNum(inputs.precoVenda) > 0 ? 'Manual' : 'Automático' }}</p>
+                                </div>
+                                <div class="text-right space-y-4">
+                                    <p class="text-[12px] font-black text-slate-400 uppercase tracking-widest">Margem Real Final</p>
+                                    <p class="text-4xl font-black leading-none mt-1.5" :class="calcLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-400'">
+                                        {{ calcMargem(mkp).toFixed(1) }}%
+                                    </p>
                                 </div>
                             </div>
 
-                            <div class="pt-8 border-t border-slate-100 grid grid-cols-2 gap-8">
-                                <div class="space-y-2">
-                                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center">Lucro <i :class="sNum(inputs.precoVenda) > 0 ? 'fas fa-hand-pointer ml-3 text-blue-500' : 'fas fa-robot ml-3 text-emerald-500'" class="text-sm"></i></p>
-                                    <p class="text-4xl font-black leading-none tracking-tighter" :class="calcLucro(mkp) >= 0 ? 'text-slate-900' : 'text-red-600'">R$ {{ calcLucro(mkp).toFixed(2) }}</p>
+                            <div class="w-full bg-slate-100 rounded-full h-4 overflow-hidden shadow-inner border-2 border-white">
+                                <div class="h-full transition-all duration-1000 rounded-full shadow-lg" 
+                                     :class="calcMargem(mkp) >= sNum(inputs.alvo) ? 'bg-emerald-500' : (calcMargem(mkp) > 0 ? 'bg-amber-400' : 'bg-red-500')" 
+                                     :style="{ width: Math.min(Math.max((calcMargem(mkp)/sNum(inputs.alvo))*100, 0), 100) + '%' }">
                                 </div>
-                                <div class="text-right space-y-2">
-                                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Margem Real</p>
-                                    <p class="text-3xl font-black leading-none mt-1" :class="calcLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-400'">{{ calcMargem(mkp).toFixed(1) }}%</p>
-                                </div>
-                            </div>
-
-                            <div class="w-full bg-slate-100 rounded-full h-3.5 overflow-hidden shadow-inner border border-white">
-                                <div class="h-full transition-all duration-1000 rounded-full shadow-lg" :class="calcMargem(mkp) >= sNum(inputs.alvo) ? 'bg-emerald-500' : (calcMargem(mkp) > 0 ? 'bg-amber-400' : 'bg-red-500')" :style="{ width: Math.min(Math.max((calcMargem(mkp)/sNum(inputs.alvo))*100, 0), 100) + '%' }"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div v-if="banco.length > 0" class="bg-slate-900 rounded-[4rem] p-16 shadow-2xl mt-12 border border-slate-800 animate-in print:hidden">
-                    <h2 class="text-[14px] font-black text-emerald-400 uppercase tracking-[0.7em] mb-12 flex items-center"><i class="fas fa-layer-group mr-6 text-4xl text-emerald-500"></i> Banco de Precificações Titan</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div v-for="(b, i) in banco" :key="i" class="flex flex-col md:flex-row items-center justify-between p-10 bg-white/5 rounded-[3rem] border border-white/5 hover:bg-white/10 transition-all group">
-                            <div>
-                                <h4 class="text-white font-extrabold text-2xl tracking-tight uppercase leading-none">{{ b.nome }}</h4>
-                                <div class="flex flex-wrap gap-8 mt-6">
-                                    <span class="text-[12px] font-black text-emerald-400 uppercase tracking-widest border-b border-emerald-900/50 pb-2">Preço: R$ {{ b.venda }}</span>
-                                    <span class="text-[12px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2">Meta: {{ b.alvo }}%</span>
+                <div v-if="banco.length > 0" class="bg-slate-900 rounded-[5rem] p-20 shadow-2xl mt-20 border border-slate-800 animate-fade print:hidden">
+                    <h2 class="text-[15px] font-black text-emerald-400 uppercase tracking-[0.9em] mb-16 flex items-center">
+                        <i class="fas fa-database mr-8 text-5xl text-emerald-500"></i> Banco de Precificações Titan
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div v-for="(b, i) in banco" :key="i" class="flex flex-col lg:flex-row items-center justify-between p-12 bg-white/5 rounded-[3.5rem] border border-white/5 hover:bg-white/10 transition-all group shadow-2xl">
+                            <div class="mb-10 lg:mb-0">
+                                <h4 class="text-white font-extrabold text-3xl tracking-tight uppercase leading-none">{{ b.nome }}</h4>
+                                <div class="flex flex-wrap gap-12 mt-10">
+                                    <div class="flex flex-col">
+                                        <span class="text-[12px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 mb-3">Preço Unitário</span>
+                                        <span class="text-3xl font-black text-emerald-400 tracking-tighter leading-none">R$ {{ b.venda }}</span>
+                                    </div>
+                                    <div class="flex flex-col border-l border-slate-800 pl-12">
+                                        <span class="text-[12px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 mb-3">Meta Lucro</span>
+                                        <span class="text-3xl font-black text-slate-200 tracking-tighter leading-none">{{ b.alvo }}%</span>
+                                    </div>
                                 </div>
                             </div>
-                            <button @click="removerProduto(i)" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-10 py-4 rounded-[1.5rem] text-[12px] font-black uppercase shadow-2xl transition-all">Excluir</button>
+                            <button @click="removerProduto(i)" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-16 py-6 rounded-[2.5rem] text-[13px] font-black uppercase shadow-2xl transition-all active:scale-90">
+                                Excluir Registro
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -289,12 +366,26 @@
         createApp({
             data() {
                 return {
-                    // CONFIGURAÇÃO TÉCNICA V29 HYBRID MASTER
-                    inputs: { nomeProd: '', precoVenda: '0,00', custo: '35,00', embalagem: '1,50', custoFixoDireto: '0,00', perdas: '1,5', volume: '300', imposto: '10,0', alvo: '15,0' },
+                    // --- CONFIGURAÇÃO TÉCNICA V31.0 ENTERPRISE ---
+                    inputs: { 
+                        nomeProd: '', 
+                        precoVenda: '0,00', 
+                        custo: '45,00', 
+                        embalagem: '1,00', 
+                        custoFixoDireto: '0,00', 
+                        perdas: '1,0', 
+                        volume: '3000', 
+                        imposto: '10,0', 
+                        alvo: '15,0' 
+                    },
+                    
                     despesas: [
-                        { nome: 'Aluguel / Galpão', valor: '1200' }, { nome: 'Sistemas (Bling/Olist)', valor: '450' },
-                        { nome: 'Folha Pagamento', valor: '1300' }, { nome: 'Internet / Energia', valor: '300' }
+                        { nome: 'Aluguel / Galpão / Escritório', valor: '1200' }, 
+                        { nome: 'Sistemas (Bling / Olist / ERP)', valor: '450' },
+                        { nome: 'Folha Pagamento / Pro-Labore', valor: '1300' }, 
+                        { nome: 'Energia / Internet / Telefonia', valor: '300' }
                     ],
+                    
                     marketplaces: [
                         { id: 1, nome: 'Shopee (Regulatory 2026)', com: '14', ads: '0', afi: '0', ant: '0', fixo: '4', log: '0', corTexto: 'text-orange-600', edit: false },
                         { id: 2, nome: 'Mercado Livre (Smart Tiers)', com: '19', ads: '0', afi: '0', ant: '0', fixo: '6.75', log: '18,50', corTexto: 'text-yellow-600', edit: false },
@@ -305,105 +396,200 @@
                         { id: 7, nome: 'Netshoes (Fitness Pro)', com: '18', ads: '0', afi: '0', ant: '0', fixo: '5', log: '0', corTexto: 'text-purple-700', edit: false },
                         { id: 8, nome: 'Temu (Direct Local)', com: '15', ads: '0', afi: '0', ant: '0', fixo: '0', log: '0', corTexto: 'text-red-600', edit: false }
                     ],
-                    banco: [], chart: null
+                    
+                    banco: [], 
+                    chart: null
                 }
             },
+            
             computed: {
-                totalFixas() { return this.despesas.reduce((acc, cur) => acc + this.sNum(cur.valor), 0); },
-                rateio() { const v = this.sNum(this.inputs.volume); return v > 0 ? this.totalFixas / v : 0; },
-                cmvFinalCalculado() { 
-                    // SOMA HÍBRIDA: Custo + Embalagem + Custo Fixo Direto (Opcional)
+                totalFixas() { 
+                    return this.despesas.reduce((acc, cur) => acc + this.sNum(cur.valor), 0); 
+                },
+                rateio() { 
+                    const v = this.sNum(this.inputs.volume); 
+                    return v > 0 ? this.totalFixas / v : 0; 
+                },
+                totalCustoDiretoUnidade() { 
+                    // Cálculo Híbrido: Custo + Embalagem + Adicional Fixo Direto
                     return this.sNum(this.inputs.custo) + this.sNum(this.inputs.embalagem) + this.sNum(this.inputs.custoFixoDireto);
                 }
             },
+            
             methods: {
-                // ENGINE DE TRATAMENTO NUMÉRICO (PONTO E VÍRGULA)
-                sNum(v) { if (!v) return 0; const clean = v.toString().replace(',', '.').replace(/[^\d.-]/g, ''); return parseFloat(clean) || 0; },
-                syncAll() { this.salvar(); this.updateChart(); },
-                adicionarDespesa() { this.despesas.push({ nome: '', valor: '' }); this.salvar(); },
-                removerDespesa(i) { this.despesas.splice(i, 1); this.syncAll(); },
-                salvar() { 
-                    localStorage.setItem('v29_inputs', JSON.stringify(this.inputs));
-                    localStorage.setItem('v29_despesas', JSON.stringify(this.despesas));
-                    localStorage.setItem('v29_marketplaces', JSON.stringify(this.marketplaces));
+                // ENGINE DE TRATAMENTO NUMÉRICO AVANÇADO
+                sNum(v) { 
+                    if (!v) return 0; 
+                    const clean = v.toString().replace(',', '.').replace(/[^\d.-]/g, ''); 
+                    return parseFloat(clean) || 0; 
                 },
                 
-                // --- INTELIGÊNCIA RECURSIVA DE TAXAS 2026 (REAJUSTE MARÇO) ---
-                getSmartFees(mkp, precoEstimado) {
-                    let com = this.sNum(mkp.com); let fix = this.sNum(mkp.fixo); let log = this.sNum(mkp.log);
+                syncAll() { 
+                    this.salvar(); 
+                    this.updateChart(); 
+                },
+
+                adicionarDespesa() { 
+                    this.despesas.push({ nome: '', valor: '' }); 
+                    this.salvar(); 
+                },
+
+                removerDespesa(i) { 
+                    this.despesas.splice(i, 1); 
+                    this.syncAll(); 
+                },
+
+                salvar() { 
+                    localStorage.setItem('v31_inputs', JSON.stringify(this.inputs));
+                    localStorage.setItem('v31_despesas', JSON.stringify(this.despesas));
+                    localStorage.setItem('v31_marketplaces', JSON.stringify(this.marketplaces));
+                },
+                
+                // --- LÓGICA DE AUDITORIA DE TAXAS 2026 (RECURSIVA) ---
+                getSmartFees(mkp, precoRef) {
+                    let com = this.sNum(mkp.com); 
+                    let fix = this.sNum(mkp.fixo); 
+                    let log = this.sNum(mkp.log);
                     
-                    if (mkp.id === 2) { // MERCADO LIVRE MARÇO/2026 (REAJUSTE GRADUAL)
-                        if (precoEstimado < 79) { 
-                            log = 0; if (precoEstimado >= 50) fix = 6.75; else if (precoEstimado >= 29) fix = 6.50; else fix = 6.25;
-                        } else { fix = 0; } 
+                    // AUDITORIA MERCADO LIVRE (Gatilho R$ 79,00 - Reajuste Março/26)
+                    if (mkp.id === 2) {
+                        if (precoRef < 79) { 
+                            log = 0; // Abaixo de 79 não paga logística (frete grátis)
+                            // Escalonamento de Taxa Fixa conforme Tabela Oficial
+                            if (precoRef >= 50) fix = 6.75; 
+                            else if (precoRef >= 29) fix = 6.50; 
+                            else fix = 6.25;
+                        } else { 
+                            fix = 0; // Acima de 79 paga logística, mas a taxa fixa é ISENTA
+                        } 
                     }
-                    if (mkp.id === 1) { // SHOPEE MARÇO/2026 (COMISSÃO 14% UNIFICADA)
-                        com = 14; if (precoEstimado < 8.00) fix = precoEstimado / 2;
-                        else if (precoEstimado < 80.00) fix = 4.00;
-                        else if (precoEstimado < 200.00) fix = 20.00; else fix = 26.00;
+                    
+                    // AUDITORIA SHOPEE (Novas Regras de Comissão 14% e Tiers Fixos)
+                    if (mkp.id === 1) {
+                        com = 14; // Comissão unificada 2026 com frete embutido
+                        if (precoRef < 8.00) {
+                            fix = precoRef / 2; // Regra dos produtos baratinhos
+                        } else if (precoRef < 80.00) {
+                            fix = 4.00; // Tier 1: Até 79,99
+                        } else if (precoRef < 200.00) {
+                            fix = 20.00; // Tier 2: Entre 80 e 199,99
+                        } else {
+                            fix = 26.00; // Tier 3: Acima de 200
+                        }
                     }
+                    
                     return { com, fix, log };
                 },
 
                 calcPrecoIdeal(mkp) {
-                    let finalPrice = 100;
-                    // Tripla iteração para estabilidade de faixas (Thresholds)
+                    // Motor de 3 estágios para garantir estabilidade em thresholds de impostos e frete
+                    let resultPrice = 100;
+                    
                     for (let i = 0; i < 3; i++) {
-                        let f = this.getSmartFees(mkp, finalPrice);
-                        let percRet = (f.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.imposto) + this.sNum(this.inputs.perdas) + this.sNum(this.inputs.alvo)) / 100;
-                        let fixosVal = f.fix + f.log;
+                        let fees = this.getSmartFees(mkp, resultPrice);
                         
-                        // LÓGICA ESPECIAL TIKTOK SFP (6% com trava R$ 50)
+                        let totalPercRetenção = (fees.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.imposto) + this.sNum(this.inputs.perdas) + this.sNum(this.inputs.alvo)) / 100;
+                        let totalCustosReais = fees.fix + fees.log;
+                        
+                        // LÓGICA ESPECIAL TIKTOK SFP (6% com trava física de R$ 50)
                         if(mkp.id === 3 && mkp.useSFP) {
-                            const tempPreco = (this.cmvFinalCalculado + this.rateio + fixosVal) / (1 - percRet - 0.06);
-                            if(tempPreco * 0.06 > 50) fixosVal += 50; else percRet += 0.06;
+                            const precoProvisorio = (this.totalCustoDiretoUnidade + this.rateio + totalCustosReais) / (1 - totalPercRetenção - 0.06);
+                            if(precoProvisorio * 0.06 > 50) {
+                                totalCustosReais += 50; 
+                            } else {
+                                totalPercRetenção += 0.06;
+                            }
                         }
 
-                        if (percRet >= 1) return 0;
-                        finalPrice = (this.cmvFinalCalculado + this.rateio + fixosVal) / (1 - percRet);
+                        if (totalPercRetenção >= 1) return 0;
+                        resultPrice = (this.totalCustoDiretoUnidade + this.rateio + totalCustosReais) / (1 - totalPercRetenção);
                     }
-                    return finalPrice;
+                    return resultPrice;
                 },
 
                 calcLucro(mkp) {
-                    const preco = this.sNum(this.inputs.precoVenda) > 0 ? this.sNum(this.inputs.precoVenda) : this.calcPrecoIdeal(mkp);
-                    const f = this.getSmartFees(mkp, preco);
-                    let sfpFee = (mkp.id === 3 && mkp.useSFP) ? Math.min(preco * 0.06, 50) : 0;
-                    const percVar = (this.sNum(this.inputs.imposto) + f.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.perdas)) / 100;
-                    return preco - (preco * percVar) - sfpFee - this.cmvFinalCalculado - this.rateio - f.fix - f.log;
+                    const manual = this.sNum(this.inputs.precoVenda);
+                    const precoFinal = manual > 0 ? manual : this.calcPrecoIdeal(mkp);
+                    const fees = this.getSmartFees(mkp, precoFinal);
+                    
+                    let tiktokFeeSFP = (mkp.id === 3 && mkp.useSFP) ? Math.min(precoFinal * 0.06, 50) : 0;
+                    
+                    const percentuaisVariaveis = (this.sNum(this.inputs.imposto) + fees.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.perdas)) / 100;
+                    
+                    return precoFinal - (precoFinal * percentuaisVariaveis) - tiktokFeeSFP - this.totalCustoDiretoUnidade - this.rateio - fees.fix - fees.log;
                 },
 
                 calcMargem(mkp) {
-                    const preco = this.sNum(this.inputs.precoVenda) > 0 ? this.sNum(this.inputs.precoVenda) : this.calcPrecoIdeal(mkp);
+                    const manual = this.sNum(this.inputs.precoVenda);
+                    const preco = manual > 0 ? manual : this.calcPrecoIdeal(mkp);
                     return preco > 0 ? (this.calcLucro(mkp) / preco) * 100 : 0;
                 },
 
-                // GESTÃO ANALYTICS (CHART.JS)
+                // GESTÃO DE GRÁFICOS (CHART.JS ENTERPRISE)
                 initChart() {
                     const ctx = document.getElementById('priceChart').getContext('2d');
                     this.chart = new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: this.marketplaces.map(m => m.nome.split(' ')[0]),
-                            datasets: [{ label: 'Preço Sugerido (R$)', data: this.marketplaces.map(m => this.calcPrecoIdeal(m)), backgroundColor: '#6366f1', borderRadius: 15, barThickness: 45 }]
+                            datasets: [{ 
+                                label: 'Preço Sugerido (R$)', 
+                                data: this.marketplaces.map(m => this.calcPrecoIdeal(m)), 
+                                backgroundColor: '#6366f1', 
+                                borderRadius: 15, 
+                                barThickness: 45 
+                            }]
                         },
-                        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 10, weight: 'bold' } } }, x: { grid: { display: false }, ticks: { font: { size: 10, weight: '900' } } } } }
+                        options: { 
+                            maintainAspectRatio: false, 
+                            plugins: { legend: { display: false } }, 
+                            scales: { 
+                                y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 10, weight: 'bold' } } }, 
+                                x: { grid: { display: false }, ticks: { font: { size: 10, weight: '900' } } } 
+                            } 
+                        }
                     });
                 },
-                updateChart() { if(this.chart) { this.chart.data.datasets[0].data = this.marketplaces.map(m => this.calcPrecoIdeal(m)); this.chart.update(); } },
-                salvarNoBanco() {
-                    if(!this.inputs.nomeProd) { alert('Informe o nome!'); return; }
-                    this.banco.unshift({ nome: this.inputs.nomeProd, venda: this.calcPrecoIdeal(this.marketplaces[0]).toFixed(2), alvo: this.inputs.alvo });
-                    localStorage.setItem('v29_banco', JSON.stringify(this.banco));
+
+                updateChart() { 
+                    if(this.chart) { 
+                        this.chart.data.datasets[0].data = this.marketplaces.map(m => this.calcPrecoIdeal(m)); 
+                        this.chart.update(); 
+                    } 
                 },
-                removerProduto(i) { this.banco.splice(i, 1); localStorage.setItem('v29_banco', JSON.stringify(this.banco)); },
-                resetarTudo() { if(confirm('⚠️ Zerar sistema completo?')) { localStorage.clear(); location.reload(); }}
+                
+                // GESTÃO DE BANCO DE DADOS LOCAL (PERSISTÊNCIA)
+                salvarNoBanco() {
+                    if(!this.inputs.nomeProd) { alert('Informe o nome do produto!'); return; }
+                    this.banco.unshift({ 
+                        nome: this.inputs.nomeProd, 
+                        venda: this.calcPrecoIdeal(this.marketplaces[0]).toFixed(2), 
+                        alvo: this.inputs.alvo 
+                    });
+                    localStorage.setItem('v31_banco', JSON.stringify(this.banco));
+                },
+
+                removerProduto(i) { 
+                    this.banco.splice(i, 1); 
+                    localStorage.setItem('v31_banco', JSON.stringify(this.banco)); 
+                },
+
+                resetarTudo() { 
+                    if(confirm('⚠️ AUDITORIA: Deseja apagar todos os dados e o histórico do Titan?')) { 
+                        localStorage.clear(); 
+                        location.reload(); 
+                    }
+                }
             },
+            
             mounted() {
-                const i = localStorage.getItem('v29_inputs'); if (i) this.inputs = JSON.parse(i);
-                const d = localStorage.getItem('v29_despesas'); if (d) this.despesas = JSON.parse(d);
-                const m = localStorage.getItem('v29_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
-                const b = localStorage.getItem('v29_banco'); if (b) this.banco = JSON.parse(b);
+                // RECUPERAÇÃO AUTOMÁTICA DA MEMÓRIA TITAN
+                const i = localStorage.getItem('v31_inputs'); if (i) this.inputs = JSON.parse(i);
+                const d = localStorage.getItem('v31_despesas'); if (d) this.despesas = JSON.parse(d);
+                const m = localStorage.getItem('v31_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
+                const b = localStorage.getItem('v31_banco'); if (b) this.banco = JSON.parse(b);
+                
+                // INICIALIZAÇÃO DE ANALYTICS
                 this.initChart();
             }
         }).mount('#app')
