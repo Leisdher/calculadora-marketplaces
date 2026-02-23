@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Calculadora Marketplaces 2026 - Master V18</title>
+    <title>Super Calculadora Marketplaces 2026 - Master V19</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -15,10 +15,11 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #0f172a; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .card-premium { @apply bg-white rounded-[2.5rem] border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-1; }
+        .fintech-card { @apply bg-white rounded-[2.5rem] border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-1; }
         .input-premium { @apply w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-sm focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all; }
         .chart-box { position: relative; height: 320px; width: 100%; }
         .btn-action { @apply px-6 py-2.5 rounded-xl text-xs font-black transition-all active:scale-95 uppercase tracking-widest; }
+        .badge-smart { @apply text-[8px] font-black px-2 py-0.5 rounded-md uppercase tracking-tighter; }
     </style>
 </head>
 <body class="antialiased">
@@ -28,16 +29,16 @@
             <div class="max-w-[1800px] mx-auto px-8 py-5 flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center space-x-6">
                     <div class="bg-indigo-500 p-3 rounded-2xl shadow-lg rotate-3">
-                        <i class="fas fa-chart-pie text-2xl text-white"></i>
+                        <i class="fas fa-microchip text-2xl text-white"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-black tracking-tight uppercase leading-none">Titan Ultimate <span class="text-indigo-400">V18.0</span></h1>
-                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-[0.4em] mt-2">Inteligência de Precificação Omnichannel</p>
+                        <h1 class="text-xl font-black tracking-tight uppercase leading-none">Titan Smart <span class="text-indigo-400">V19.0</span></h1>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-[0.4em] mt-2">Automação de Frete & Inteligência de Threshold</p>
                     </div>
                 </div>
                 <div class="mt-4 md:mt-0 flex items-center space-x-6">
-                    <button @click="resetarTudo" class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest px-4">Zerar Tudo</button>
-                    <button onclick="window.print()" class="bg-white text-slate-900 btn-action shadow-xl hover:bg-indigo-50">Exportar PDF</button>
+                    <button @click="resetarTudo" class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest px-4">Resetar Tudo</button>
+                    <button onclick="window.print()" class="bg-white text-slate-900 btn-action shadow-xl hover:bg-indigo-50">Gerar Relatório</button>
                 </div>
             </div>
         </header>
@@ -47,51 +48,51 @@
             <div class="lg:col-span-3 space-y-8 print:hidden">
                 
                 <div class="bg-indigo-600 p-10 rounded-[3rem] shadow-2xl text-white relative overflow-hidden">
-                    <div class="absolute -right-10 -top-10 opacity-10 text-[200px] rotate-12"><i class="fas fa-bullseye"></i></div>
+                    <div class="absolute -right-10 -bottom-10 opacity-10 text-[200px] rotate-12"><i class="fas fa-gears"></i></div>
                     <div class="relative z-10 space-y-8">
                         <div>
                             <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-200 mb-3 text-center">Margem de Lucro Alvo (%)</label>
                             <input type="text" v-model="inputs.alvo" @input="syncAll" class="w-full bg-indigo-500/50 border-2 border-indigo-400 rounded-3xl p-6 text-6xl font-black text-white focus:outline-none focus:border-emerald-400 text-center shadow-inner">
-                            <p class="text-[9px] text-indigo-200 mt-4 font-bold uppercase text-center italic">Calculamos o preço para garantir este lucro.</p>
                         </div>
                         <div class="pt-8 border-t border-indigo-500/50">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-300 mb-3 text-center">Preço Manual p/ Simular (R$)</label>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-300 mb-3 text-center">Simular Preço Manual (R$)</label>
                             <input type="text" v-model="inputs.precoVenda" @input="syncAll" class="w-full bg-transparent text-3xl font-black text-white focus:outline-none text-center border-b-2 border-indigo-400" placeholder="0,00">
+                            <p class="text-[8px] text-indigo-400 mt-2 text-center uppercase font-black">Zere para usar o Preço Sugerido automático.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-premium p-8 border-l-[8px] border-indigo-500">
-                    <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center"><i class="fas fa-boxes-packing mr-3 text-indigo-500 text-lg"></i> 1. Custos do Produto</h2>
+                <div class="fintech-card p-8 border-l-[8px] border-indigo-500">
+                    <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center"><i class="fas fa-boxes-stacked mr-3 text-indigo-500 text-lg"></i> 1. Custos do Produto</h2>
                     <div class="space-y-6">
-                        <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-premium" placeholder="Descrição do Produto/Kit">
+                        <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-premium" placeholder="Descrição do Produto">
                         <div class="grid grid-cols-2 gap-4">
                             <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Custo Compra</label><input type="text" v-model="inputs.custo" @input="syncAll" class="input-premium"></div>
                             <div><label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Embalagem</label><input type="text" v-model="inputs.embalagem" @input="syncAll" class="input-premium"></div>
                         </div>
-                        <div class="p-4 bg-slate-900 rounded-[2rem] flex justify-between items-center shadow-xl">
-                            <span class="text-[10px] font-black text-slate-500 uppercase">CMV Líquido:</span>
+                        <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center shadow-xl">
+                            <span class="text-[10px] font-black text-slate-500 uppercase">CMV:</span>
                             <span class="text-xl font-black text-white">R$ {{ cmvTotal.toFixed(2) }}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-premium p-8 border-l-[8px] border-amber-500">
+                <div class="fintech-card p-8 border-l-[8px] border-amber-500">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest">2. Custos Fixos</h2>
-                        <span class="text-[10px] font-black bg-amber-50 text-amber-600 px-4 py-2 rounded-xl border border-amber-100">R$ {{ totalFixas.toFixed(2) }}</span>
+                        <span class="text-[10px] font-black bg-amber-50 text-amber-600 px-4 py-2 rounded-xl">R$ {{ totalFixas.toFixed(2) }}</span>
                     </div>
                     <div class="space-y-3 mb-6 max-h-56 overflow-y-auto pr-2">
                         <div v-for="(d, i) in despesas" :key="i" class="flex items-center space-x-3 group">
-                            <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-bold focus:bg-white" placeholder="Ex: Aluguel">
+                            <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-bold" placeholder="Item">
                             <input type="text" v-model="d.valor" @input="syncAll" class="w-20 p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-black text-right">
-                            <button @click="removerDespesa(i)" class="text-slate-300 hover:text-red-500 transition-all p-1"><i class="fas fa-trash-can"></i></button>
+                            <button @click="removerDespesa(i)" class="text-slate-300 hover:text-red-500 p-1"><i class="fas fa-trash-can"></i></button>
                         </div>
                     </div>
-                    <button @click="adicionarDespesa" class="w-full py-3.5 border-2 border-dashed border-slate-100 rounded-2xl text-[9px] font-black text-slate-400 hover:text-indigo-600 transition-all uppercase tracking-widest">+ Nova Despesa</button>
+                    <button @click="adicionarDespesa" class="w-full py-3.5 border-2 border-dashed border-slate-100 rounded-2xl text-[9px] font-black text-slate-400 hover:text-indigo-600 uppercase tracking-widest">+ Nova Conta</button>
                     <div class="mt-8 pt-6 border-t border-slate-50">
                         <div class="flex justify-between items-center mb-4">
-                            <label class="text-[10px] font-black text-slate-400 uppercase leading-none">Vendas/Mês</label>
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Volume Vendas/Mês</label>
                             <input type="text" v-model="inputs.volume" @input="syncAll" class="w-24 p-3 border border-slate-100 rounded-xl text-sm text-right font-black bg-slate-50 outline-none">
                         </div>
                         <div class="p-4 bg-amber-50 rounded-2xl flex justify-between items-center">
@@ -112,15 +113,15 @@
                     </div>
                 </div>
                 
-                <button @click="salvarNoBanco" class="w-full py-5 bg-slate-900 hover:bg-black text-white rounded-[2.5rem] font-black text-[11px] shadow-2xl transition-all active:scale-95 uppercase tracking-[0.3em]"><i class="fas fa-archive mr-3"></i> Arquivar no Banco</button>
+                <button @click="salvarNoBanco" class="w-full py-6 bg-slate-900 hover:bg-black text-white rounded-[2.5rem] font-black text-[11px] shadow-2xl transition-all active:scale-95 uppercase tracking-[0.3em]"><i class="fas fa-database mr-3"></i> Arquivar no Banco</button>
             </div>
 
             <div class="lg:col-span-9 space-y-10">
                 
                 <div class="card-premium p-10 shadow-2xl">
                     <div class="flex justify-between items-center mb-8">
-                        <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center"><i class="fas fa-chart-line mr-3 text-indigo-500 text-xl"></i> Gráfico Comparativo de Preço Ideal</h2>
-                        <span class="text-[10px] font-black bg-indigo-50 text-indigo-600 px-5 py-2 rounded-full uppercase tracking-widest">Alvo: {{sNum(inputs.alvo)}}% de Lucro Real</span>
+                        <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center"><i class="fas fa-chart-line mr-3 text-indigo-500 text-xl"></i> Analytics de Precificação</h2>
+                        <span class="text-[10px] font-black bg-indigo-50 text-indigo-600 px-5 py-2 rounded-full uppercase tracking-widest">Lucro Alvo: {{sNum(inputs.alvo)}}%</span>
                     </div>
                     <div class="chart-box">
                         <canvas id="priceChart"></canvas>
@@ -132,13 +133,13 @@
                         <thead>
                             <tr class="bg-slate-50/50 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
                                 <th class="py-6 px-10">Marketplace</th>
-                                <th class="text-center">Preço Sugerido (Venda)</th>
-                                <th class="text-center">Lucro Estimado</th>
-                                <th class="text-center">Margem</th>
+                                <th class="text-center">Preço Sugerido</th>
+                                <th class="text-center">Lucro Líquido</th>
+                                <th class="text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50 text-sm">
-                            <tr v-for="mkp in marketplaces" :key="mkp.id" class="hover:bg-slate-50 transition-all font-bold">
+                            <tr v-for="mkp in marketplaces" :key="mkp.id" class="hover:bg-slate-50 transition-all font-bold group">
                                 <td class="py-5 px-10" :class="mkp.corTexto">{{ mkp.nome }}</td>
                                 <td class="text-center text-slate-900 font-black text-base">R$ {{ calcPrecoIdeal(mkp).toFixed(2) }}</td>
                                 <td class="text-center" :class="calcLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-500'">R$ {{ calcLucro(mkp).toFixed(2) }}</td>
@@ -150,40 +151,54 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div v-for="mkp in marketplaces" :key="mkp.id" class="card-premium relative overflow-hidden flex flex-col group border-slate-200/50">
-                        <div class="absolute left-0 top-0 bottom-0 w-3 shadow-2xl transition-all duration-700" :class="calcLucro(mkp) >= 0 ? 'bg-emerald-500' : 'bg-red-500'"></div>
+                        <div class="absolute left-0 top-0 bottom-0 w-3 transition-all duration-700 shadow-2xl" :class="calcLucro(mkp) >= 0 ? 'bg-emerald-500' : 'bg-red-500'"></div>
                         
                         <div class="p-6 px-10 flex justify-between items-center bg-slate-50/50 border-b border-slate-100">
-                            <h3 class="font-black text-[16px] uppercase tracking-widest" :class="mkp.corTexto">{{ mkp.nome }}</h3>
-                            <button @click="mkp.edit = !mkp.edit" class="text-[10px] font-black bg-white border border-slate-100 px-6 py-2.5 rounded-2xl shadow-sm hover:shadow-md transition uppercase">Taxas & Marketing</button>
+                            <div class="flex flex-col">
+                                <h3 class="font-black text-[16px] uppercase tracking-widest" :class="mkp.corTexto">{{ mkp.nome }}</h3>
+                                <div v-if="mkp.id === 2" class="flex space-x-1 mt-1">
+                                    <span v-if="calcPrecoIdeal(mkp) < 79" class="badge-smart bg-amber-100 text-amber-700">Taxa Fixa R$ 6 Ativa</span>
+                                    <span v-else class="badge-smart bg-indigo-100 text-indigo-700">Frete Grátis Ativo</span>
+                                </div>
+                            </div>
+                            <button @click="mkp.edit = !mkp.edit" class="text-[10px] font-black bg-white border border-slate-100 px-6 py-2.5 rounded-2xl shadow-sm hover:shadow-md transition uppercase">Taxas</button>
                         </div>
 
-                        <div v-show="mkp.edit" class="p-10 bg-slate-50 border-b border-slate-100 grid grid-cols-2 gap-6 print:hidden animate-fade">
-                            <div class="space-y-1"><label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Comissão %</label><input type="text" v-model="mkp.com" @input="syncAll" class="w-full p-3.5 text-xs border border-slate-200 rounded-2xl bg-white font-black"></div>
-                            <div class="space-y-1"><label class="text-[10px] font-black text-blue-500 uppercase tracking-widest">Invest. ADS %</label><input type="text" v-model="mkp.ads" @input="syncAll" class="w-full p-3.5 text-xs border-2 border-blue-100 rounded-2xl bg-blue-50 font-black text-blue-700"></div>
-                            <div class="space-y-1"><label class="text-[10px] font-black text-purple-600 uppercase tracking-widest">Afiliados %</label><input type="text" v-model="mkp.afi" @input="syncAll" class="w-full p-3.5 text-xs border-2 border-purple-100 rounded-2xl bg-purple-50 font-black text-purple-700"></div>
-                            <div class="space-y-1"><label class="text-[10px] font-black text-amber-600 uppercase tracking-widest">Antecipação %</label><input type="text" v-model="mkp.ant" @input="syncAll" class="w-full p-3.5 text-xs border-2 border-amber-100 rounded-2xl bg-amber-50 font-black text-amber-700"></div>
+                        <div v-show="mkp.edit" class="p-10 bg-slate-50 border-b border-slate-100 grid grid-cols-2 gap-6 animate-fade">
+                            <div><label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Comissão %</label><input type="text" v-model="mkp.com" @input="syncAll" class="w-full p-3.5 text-xs border border-slate-200 rounded-2xl bg-white font-black shadow-inner"></div>
+                            <div><label class="text-[10px] font-black text-blue-500 uppercase tracking-widest block mb-1">Ads %</label><input type="text" v-model="mkp.ads" @input="syncAll" class="w-full p-3.5 text-xs border-2 border-blue-100 rounded-2xl bg-blue-50 font-black text-blue-700"></div>
+                            <div><label class="text-[10px] font-black text-purple-600 uppercase tracking-widest block mb-1">Afiliados %</label><input type="text" v-model="mkp.afi" @input="syncAll" class="w-full p-3.5 text-xs border-2 border-purple-100 rounded-2xl bg-purple-50 font-black text-purple-700 shadow-inner"></div>
+                            <div><label class="text-[10px] font-black text-amber-600 uppercase tracking-widest block mb-1">Antecipação %</label><input type="text" v-model="mkp.ant" @input="syncAll" class="w-full p-3.5 text-xs border-2 border-amber-100 rounded-2xl bg-amber-50 font-black text-amber-700 shadow-inner"></div>
                             
                             <div v-if="mkp.id === 3" class="col-span-2 p-5 bg-emerald-50 rounded-[2rem] border-2 border-emerald-100 flex items-center justify-between">
-                                <label class="text-[10px] font-black text-emerald-800 uppercase tracking-widest flex items-center"><i class="fas fa-truck-fast mr-3 text-lg"></i> Frete Grátis SFP Ativado (+6% | Teto R$ 50)</label>
+                                <label class="text-[10px] font-black text-emerald-800 uppercase tracking-widest flex items-center"><i class="fas fa-truck-fast mr-3 text-lg"></i> Frete Grátis SFP (+6% | Teto R$ 50)</label>
                                 <input type="checkbox" v-model="mkp.useSFP" @change="syncAll" class="w-6 h-6 rounded-lg text-emerald-600 focus:ring-emerald-500">
                             </div>
 
-                            <div class="space-y-1"><label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Taxa Fixa R$</label><input type="text" v-model="mkp.fixo" @input="syncAll" class="w-full p-3.5 text-xs border border-slate-200 rounded-2xl bg-white font-black"></div>
-                            <div class="space-y-1"><label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Logística R$</label><input type="text" v-model="mkp.log" @input="syncAll" class="w-full p-3.5 text-xs border border-slate-200 rounded-2xl bg-white font-black"></div>
+                            <div class="relative group">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Taxa Fixa R$</label>
+                                <input type="text" v-model="mkp.fixo" @input="syncAll" class="w-full p-3.5 text-xs border border-slate-200 rounded-2xl bg-white font-black" :disabled="mkp.id === 2 && calcPrecoIdeal(mkp) >= 79">
+                                <div v-if="mkp.id === 2 && calcPrecoIdeal(mkp) >= 79" class="absolute inset-0 bg-slate-50/50 cursor-not-allowed rounded-2xl flex items-center justify-center text-[8px] font-bold text-slate-400 uppercase">Isento (>79)</div>
+                            </div>
+                            <div class="relative group">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Logística R$</label>
+                                <input type="text" v-model="mkp.log" @input="syncAll" class="w-full p-3.5 text-xs border border-slate-200 rounded-2xl bg-white font-black" :disabled="mkp.id === 2 && calcPrecoIdeal(mkp) < 79">
+                                <div v-if="mkp.id === 2 && calcPrecoIdeal(mkp) < 79" class="absolute inset-0 bg-slate-50/50 cursor-not-allowed rounded-2xl flex items-center justify-center text-[8px] font-bold text-slate-400 uppercase">Isento (<79)</div>
+                            </div>
                         </div>
 
                         <div class="p-12 flex-grow flex flex-col space-y-10">
                             <div class="p-10 bg-emerald-50 border-2 border-emerald-100 rounded-[3.5rem] text-center shadow-inner relative group/price">
-                                <p class="text-[11px] font-black text-emerald-600 uppercase mb-4 tracking-[0.4em] leading-none">Preço Sugerido p/ Venda</p>
+                                <p class="text-[11px] font-black text-emerald-600 uppercase mb-4 tracking-[0.4em] leading-none">Preço Sugerido Titan</p>
                                 <p class="text-6xl font-black text-emerald-900 tracking-tighter leading-none">R$ {{ calcPrecoIdeal(mkp).toFixed(2) }}</p>
                                 <div class="absolute -right-5 -bottom-5 opacity-5 text-[120px] transition-all group-hover/price:scale-125"><i class="fas fa-check-circle"></i></div>
                             </div>
 
                             <div class="pt-10 border-t border-slate-100 grid grid-cols-2 gap-10">
                                 <div class="space-y-3">
-                                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center">Lucro <i :class="sNum(inputs.precoVenda) > 0 ? 'fas fa-hand-pointer ml-3 text-indigo-400' : 'fas fa-robot ml-3 text-emerald-500'" :title="sNum(inputs.precoVenda) > 0 ? 'Simulação Manual' : 'Meta Baseada no Preço Sugerido'"></i></p>
+                                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center">Lucro <i :class="sNum(inputs.precoVenda) > 0 ? 'fas fa-hand-pointer ml-3 text-indigo-400' : 'fas fa-robot ml-3 text-emerald-500'"></i></p>
                                     <p class="text-4xl font-black leading-none tracking-tighter" :class="calcLucro(mkp) >= 0 ? 'text-slate-800' : 'text-red-600'">R$ {{ calcLucro(mkp).toFixed(2) }}</p>
-                                    <p class="text-[9px] font-bold text-slate-300 uppercase">{{ sNum(inputs.precoVenda) > 0 ? 'Manual' : 'Automático' }}</p>
+                                    <p class="text-[9px] font-bold text-slate-300 uppercase">{{ sNum(inputs.precoVenda) > 0 ? 'Simulação Manual' : 'Automático' }}</p>
                                 </div>
                                 <div class="text-right space-y-3">
                                     <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Margem Real</p>
@@ -192,24 +207,24 @@
                             </div>
 
                             <div class="w-full bg-slate-100 rounded-full h-3.5 overflow-hidden shadow-inner border border-white">
-                                <div class="h-full transition-all duration-1000 rounded-full shadow-lg" :class="calcMargem(mkp) >= sNum(inputs.alvo) ? 'bg-emerald-500' : (calcMargem(mkp) > 0 ? 'bg-amber-400' : 'bg-red-500')" :style="{ width: Math.min(Math.max((calcMargem(mkp)/sNum(inputs.alvo))*100, 0), 100) + '%' }"></div>
+                                <div class="h-full transition-all duration-1000 rounded-full shadow-lg shadow-emerald-500/10" :class="calcMargem(mkp) >= sNum(inputs.alvo) ? 'bg-emerald-500' : (calcMargem(mkp) > 0 ? 'bg-amber-400' : 'bg-red-500')" :style="{ width: Math.min(Math.max((calcMargem(mkp)/sNum(inputs.alvo))*100, 0), 100) + '%' }"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div v-if="banco.length > 0" class="bg-slate-900 rounded-[4.5rem] p-16 shadow-2xl mt-16 border border-slate-800">
-                    <h2 class="text-[12px] font-black text-emerald-400 uppercase tracking-[0.7em] mb-12 flex items-center"><i class="fas fa-layer-group mr-6 text-3xl"></i> Banco de Simulações Titan</h2>
+                <div v-if="banco.length > 0" class="bg-slate-900 rounded-[4.5rem] p-16 shadow-2xl mt-16 border border-slate-800 animate-fade">
+                    <h2 class="text-[12px] font-black text-emerald-400 uppercase tracking-[0.7em] mb-12 flex items-center"><i class="fas fa-layer-group mr-6 text-3xl"></i> Banco de Precificações</h2>
                     <div class="grid grid-cols-1 gap-6">
                         <div v-for="(b, i) in banco" :key="i" class="flex flex-col md:flex-row items-center justify-between p-10 bg-white/5 rounded-[3rem] border border-white/5 hover:bg-white/10 transition-all group">
                             <div class="mb-6 md:mb-0">
                                 <h4 class="text-slate-100 font-extrabold text-2xl tracking-tight leading-none uppercase">{{ b.nome }}</h4>
                                 <div class="flex flex-wrap gap-10 mt-6">
-                                    <span class="text-[11px] font-black text-emerald-400 uppercase tracking-widest border-b border-emerald-900 pb-2">Preço Venda: R$ {{ b.venda }}</span>
-                                    <span class="text-[11px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2">Lucro Alvo: {{ b.alvo }}%</span>
+                                    <span class="text-[11px] font-black text-emerald-400 uppercase tracking-widest border-b border-emerald-900 pb-2">Venda: R$ {{ b.venda }}</span>
+                                    <span class="text-[11px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2">Meta: {{ b.alvo }}%</span>
                                 </div>
                             </div>
-                            <button @click="removerProduto(i)" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-12 py-4 rounded-[1.5rem] text-[11px] font-black uppercase tracking-[0.2em] shadow-xl">Excluir</button>
+                            <button @click="removerProduto(i)" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-12 py-4 rounded-[1.5rem] text-[11px] font-black uppercase shadow-xl">Excluir</button>
                         </div>
                     </div>
                 </div>
@@ -223,15 +238,11 @@
         createApp({
             data() {
                 return {
-                    // INPUTS PRINCIPAIS BLINDADOS
-                    inputs: { nomeProd: '', precoVenda: '0,00', custo: '35,00', embalagem: '1,50', perdas: '1,5', volume: '300', imposto: '6,0', alvo: '20,0' },
-                    despesas: [
-                        { nome: 'Aluguel / Galpão', valor: '1200' }, { nome: 'Sistemas (Bling / Olist)', valor: '450' },
-                        { nome: 'Folha Pagamento', valor: '1300' }, { nome: 'Energia / Internet', valor: '300' }
-                    ],
+                    inputs: { nomeProd: '', precoVenda: '0,00', custo: '35,00', embalagem: '1,50', perdas: '1,5', volume: '300', imposto: '6,0', alvo: '15,0' },
+                    despesas: [{ nome: 'Aluguel / Escritório', valor: '1200' }, { nome: 'Sistemas (Bling / Olist)', valor: '450' }, { nome: 'Folha Pagamento', valor: '1300' }, { nome: 'Internet / Energia', valor: '300' }],
                     marketplaces: [
                         { id: 1, nome: 'Shopee (Tiers 2026)', com: '14', ads: '0', afi: '0', ant: '0', fixo: '20', log: '0', corTexto: 'text-orange-600', edit: false },
-                        { id: 2, nome: 'Mercado Livre (Full/Flex)', com: '19', ads: '0', afi: '0', ant: '0', fixo: '0', log: '18,50', corTexto: 'text-yellow-600', edit: false },
+                        { id: 2, nome: 'Mercado Livre (Smart Envios)', com: '19', ads: '0', afi: '0', ant: '0', fixo: '6', log: '18,50', corTexto: 'text-yellow-600', edit: false },
                         { id: 3, nome: 'TikTok Shop (SFP Active)', com: '6', ads: '5', afi: '10', ant: '0', fixo: '4', log: '0', corTexto: 'text-slate-900', edit: false, useSFP: true },
                         { id: 4, nome: 'Amazon (DBA/FBA)', com: '14', ads: '0', afi: '0', ant: '0', fixo: '0', log: '11,95', corTexto: 'text-sky-700', edit: false },
                         { id: 5, nome: 'Shein Brasil (Standard)', com: '16', ads: '0', afi: '0', ant: '0', fixo: '0', log: '0', corTexto: 'text-zinc-800', edit: false },
@@ -249,37 +260,44 @@
                 cmvTotal() { return this.sNum(this.inputs.custo) + this.sNum(this.inputs.embalagem); }
             },
             methods: {
-                // MOTOR DE TRATAMENTO DE NÚMEROS (PONTO E VÍRGULA)
                 sNum(v) { if (!v) return 0; const clean = v.toString().replace(',', '.').replace(/[^\d.-]/g, ''); return parseFloat(clean) || 0; },
-                
-                // SINCRONIZAÇÃO E PERSISTÊNCIA
                 syncAll() { this.salvar(); this.updateChart(); },
                 adicionarDespesa() { this.despesas.push({ nome: '', valor: '' }); this.salvar(); },
                 removerDespesa(i) { this.despesas.splice(i, 1); this.syncAll(); },
                 salvar() { 
-                    localStorage.setItem('v18_inputs', JSON.stringify(this.inputs));
-                    localStorage.setItem('v18_despesas', JSON.stringify(this.despesas));
-                    localStorage.setItem('v18_marketplaces', JSON.stringify(this.marketplaces));
+                    localStorage.setItem('v19_inputs', JSON.stringify(this.inputs));
+                    localStorage.setItem('v19_despesas', JSON.stringify(this.despesas));
+                    localStorage.setItem('v19_marketplaces', JSON.stringify(this.marketplaces));
                 },
                 
-                // MÁQUINA DE CÁLCULO TITAN
-                calcPrecoIdeal(mkp) {
-                    const precoManual = this.sNum(this.inputs.precoVenda) || 100;
+                getSmartFees(mkp, precoRef) {
                     let com = this.sNum(mkp.com);
                     let fix = this.sNum(mkp.fixo);
+                    let log = this.sNum(mkp.log);
+
+                    if (mkp.id === 2) { // Mercado Livre Threshold
+                        if (precoRef < 79) { log = 0; } else { fix = 0; }
+                    }
+                    if (mkp.id === 1 && precoRef < 80) { com = 20; fix = 4.00; }
                     
-                    // Lógica 2026: Mercado Livre < R$ 79
-                    if(mkp.id === 2 && precoManual < 79) fix = 6.00;
-                    // Lógica 2026: Shopee < R$ 80
-                    if(mkp.id === 1 && precoManual < 80) { com = 20; fix = 4.00; }
+                    return { com, fix, log };
+                },
 
-                    let percRet = (com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.imposto) + this.sNum(this.inputs.perdas) + this.sNum(this.inputs.alvo)) / 100;
-                    let custosDinheiro = fix + this.sNum(mkp.log);
+                calcPrecoIdeal(mkp) {
+                    const precoManual = this.sNum(this.inputs.precoVenda);
+                    // Pré-tentativa para Mercado Livre
+                    let fees = this.getSmartFees(mkp, 100); 
+                    if (mkp.id === 2) {
+                        const testFix = (this.cmvTotal + this.rateio + 6.00) / (1 - (this.sNum(mkp.com) + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.imposto) + this.sNum(this.inputs.perdas) + this.sNum(this.inputs.alvo)) / 100);
+                        fees = this.getSmartFees(mkp, testFix);
+                    }
 
-                    // Lógica TikTok SFP com Trava R$ 50
+                    let percRet = (fees.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.imposto) + this.sNum(this.inputs.perdas) + this.sNum(this.inputs.alvo)) / 100;
+                    let custosDinheiro = fees.fix + fees.log;
+
                     if(mkp.id === 3 && mkp.useSFP) {
-                        const precoProjetado = (this.cmvTotal + this.rateio + custosDinheiro) / (1 - percRet - 0.06);
-                        if(precoProjetado * 0.06 > 50) custosDinheiro += 50; else percRet += 0.06;
+                        const proj = (this.cmvTotal + this.rateio + custosDinheiro) / (1 - percRet - 0.06);
+                        if(proj * 0.06 > 50) custosDinheiro += 50; else percRet += 0.06;
                     }
 
                     if (percRet >= 1) return 0;
@@ -289,51 +307,43 @@
                 calcLucro(mkp) {
                     const manual = this.sNum(this.inputs.precoVenda);
                     const preco = manual > 0 ? manual : this.calcPrecoIdeal(mkp);
-                    
-                    let com = this.sNum(mkp.com);
-                    let fix = this.sNum(mkp.fixo);
-                    if(mkp.id === 2 && preco < 79) fix = 6.00;
-                    if(mkp.id === 1 && preco < 80) { com = 20; fix = 4.00; }
+                    const fees = this.getSmartFees(mkp, preco);
 
                     let sfp = (mkp.id === 3 && mkp.useSFP) ? Math.min(preco * 0.06, 50) : 0;
-                    const percVariavel = (this.sNum(this.inputs.imposto) + com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.perdas)) / 100;
-                    return preco - (preco * percVariavel) - sfp - this.cmvTotal - this.rateio - fix - this.sNum(mkp.log);
+                    const percVariavel = (this.sNum(this.inputs.imposto) + fees.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.perdas)) / 100;
+                    return preco - (preco * percVariavel) - sfp - this.cmvTotal - this.rateio - fees.fix - fees.log;
                 },
 
                 calcMargem(mkp) {
-                    const manual = this.sNum(this.inputs.precoVenda);
-                    const preco = manual > 0 ? manual : this.calcPrecoIdeal(mkp);
+                    const preco = this.sNum(this.inputs.precoVenda) > 0 ? this.sNum(this.inputs.precoVenda) : this.calcPrecoIdeal(mkp);
                     return preco > 0 ? (this.calcLucro(mkp) / preco) * 100 : 0;
                 },
 
-                // GESTÃO DO GRÁFICO (ANALYTICS)
                 initChart() {
                     const ctx = document.getElementById('priceChart').getContext('2d');
                     this.chart = new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: this.marketplaces.map(m => m.nome),
-                            datasets: [{ label: 'Preço Sugerido (Ideal)', data: this.marketplaces.map(m => this.calcPrecoIdeal(m)), backgroundColor: '#6366f1', borderRadius: 15 }]
+                            datasets: [{ label: 'Preço Sugerido (R$)', data: this.marketplaces.map(m => this.calcPrecoIdeal(m)), backgroundColor: '#6366f1', borderRadius: 15 }]
                         },
                         options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } } }
                     });
                 },
                 updateChart() { if(this.chart) { this.chart.data.datasets[0].data = this.marketplaces.map(m => this.calcPrecoIdeal(m)); this.chart.update(); } },
-                
-                // BANCO DE DADOS
                 salvarNoBanco() {
                     if(!this.inputs.nomeProd) { alert('Digite o nome do produto!'); return; }
                     this.banco.unshift({ nome: this.inputs.nomeProd, venda: this.calcPrecoIdeal(this.marketplaces[0]).toFixed(2), alvo: this.inputs.alvo });
-                    localStorage.setItem('v18_banco', JSON.stringify(this.banco));
+                    localStorage.setItem('v19_banco', JSON.stringify(this.banco));
                 },
-                removerProduto(i) { this.banco.splice(i, 1); localStorage.setItem('v18_banco', JSON.stringify(this.banco)); },
+                removerProduto(i) { this.banco.splice(i, 1); localStorage.setItem('v19_banco', JSON.stringify(this.banco)); },
                 resetarTudo() { if(confirm('Zerar o sistema completo?')) { localStorage.clear(); location.reload(); }}
             },
             mounted() {
-                const i = localStorage.getItem('v18_inputs'); if (i) this.inputs = JSON.parse(i);
-                const d = localStorage.getItem('v18_despesas'); if (d) this.despesas = JSON.parse(d);
-                const m = localStorage.getItem('v18_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
-                const b = localStorage.getItem('v18_banco'); if (b) this.banco = JSON.parse(b);
+                const i = localStorage.getItem('v19_inputs'); if (i) this.inputs = JSON.parse(i);
+                const d = localStorage.getItem('v19_despesas'); if (d) this.despesas = JSON.parse(d);
+                const m = localStorage.getItem('v19_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
+                const b = localStorage.getItem('v19_banco'); if (b) this.banco = JSON.parse(b);
                 this.initChart();
             }
         }).mount('#app')
