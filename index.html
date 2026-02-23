@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titan ERP Enterprise 2026 - Master V33</title>
+    <title>Titan ERP Enterprise 2026 - Master V35</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -23,7 +23,7 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-        /* Dashboard UI Master - V33 */
+        /* Dashboard UI Architecture - V35 */
         .card-titan { 
             @apply bg-white rounded-[2rem] border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:-translate-y-1; 
         }
@@ -46,7 +46,7 @@
             @apply text-[8px] font-black px-2 py-0.5 rounded-md uppercase tracking-tighter shadow-sm border border-black/5; 
         }
 
-        /* Estilo para Simulação Manual Hero (Azul) */
+        /* Estilo para Simulação Manual Hero (Prioridade Visual) */
         .simulando-ativo {
             background: linear-gradient(145deg, #ffffff 0%, #f0f9ff 100%);
             border-color: #bae6fd !important;
@@ -67,14 +67,14 @@
                         <i class="fas fa-microchip text-xl text-white"></i>
                     </div>
                     <div>
-                        <h1 class="text-base font-black tracking-tight uppercase leading-none text-indigo-100">Titan Auditor <span class="text-emerald-400">V33.0</span></h1>
-                        <p class="text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] mt-1.5">Inteligência Março/2026 & Gestão Híbrida de Custos</p>
+                        <h1 class="text-base font-black tracking-tight uppercase leading-none text-indigo-100">Titan Enterprise <span class="text-emerald-400">V35.0</span></h1>
+                        <p class="text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] mt-1.5">Auditoria Completa Março/2026 & Motor de Frete Dinâmico</p>
                     </div>
                 </div>
 
                 <div class="mt-4 md:mt-0 flex items-center space-x-6">
-                    <button @click="resetarTudo" class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest px-2">Zerar Sistema</button>
-                    <button onclick="window.print()" class="bg-white text-slate-900 btn-titan shadow-xl hover:bg-indigo-50 border border-slate-200">Gerar Relatório PDF</button>
+                    <button @click="resetarTudo" class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest px-2">Limpar Tudo</button>
+                    <button onclick="window.print()" class="bg-white text-slate-900 btn-titan shadow-xl hover:bg-indigo-50 border border-slate-200">Exportar Relatório PDF</button>
                 </div>
             </div>
         </header>
@@ -90,13 +90,13 @@
                         <div class="text-center">
                             <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-200 mb-3">1. Meta de Lucro Alvo (%)</label>
                             <input type="text" v-model="inputs.alvo" @input="syncAll" class="w-full bg-indigo-500/50 border-2 border-indigo-400 rounded-3xl p-6 text-6xl font-black text-white focus:outline-none focus:border-emerald-400 text-center shadow-inner">
-                            <p class="text-[8px] text-indigo-300 mt-4 font-bold uppercase italic tracking-wider">Define o preço para atingir este lucro.</p>
+                            <p class="text-[8px] text-indigo-300 mt-4 font-bold uppercase italic tracking-wider">O Titan sugere o preço p/ este lucro.</p>
                         </div>
 
                         <div class="pt-7 border-t border-indigo-500/50 text-center">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-300 mb-2">2. Simular Preço de Venda (R$)</label>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-300 mb-2">2. Simular Venda (Preço R$)</label>
                             <input type="text" v-model="inputs.precoVenda" @input="syncAll" class="w-full bg-indigo-900/30 border-2 border-indigo-400 p-4 text-3xl font-black text-white rounded-2xl focus:outline-none text-center shadow-lg" placeholder="0,00">
-                            <p class="text-[8px] text-indigo-400 mt-2 font-black uppercase tracking-widest">Calcula o lucro baseado neste valor manual.</p>
+                            <p class="text-[8px] text-indigo-400 mt-2 font-black uppercase tracking-widest">Confere o lucro deste valor manual.</p>
                         </div>
                     </div>
                 </div>
@@ -107,10 +107,7 @@
                     </h2>
                     
                     <div class="space-y-5">
-                        <div>
-                            <label class="block text-[9px] font-black text-slate-500 uppercase mb-2 ml-1">Descrição do Item/Kit</label>
-                            <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-titan" placeholder="Ex: Bodysuit Manga Longa">
-                        </div>
+                        <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-titan" placeholder="Descrição do Produto">
                         
                         <div class="grid grid-cols-2 gap-4">
                             <div>
@@ -128,7 +125,7 @@
                                 Adicional Operacional (R$) <i class="fas fa-info-circle ml-2 opacity-40"></i>
                             </label>
                             <input type="text" v-model="inputs.custoFixoDireto" @input="syncAll" class="input-titan !bg-white border-indigo-200" placeholder="Ex: 10,00">
-                            <p class="text-[7px] text-indigo-400 mt-2 uppercase font-bold italic">* Use para cobrir custos fixos diretamente na peça.</p>
+                            <p class="text-[7px] text-indigo-400 mt-2 uppercase font-bold italic">* Defina um valor p/ cobrir custos sem histórico.</p>
                         </div>
 
                         <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center shadow-md">
@@ -146,13 +143,13 @@
 
                     <div class="space-y-2 mb-4 max-h-48 overflow-y-auto pr-1">
                         <div v-for="(d, i) in despesas" :key="i" class="flex items-center space-x-3 group">
-                            <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-bold focus:bg-white transition-all outline-none" placeholder="Ex: Aluguel">
+                            <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-bold focus:bg-white outline-none transition-all" placeholder="Item">
                             <input type="text" v-model="d.valor" @input="syncAll" class="w-20 p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-black text-right">
                             <button @click="removerDespesa(i)" class="text-slate-300 hover:text-red-500 transition-all p-1"><i class="fas fa-trash-can"></i></button>
                         </div>
                     </div>
 
-                    <button @click="adicionarDespesa" class="w-full py-3.5 border-2 border-dashed border-slate-100 rounded-2xl text-[9px] font-black text-slate-400 hover:text-indigo-600 transition-all shadow-sm uppercase tracking-widest">+ Adicionar Nova Conta</button>
+                    <button @click="adicionarDespesa" class="w-full py-3.5 border-2 border-dashed border-slate-100 rounded-2xl text-[9px] font-black text-slate-400 hover:text-indigo-600 uppercase tracking-widest transition-all shadow-sm">+ Nova Conta</button>
 
                     <div class="mt-8 pt-6 border-t border-slate-50">
                         <div class="flex justify-between items-center mb-4">
@@ -177,13 +174,13 @@
 
                     <div class="flex items-center justify-between">
                         <h2 class="text-[11px] font-black text-orange-500 uppercase tracking-widest flex items-center">
-                            <i class="fas fa-shield-virus mr-2 text-orange-500"></i> Provisão Perdas %
+                            <i class="fas fa-shield-virus mr-2 text-orange-500"></i> Perdas %
                         </h2>
                         <input type="text" v-model="inputs.perdas" @input="syncAll" class="w-24 p-3 border border-orange-100 rounded-xl text-xs text-right font-black bg-orange-50 text-orange-700">
                     </div>
 
-                    <button @click="salvarNoBanco" class="w-full py-5 bg-slate-900 hover:bg-black text-white rounded-3xl font-black text-[11px] shadow-2xl transition-all active:scale-95 uppercase tracking-widest">
-                        <i class="fas fa-database mr-3 text-emerald-400"></i> Arquivar no Banco
+                    <button @click="salvarNoBanco" class="w-full py-5 bg-slate-900 hover:bg-black text-white rounded-3xl font-black text-[11px] shadow-2xl transition-all active:scale-95 uppercase tracking-[0.2em]">
+                        <i class="fas fa-database mr-3 text-emerald-400"></i> Arquivar Precificação
                     </button>
                 </div>
             </div>
@@ -195,7 +192,7 @@
                     <div class="xl:col-span-8 card-titan p-8 shadow-lg">
                         <div class="flex justify-between items-center mb-8">
                             <h2 class="text-[12px] font-black text-slate-400 uppercase tracking-[0.4em] flex items-center">
-                                <i class="fas fa-chart-line mr-4 text-indigo-500 text-xl"></i> Monitor de Precificação Omnichannel
+                                <i class="fas fa-chart-line mr-4 text-indigo-500 text-xl"></i> Monitor de Preços Omnichannel
                             </h2>
                             <span class="text-[10px] font-black bg-indigo-50 text-indigo-600 px-6 py-2 rounded-full uppercase tracking-widest shadow-sm">
                                 Margem Meta: {{sNum(inputs.alvo)}}%
@@ -210,12 +207,12 @@
                         <table class="w-full text-left text-[11px] border-collapse">
                             <thead>
                                 <tr class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b">
-                                    <th class="py-5 px-6">Marketplace</th>
+                                    <th class="py-5 px-6">Plataforma</th>
                                     <th class="text-right px-6">Preço Ideal</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-50 font-bold">
-                                <tr v-for="mkp in marketplaces" :key="mkp.id" class="hover:bg-slate-50 transition-all">
+                                <tr v-for="mkp in marketplaces" :key="mkp.id" class="hover:bg-slate-50 transition-all group">
                                     <td class="py-4 px-6" :class="mkp.corTexto">{{ mkp.nome.split(' ')[0] }}</td>
                                     <td class="text-right px-6 font-black text-slate-900 text-sm">R$ {{ calcPrecoIdeal(mkp).toFixed(2) }}</td>
                                 </tr>
@@ -235,11 +232,11 @@
                                 
                                 <div class="flex flex-wrap gap-1.5">
                                     <span v-if="mkp.id === 2" class="badge-rule" :class="getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).log === 0 ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700'">
-                                        {{ getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).log === 0 ? 'Taxa Fixa Ativa' : 'Frete Grátis Ativo' }}
+                                        {{ getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).log === 0 ? 'Regra: Taxa Fixa Ativa' : 'Regra: Frete Grátis Ativo' }}
                                     </span>
                                     
                                     <span v-if="mkp.id === 1" class="badge-rule bg-orange-100 text-orange-700 shadow-orange-100/30">
-                                        Taxa Fixa: R$ {{ getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).fix.toFixed(2) }}
+                                        Fixa: R$ {{ getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).fix.toFixed(2) }}
                                     </span>
                                 </div>
                             </div>
@@ -256,28 +253,28 @@
                                 <input type="text" v-model="mkp.ads" @input="syncAll" class="input-titan !p-2.5 !bg-blue-50 shadow-sm">
                             </div>
                             <div class="space-y-1.5">
-                                <label class="text-[10px] font-black text-purple-600 uppercase tracking-widest block">Afiliados (%)</label>
+                                <label class="text-[10px] font-black text-purple-600 uppercase tracking-widest block">Afiliados %</label>
                                 <input type="text" v-model="mkp.afi" @input="syncAll" class="input-titan !p-2.5 shadow-sm">
                             </div>
                             <div class="space-y-1.5">
-                                <label class="text-[10px] font-black text-amber-600 uppercase tracking-widest block">Antecip. (%)</label>
+                                <label class="text-[10px] font-black text-amber-600 uppercase tracking-widest block">Antecipação %</label>
                                 <input type="text" v-model="mkp.ant" @input="syncAll" class="input-titan !p-2.5 shadow-sm">
                             </div>
                             
                             <div v-if="mkp.id === 3" class="col-span-2 p-5 bg-emerald-50 rounded-2xl border-2 border-emerald-100 flex items-center justify-between shadow-inner">
                                 <div class="flex flex-col">
                                     <label class="text-[10px] font-black text-emerald-800 uppercase tracking-widest flex items-center">
-                                        <i class="fas fa-truck-fast mr-3 text-lg"></i> Frete Grátis SFP
+                                        <i class="fas fa-truck-fast mr-3"></i> Programa Frete Grátis SFP
                                     </label>
                                     <p class="text-[8px] text-emerald-600 font-bold uppercase mt-1">Custo: 6% | Teto: R$ 50,00</p>
                                 </div>
-                                <input type="checkbox" v-model="mkp.useSFP" @change="syncAll" class="w-6 h-6 rounded text-emerald-600 focus:ring-emerald-500 transition-all cursor-pointer shadow-md">
+                                <input type="checkbox" v-model="mkp.useSFP" @change="syncAll" class="w-6 h-6 rounded text-emerald-600 focus:ring-emerald-500 transition-all cursor-pointer">
                             </div>
 
                             <div class="relative space-y-1.5">
                                 <label class="text-[10px] font-black text-slate-400 uppercase block tracking-widest">Taxa Fixa R$</label>
                                 <input type="text" v-model="mkp.fixo" @input="syncAll" class="input-titan !p-2.5 shadow-inner">
-                                <div v-if="mkp.id === 2 && (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp)) >= 79" class="absolute inset-x-0 bottom-0 top-[26px] bg-slate-100/80 rounded-xl flex items-center justify-center text-[8px] font-black text-slate-500 uppercase cursor-not-allowed">Isento (>79)</div>
+                                <div v-if="mkp.id === 2 && (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp)) >= 79" class="absolute inset-x-0 bottom-0 top-[26px] bg-slate-100/80 rounded-xl flex items-center justify-center text-[8px] font-black text-slate-500 uppercase cursor-not-allowed">Regra Frete</div>
                             </div>
 
                             <div class="relative space-y-1.5">
@@ -292,7 +289,7 @@
                             <div class="p-10 border border-slate-100 rounded-[3rem] text-center shadow-inner relative overflow-hidden group/price transition-all" :class="{'bg-emerald-50 border-emerald-100': sNum(inputs.precoVenda) === 0, 'bg-blue-50 border-blue-100': sNum(inputs.precoVenda) > 0}">
                                 
                                 <p class="text-[12px] font-black uppercase mb-4 tracking-[0.4em]" :class="sNum(inputs.precoVenda) > 0 ? 'text-blue-600' : 'text-emerald-600'">
-                                    {{ sNum(inputs.precoVenda) > 0 ? 'Lucro p/ Venda de' : 'Preço Ideal Sugerido' }}
+                                    {{ sNum(inputs.precoVenda) > 0 ? 'Lucro p/ Venda Manual' : 'Preço Ideal Sugerido' }}
                                 </p>
                                 
                                 <p class="text-7xl font-black tracking-tighter leading-none" :class="sNum(inputs.precoVenda) > 0 ? 'text-blue-900' : 'text-emerald-900'">
@@ -300,7 +297,7 @@
                                 </p>
                                 
                                 <div class="mt-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                    {{ sNum(inputs.precoVenda) > 0 ? 'Ideal p/ Meta: R$ ' + calcPrecoIdeal(mkp).toFixed(2) : 'Garante exatamente ' + sNum(inputs.alvo) + '% de lucro' }}
+                                    {{ sNum(inputs.precoVenda) > 0 ? 'Ideal p/ Meta: R$ ' + calcPrecoIdeal(mkp).toFixed(2) : 'Atinge exatamente ' + sNum(inputs.alvo) + '% lucro' }}
                                 </div>
                                 <div class="absolute -right-8 -bottom-8 opacity-5 text-[150px] transition-all group-hover/price:scale-110"><i class="fas fa-check-double"></i></div>
                             </div>
@@ -313,10 +310,10 @@
                                     <p class="text-5xl font-black leading-none tracking-tighter" :class="calcLucro(mkp) >= 0 ? 'text-slate-900' : 'text-red-600'">
                                         R$ {{ calcLucro(mkp).toFixed(2) }}
                                     </p>
-                                    <p class="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em]">Resultado {{ sNum(inputs.precoVenda) > 0 ? 'Manual' : 'Automático' }}</p>
+                                    <p class="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em]">Cálculo {{ sNum(inputs.precoVenda) > 0 ? 'Manual' : 'Automático' }}</p>
                                 </div>
                                 <div class="text-right space-y-4">
-                                    <p class="text-[12px] font-black text-slate-400 uppercase tracking-widest">Margem Líquida</p>
+                                    <p class="text-[12px] font-black text-slate-400 uppercase tracking-widest">Margem Final</p>
                                     <p class="text-4xl font-black leading-none mt-1.5" :class="calcLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-400'">
                                         {{ calcMargem(mkp).toFixed(1) }}%
                                     </p>
@@ -335,7 +332,7 @@
 
                 <div v-if="banco.length > 0" class="bg-slate-900 rounded-[5rem] p-20 shadow-2xl mt-20 border border-slate-800 animate-fade print:hidden">
                     <h2 class="text-[15px] font-black text-emerald-400 uppercase tracking-[0.9em] mb-16 flex items-center">
-                        <i class="fas fa-database mr-8 text-5xl text-emerald-500"></i> Banco de Precificações Titan
+                        <i class="fas fa-database mr-8 text-5xl text-emerald-500"></i> Banco de Precificações
                     </h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -344,11 +341,11 @@
                                 <h4 class="text-white font-extrabold text-3xl tracking-tight uppercase leading-none">{{ b.nome }}</h4>
                                 <div class="flex flex-wrap gap-12 mt-10">
                                     <div class="flex flex-col">
-                                        <span class="text-[12px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 mb-3">Preço Sugerido</span>
+                                        <span class="text-[12px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 mb-3">Preço Unitário</span>
                                         <span class="text-3xl font-black text-emerald-400 tracking-tighter leading-none">R$ {{ b.venda }}</span>
                                     </div>
                                     <div class="flex flex-col border-l border-slate-800 pl-12">
-                                        <span class="text-[12px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 mb-3">Lucro Meta</span>
+                                        <span class="text-[12px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 mb-3">Meta Lucro</span>
                                         <span class="text-3xl font-black text-slate-200 tracking-tighter leading-none">{{ b.alvo }}%</span>
                                     </div>
                                 </div>
@@ -369,9 +366,26 @@
         createApp({
             data() {
                 return {
-                    // CONFIGURAÇÃO TÉCNICA V33.0 AUDITOR Master
-                    inputs: { nomeProd: '', precoVenda: '0,00', custo: '45,00', embalagem: '1,00', custoFixoDireto: '0,00', perdas: '1,0', volume: '3000', imposto: '10,0', alvo: '15,0' },
-                    despesas: [{ nome: 'Aluguel / Escritório', valor: '1200' }, { nome: 'Sistemas ERP', valor: '450' }, { nome: 'Folha Pagamento', valor: '1300' }, { nome: 'Internet / Energia', valor: '300' }],
+                    // CONFIGURAÇÃO TÉCNICA V35.0 ENTERPRISE
+                    inputs: { 
+                        nomeProd: '', 
+                        precoVenda: '0,00', 
+                        custo: '45,00', 
+                        embalagem: '1,00', 
+                        custoFixoDireto: '0,00', 
+                        perdas: '1,0', 
+                        volume: '3000', 
+                        imposto: '10,0', 
+                        alvo: '15,0' 
+                    },
+                    
+                    despesas: [
+                        { nome: 'Aluguel / Galpão / Escritório', valor: '1200' }, 
+                        { nome: 'Sistemas ERP / Bling / Olist', valor: '450' },
+                        { nome: 'Folha Pagamento / Pro-Labore', valor: '1300' }, 
+                        { nome: 'Internet / Energia / Telefonia', valor: '300' }
+                    ],
+                    
                     marketplaces: [
                         { id: 1, nome: 'Shopee (Regulatory 2026)', com: '14', ads: '0', afi: '0', ant: '0', fixo: '4', log: '0', corTexto: 'text-orange-600', edit: false },
                         { id: 2, nome: 'Mercado Livre (Smart Tiers)', com: '19', ads: '0', afi: '0', ant: '0', fixo: '6.75', log: '18,50', corTexto: 'text-yellow-600', edit: false },
@@ -382,77 +396,114 @@
                         { id: 7, nome: 'Netshoes (Fitness Pro)', com: '18', ads: '0', afi: '0', ant: '0', fixo: '5', log: '0', corTexto: 'text-purple-700', edit: false },
                         { id: 8, nome: 'Temu (Direct Local)', com: '15', ads: '0', afi: '0', ant: '0', fixo: '0', log: '0', corTexto: 'text-red-600', edit: false }
                     ],
-                    banco: [], chart: null
+                    
+                    banco: [], 
+                    chart: null
                 }
             },
+            
             computed: {
-                totalFixas() { return this.despesas.reduce((acc, cur) => acc + this.sNum(cur.valor), 0); },
-                rateio() { const v = this.sNum(this.inputs.volume); return v > 0 ? this.totalFixas / v : 0; },
-                totalCustoDiretoUnidade() { return this.sNum(this.inputs.custo) + this.sNum(this.inputs.embalagem) + this.sNum(this.inputs.custoFixoDireto); }
+                totalFixas() { 
+                    return this.despesas.reduce((acc, cur) => acc + this.sNum(cur.valor), 0); 
+                },
+                rateio() { 
+                    const v = this.sNum(this.inputs.volume); 
+                    return v > 0 ? this.totalFixas / v : 0; 
+                },
+                totalCustoDiretoUnidade() { 
+                    return this.sNum(this.inputs.custo) + this.sNum(this.inputs.embalagem) + this.sNum(this.inputs.custoFixoDireto);
+                }
             },
+            
             methods: {
-                sNum(v) { if (!v) return 0; const clean = v.toString().replace(',', '.').replace(/[^\d.-]/g, ''); return parseFloat(clean) || 0; },
-                syncAll() { this.salvar(); this.updateChart(); },
-                adicionarDespesa() { this.despesas.push({ nome: '', valor: '' }); this.salvar(); },
-                removerDespesa(i) { this.despesas.splice(i, 1); this.syncAll(); },
-                salvar() { localStorage.setItem('v33_inputs', JSON.stringify(this.inputs)); localStorage.setItem('v33_despesas', JSON.stringify(this.despesas)); localStorage.setItem('v33_marketplaces', JSON.stringify(this.marketplaces)); },
+                sNum(v) { 
+                    if (!v) return 0; 
+                    const clean = v.toString().replace(',', '.').replace(/[^\d.-]/g, ''); 
+                    return parseFloat(clean) || 0; 
+                },
                 
-                // --- MOTOR DE AUDITORIA DINÂMICA RECURSIVA V33 ---
-                getSmartFees(mkp, precoReferencia) {
-                    let comissao = this.sNum(mkp.com); 
-                    let taxaFixa = this.sNum(mkp.fixo); 
-                    let logística = this.sNum(mkp.log);
+                syncAll() { 
+                    this.salvar(); 
+                    this.updateChart(); 
+                },
+
+                adicionarDespesa() { 
+                    this.despesas.push({ nome: '', valor: '' }); 
+                    this.salvar(); 
+                },
+
+                removerDespesa(i) { 
+                    this.despesas.splice(i, 1); 
+                    this.syncAll(); 
+                },
+
+                salvar() { 
+                    localStorage.setItem('v35_inputs', JSON.stringify(this.inputs));
+                    localStorage.setItem('v35_despesas', JSON.stringify(this.despesas));
+                    localStorage.setItem('v35_marketplaces', JSON.stringify(this.marketplaces));
+                },
+                
+                // --- MOTOR DE AUDITORIA REATIVA MARÇO/2026 ---
+                getSmartFees(mkp, precoRef) {
+                    let com = this.sNum(mkp.com); 
+                    let fix = this.sNum(mkp.fixo); 
+                    let log = this.sNum(mkp.log);
                     
-                    // REGRAS MERCADO LIVRE (MARÇO/2026): SOBRESCRITA AUTOMÁTICA DE GATILHOS
+                    // AUDITORIA MERCADO LIVRE (Threshold R$ 79,00)
                     if (mkp.id === 2) {
-                        if (precoReferencia < 79.00) { 
-                            logística = 0; // ISENTA FRETE GRÁTIS ABAIXO DO GATILHO
-                            if (precoReferencia >= 50.00) taxaFixa = 6.75; 
-                            else if (precoReferencia >= 29.00) taxaFixa = 6.50; 
-                            else taxaFixa = 6.25;
+                        if (precoRef < 79.00) { 
+                            log = 0; // ISENTA FRETE GRÁTIS ABAIXO DO GATILHO
+                            if (precoRef >= 50.00) { fix = 6.75; } 
+                            else if (precoRef >= 29.00) { fix = 6.50; } 
+                            else { fix = 6.25; }
                         } else { 
-                            taxaFixa = 0; // ISENTA TAXA FIXA ACIMA DO GATILHO
-                            // RESTAURA LOGÍSTICA PADRÃO SE ESTIVER ZERADA PELO USUÁRIO
-                            if (logística === 0) logística = 18.50; 
+                            fix = 0; // ISENTA TAXA FIXA ACIMA DO GATILHO
+                            if (log === 0) { log = 18.50; } // RESTAURA LOGÍSTICA PADRÃO
                         } 
                     }
                     
-                    // REGRAS SHOPEE (MARÇO/2026): COMISSÃO 14% E TIERS GRADUAIS
+                    // AUDITORIA SHOPEE (Regulatory 2026)
                     if (mkp.id === 1) {
-                        comissao = 14; 
-                        if (precoReferencia < 8.00) taxaFixa = precoReferencia / 2;
-                        else if (precoReferencia < 80.00) taxaFixa = 4.00;
-                        else if (precoReferencia < 200.00) taxaFixa = 20.00;
-                        else taxaFixa = 26.00;
+                        com = 14; // Comissão unificada 14%
+                        if (precoRef < 8.00) { fix = precoRef / 2; } 
+                        else if (precoRef < 80.00) { fix = 4.00; } 
+                        else if (precoRef < 200.00) { fix = 20.00; } 
+                        else { fix = 26.00; }
                     }
-                    return { com: comissao, fix: taxaFixa, log: logística };
+                    
+                    return { com, fix, log };
                 },
 
                 calcPrecoIdeal(mkp) {
-                    let testPrice = 100;
-                    // Tripla iteração para estabilidade de thresholds de frete/imposto
+                    // Previsão em 3 estágios para garantir estabilidade de faixas
+                    let finalPrice = 100;
+                    
                     for (let i = 0; i < 3; i++) {
-                        let fees = this.getSmartFees(mkp, testPrice);
-                        let percRet = (fees.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.imposto) + this.sNum(this.inputs.perdas) + this.sNum(this.inputs.alvo)) / 100;
-                        let fixosVal = fees.fix + fees.log;
+                        let f = this.getSmartFees(mkp, finalPrice);
+                        
+                        let percRet = (f.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.imposto) + this.sNum(this.inputs.perdas) + this.sNum(this.inputs.alvo)) / 100;
+                        let fixosVal = f.fix + f.log;
                         
                         // LÓGICA TIKTOK SFP (6% com trava R$ 50)
                         if(mkp.id === 3 && mkp.useSFP) {
-                            const temp = (this.totalCustoDiretoUnidade + this.rateio + fixosVal) / (1 - percRet - 0.06);
-                            if(temp * 0.06 > 50) fixosVal += 50; else percRet += 0.06;
+                            const proj = (this.totalCustoDiretoUnidade + this.rateio + fixosVal) / (1 - percRet - 0.06);
+                            if(proj * 0.06 > 50) { fixosVal += 50; } else { percRet += 0.06; }
                         }
+
                         if (percRet >= 1) return 0;
-                        testPrice = (this.totalCustoDiretoUnidade + this.rateio + fixosVal) / (1 - percRet);
+                        finalPrice = (this.totalCustoDiretoUnidade + this.rateio + fixosVal) / (1 - percRet);
                     }
-                    return testPrice;
+                    return finalPrice;
                 },
 
                 calcLucro(mkp) {
                     const precoManual = this.sNum(this.inputs.precoVenda);
                     const precoFinal = precoManual > 0 ? precoManual : this.calcPrecoIdeal(mkp);
                     const f = this.getSmartFees(mkp, precoFinal);
+                    
                     let sfpFee = (mkp.id === 3 && mkp.useSFP) ? Math.min(precoFinal * 0.06, 50) : 0;
                     const percVar = (this.sNum(this.inputs.imposto) + f.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(mkp.ant) + this.sNum(this.inputs.perdas)) / 100;
+                    
                     return precoFinal - (precoFinal * percVar) - sfpFee - this.totalCustoDiretoUnidade - this.rateio - f.fix - f.log;
                 },
 
@@ -461,6 +512,7 @@
                     return preco > 0 ? (this.calcLucro(mkp) / preco) * 100 : 0;
                 },
 
+                // GESTÃO ANALYTICS (CHART.JS)
                 initChart() {
                     const ctx = document.getElementById('priceChart').getContext('2d');
                     this.chart = new Chart(ctx, {
@@ -472,20 +524,42 @@
                         options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 } } }, x: { grid: { display: false }, ticks: { font: { size: 10, weight: '900' } } } } }
                     });
                 },
-                updateChart() { if(this.chart) { this.chart.data.datasets[0].data = this.marketplaces.map(m => this.calcPrecoIdeal(m)); this.chart.update(); } },
-                salvarNoBanco() {
-                    if(!this.inputs.nomeProd) { alert('Informe o nome do produto!'); return; }
-                    this.banco.unshift({ nome: this.inputs.nomeProd, venda: this.calcPrecoIdeal(this.marketplaces[0]).toFixed(2), alvo: this.inputs.alvo });
-                    localStorage.setItem('v33_banco', JSON.stringify(this.banco));
+
+                updateChart() { 
+                    if(this.chart) { 
+                        this.chart.data.datasets[0].data = this.marketplaces.map(m => this.calcPrecoIdeal(m)); 
+                        this.chart.update(); 
+                    } 
                 },
-                removerProduto(i) { this.banco.splice(i, 1); localStorage.setItem('v33_banco', JSON.stringify(this.banco)); },
-                resetarTudo() { if(confirm('⚠️ AUDITORIA: Deseja apagar todo o sistema?')) { localStorage.clear(); location.reload(); }}
+                
+                // GESTÃO DE BANCO DE DADOS LOCAL
+                salvarNoBanco() {
+                    if(!this.inputs.nomeProd) { alert('Informe o nome!'); return; }
+                    this.banco.unshift({ nome: this.inputs.nomeProd, venda: this.calcPrecoIdeal(this.marketplaces[0]).toFixed(2), alvo: this.inputs.alvo });
+                    localStorage.setItem('v35_banco', JSON.stringify(this.banco));
+                },
+
+                removerProduto(i) { 
+                    this.banco.splice(i, 1); 
+                    localStorage.setItem('v35_banco', JSON.stringify(this.banco)); 
+                },
+
+                resetarTudo() { 
+                    if(confirm('⚠️ AUDITORIA: Deseja zerar todo o sistema?')) { 
+                        localStorage.clear(); 
+                        location.reload(); 
+                    }
+                }
             },
+            
             mounted() {
-                const i = localStorage.getItem('v33_inputs'); if (i) this.inputs = JSON.parse(i);
-                const d = localStorage.getItem('v33_despesas'); if (d) this.despesas = JSON.parse(d);
-                const m = localStorage.getItem('v33_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
-                const b = localStorage.getItem('v33_banco'); if (b) this.banco = JSON.parse(b);
+                // RECUPERAÇÃO AUTOMÁTICA DA MEMÓRIA TITAN
+                const i = localStorage.getItem('v35_inputs'); if (i) this.inputs = JSON.parse(i);
+                const d = localStorage.getItem('v35_despesas'); if (d) this.despesas = JSON.parse(d);
+                const m = localStorage.getItem('v35_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
+                const b = localStorage.getItem('v35_banco'); if (b) this.banco = JSON.parse(b);
+                
+                // INICIALIZAÇÃO DE ANALYTICS
                 this.initChart();
             }
         }).mount('#app')
