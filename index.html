@@ -1,35 +1,41 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" :class="{'dark': isDarkMode}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titan ERP Sovereign 2026 - Master V37</title>
+    <title>Titan ERP SaaS 2026 - Master V41</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {} }
+        }
+    </script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #f1f5f9; 
-            color: #0f172a; 
+            @apply bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100;
             overflow-x: hidden;
         }
 
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { @apply bg-slate-300 dark:bg-slate-700 rounded-full; }
 
-        /* Dashboard UI Architecture - V37 */
+        /* UI SaaS Expandida */
         .card-titan { 
-            @apply bg-white rounded-[2rem] border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:-translate-y-1; 
+            @apply bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-sm transition-all duration-300 hover:shadow-xl; 
         }
 
         .input-titan { 
-            @apply w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-xs focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all; 
+            @apply w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-xs focus:border-indigo-500 dark:text-white outline-none transition-all; 
         }
 
         .chart-box { 
@@ -38,263 +44,391 @@
             width: 100%; 
         }
 
-        .btn-titan { 
-            @apply px-5 py-2.5 rounded-xl text-[10px] font-black transition-all active:scale-95 uppercase tracking-widest; 
+        /* Toggle Switch Manual */
+        .toggle-checkbox:checked { 
+            @apply right-0 border-indigo-500; 
+            right: 0; 
+            border-color: #6366f1; 
         }
-
-        .badge-rule { 
-            @apply text-[8px] font-black px-2 py-0.5 rounded-md uppercase tracking-tighter shadow-sm border border-black/5; 
+        .toggle-checkbox:checked + .toggle-label { 
+            @apply bg-indigo-500; 
+            background-color: #6366f1; 
         }
-
-        /* Hero Simulação Manual */
-        .simulando-ativo {
-            background: linear-gradient(145deg, #ffffff 0%, #f0f9ff 100%);
-            border-color: #bae6fd !important;
+        
+        /* Animações e Range Slider */
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(5px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
-
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        input[type=range] { 
+            -webkit-appearance: none; 
+            width: 100%; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb { 
+            -webkit-appearance: none; 
+            height: 20px; 
+            width: 20px; 
+            border-radius: 50%; 
+            background: #6366f1; 
+            cursor: pointer; 
+            margin-top: -8px; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3); 
+        }
+        input[type=range]::-webkit-slider-runnable-track { 
+            width: 100%; 
+            height: 6px; 
+            cursor: pointer; 
+            @apply bg-slate-200 dark:bg-slate-700; 
+            border-radius: 4px; 
+        }
     </style>
 </head>
 <body class="antialiased">
-    <div id="app" class="min-h-screen flex flex-col">
+    <div id="app" class="min-h-screen flex flex-col" :class="{'dark': isDarkMode}">
         
-        <header class="bg-slate-900 text-white shadow-2xl sticky top-0 z-50 border-b border-slate-800 print:hidden">
-            <div class="max-w-[1800px] mx-auto px-8 py-4 flex flex-col md:flex-row justify-between items-center">
+        <header class="bg-slate-900 text-white shadow-xl sticky top-0 z-50 border-b border-slate-800 print:hidden">
+            <div class="max-w-[1800px] mx-auto px-4 md:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
                 
-                <div class="flex items-center space-x-5">
-                    <div class="bg-indigo-500 p-2.5 rounded-2xl shadow-lg rotate-3">
-                        <i class="fas fa-gem text-xl text-white"></i>
+                <div class="flex items-center space-x-4 w-full md:w-auto justify-between md:justify-start">
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-gradient-to-tr from-indigo-500 to-purple-500 p-2.5 rounded-2xl shadow-lg rotate-3">
+                            <i class="fas fa-rocket text-xl text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-base font-black tracking-tight uppercase leading-none text-indigo-100">
+                                Titan SaaS <span class="text-emerald-400">V41.0</span>
+                            </h1>
+                            <p class="text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] mt-1.5">
+                                Código Fonte Expandido & Auditoria Ativa
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <h1 class="text-base font-black tracking-tight uppercase leading-none text-indigo-100">Titan Sovereign <span class="text-emerald-400">V37.0</span></h1>
-                        <p class="text-[8px] text-slate-400 font-bold uppercase tracking-[0.4em] mt-1.5">Auditoria Março/2026: Antecipação Líquida & Frete Reativo</p>
-                    </div>
+                    
+                    <button @click="toggleDarkMode" class="md:hidden text-slate-400 hover:text-white p-2 text-xl">
+                        <i class="fas" :class="isDarkMode ? 'fa-sun text-amber-400' : 'fa-moon'"></i>
+                    </button>
                 </div>
 
-                <div class="mt-4 md:mt-0 flex items-center space-x-6">
-                    <button @click="resetarTudo" class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest px-2">Zerar Sistema</button>
-                    <button onclick="window.print()" class="bg-white text-slate-900 btn-titan shadow-xl hover:bg-indigo-50 border border-slate-200">Exportar Relatório</button>
+                <div class="flex items-center space-x-6 w-full md:w-auto justify-between md:justify-end">
+                    <button @click="toggleDarkMode" class="hidden md:block text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl border border-slate-700 hover:bg-slate-800 transition">
+                        <i class="fas mr-2" :class="isDarkMode ? 'fa-sun text-amber-400' : 'fa-moon'"></i> 
+                        {{ isDarkMode ? 'Modo Claro' : 'Modo Escuro' }}
+                    </button>
+                    
+                    <button @click="resetarTudo" class="text-[10px] font-black text-slate-500 hover:text-red-400 transition uppercase tracking-widest px-2">
+                        Zerar Tudo
+                    </button>
+                    
+                    <button onclick="window.print()" class="bg-white text-slate-900 px-5 py-2.5 rounded-xl text-[10px] font-black transition-all active:scale-95 uppercase tracking-widest shadow-xl hover:bg-indigo-50">
+                        Exportar PDF
+                    </button>
                 </div>
             </div>
         </header>
 
-        <main class="flex-grow max-w-[1800px] mx-auto w-full px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <main class="flex-grow max-w-[1800px] mx-auto w-full px-4 md:px-6 py-6 md:py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
             
-            <div class="lg:col-span-3 space-y-8 print:hidden">
+            <div class="lg:col-span-3 space-y-4 print:hidden">
                 
-                <div class="bg-indigo-600 p-8 rounded-[2.5rem] shadow-xl text-white relative overflow-hidden">
-                    <div class="absolute -right-8 -bottom-8 opacity-10 text-[180px] rotate-12"><i class="fas fa-bullseye"></i></div>
+                <div class="bg-indigo-600 dark:bg-indigo-900 p-6 md:p-8 rounded-[2rem] shadow-xl text-white relative overflow-hidden transition-colors">
+                    <div class="absolute -right-8 -bottom-8 opacity-10 text-[180px] rotate-12">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
                     
-                    <div class="relative z-10 space-y-7">
+                    <div class="relative z-10 space-y-6">
                         <div class="text-center">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-200 mb-3">1. Meta de Lucro Real (%)</label>
-                            <input type="text" v-model="inputs.alvo" @input="syncAll" class="w-full bg-indigo-500/50 border-2 border-indigo-400 rounded-3xl p-6 text-6xl font-black text-white focus:outline-none focus:border-emerald-400 text-center shadow-inner">
-                            <p class="text-[8px] text-indigo-300 mt-4 font-bold uppercase italic tracking-wider">Sugere o preço p/ atingir este lucro.</p>
-                        </div>
-
-                        <div class="pt-7 border-t border-indigo-500/50 text-center">
-                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-300 mb-2">2. Simular Preço de Venda (R$)</label>
-                            <input type="text" v-model="inputs.precoVenda" @input="syncAll" class="w-full bg-indigo-900/30 border-2 border-indigo-400 p-4 text-3xl font-black text-white rounded-2xl focus:outline-none text-center shadow-lg" placeholder="0,00">
-                            <p class="text-[8px] text-indigo-400 mt-2 font-black uppercase tracking-widest">Confere o lucro deste valor manual.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-titan p-6 border-l-[10px] border-indigo-500">
-                    <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center">
-                        <i class="fas fa-box-open mr-2 text-indigo-500 text-sm"></i> 1. Custos Unitários
-                    </h2>
-                    
-                    <div class="space-y-5">
-                        <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-titan" placeholder="Descrição do Produto">
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Custo Compra</label>
-                                <input type="text" v-model="inputs.custo" @input="syncAll" class="input-titan">
-                            </div>
-                            <div>
-                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Embalagem</label>
-                                <input type="text" v-model="inputs.embalagem" @input="syncAll" class="input-titan">
-                            </div>
-                        </div>
-
-                        <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100 shadow-inner">
-                            <label class="block text-[9px] font-black text-indigo-700 uppercase mb-2 tracking-widest flex items-center">
-                                Adicional Operacional (R$) <i class="fas fa-info-circle ml-2 opacity-40"></i>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-indigo-200 mb-2">
+                                1. Meta de Lucro (%)
                             </label>
-                            <input type="text" v-model="inputs.custoFixoDireto" @input="syncAll" class="input-titan !bg-white border-indigo-200" placeholder="Ex: 10,00">
-                            <p class="text-[7px] text-indigo-400 mt-2 uppercase font-bold italic">* Use se não tiver histórico de volume.</p>
+                            <input type="text" v-model="inputs.alvo" @input="syncAll" class="w-full bg-indigo-500/50 dark:bg-indigo-800/50 border-2 border-indigo-400 dark:border-indigo-500 rounded-3xl p-4 text-5xl font-black text-white focus:outline-none focus:border-emerald-400 text-center shadow-inner transition-colors">
                         </div>
 
-                        <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center shadow-md">
-                            <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">CMV Final:</span>
-                            <span class="text-xl font-black text-white tracking-tighter">R$ {{ totalCustoDiretoUnidade.toFixed(2) }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-titan p-6 border-l-[10px] border-amber-500">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest">2. Contas Mensais</h2>
-                        <span class="text-[10px] font-black bg-amber-50 text-amber-600 px-3 py-1 rounded-xl border border-amber-100 shadow-sm">Total: R$ {{ totalFixas.toFixed(2) }}</span>
-                    </div>
-
-                    <div class="space-y-2 mb-4 max-h-48 overflow-y-auto pr-1">
-                        <div v-for="(d, i) in despesas" :key="i" class="flex items-center space-x-3 group">
-                            <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-bold focus:bg-white outline-none transition-all" placeholder="Item">
-                            <input type="text" v-model="d.valor" @input="syncAll" class="w-20 p-3 text-[10px] border border-slate-100 rounded-xl bg-slate-50 font-black text-right">
-                            <button @click="removerDespesa(i)" class="text-slate-300 hover:text-red-500 transition-all p-1"><i class="fas fa-trash-can"></i></button>
-                        </div>
-                    </div>
-
-                    <button @click="adicionarDespesa" class="w-full py-3.5 border-2 border-dashed border-slate-100 rounded-2xl text-[9px] font-black text-slate-400 hover:text-indigo-600 uppercase tracking-widest transition-all shadow-sm">+ Nova Conta</button>
-
-                    <div class="mt-8 pt-6 border-t border-slate-50">
-                        <div class="flex justify-between items-center mb-4">
-                            <label class="text-[10px] font-black text-slate-400 uppercase leading-none">Volume Vendas (Un/Mês)</label>
-                            <input type="text" v-model="inputs.volume" @input="syncAll" class="w-24 p-3 border border-slate-100 rounded-xl text-xs text-right font-black bg-slate-50 outline-none">
-                        </div>
-                        <div class="p-4 bg-amber-50 rounded-2xl flex justify-between items-center shadow-inner">
-                            <span class="text-[9px] font-black text-amber-800 uppercase tracking-widest">Rateio por Peça:</span>
-                            <span class="text-lg font-black text-amber-900 tracking-tighter">R$ {{ rateio.toFixed(2) }}</span>
+                        <div class="pt-6 border-t border-indigo-500/50">
+                            <div class="flex items-center justify-between mb-4">
+                                <label class="text-[9px] font-black uppercase tracking-widest text-indigo-200">
+                                    2. Modo Simulação Manual
+                                </label>
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                    <input type="checkbox" name="toggle" id="toggle" v-model="ui.modoManual" @change="toggleModoManual" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="toggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-indigo-400/50 cursor-pointer"></label>
+                                </div>
+                            </div>
+                            
+                            <div v-if="ui.modoManual" class="fade-in">
+                                <input type="text" v-model="inputs.precoVenda" @input="syncAll" class="w-full bg-indigo-900/40 border-2 border-indigo-300 dark:border-indigo-500 p-3 text-2xl font-black text-white rounded-2xl focus:outline-none text-center shadow-lg placeholder-indigo-300" placeholder="R$ 0,00">
+                                <p class="text-[8px] text-indigo-300 mt-2 font-black uppercase tracking-widest text-center">
+                                    Testando o lucro deste preço.
+                                </p>
+                            </div>
+                            <div v-else class="text-center p-3 bg-indigo-500/20 rounded-2xl border border-indigo-500/30">
+                                <p class="text-[9px] text-indigo-200 font-bold uppercase tracking-widest">
+                                    <i class="fas fa-robot mr-2"></i> Usando Preço Automático
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-titan p-6 border-l-[10px] border-blue-500 space-y-6">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center">
-                            <i class="fas fa-landmark mr-2 text-blue-500"></i> Imposto NF-e (%)
-                        </h2>
-                        <input type="text" v-model="inputs.imposto" @input="syncAll" class="w-24 p-3 border border-slate-100 rounded-xl text-xs text-right font-black bg-slate-50">
+                <div class="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden transition-colors">
+                    
+                    <div class="border-b border-slate-100 dark:border-slate-700">
+                        <button @click="toggleAccordion('produto')" class="w-full px-6 py-5 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                            <h2 class="text-[11px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest flex items-center">
+                                <i class="fas fa-box-open mr-3 text-indigo-500"></i> Custos Unitários
+                            </h2>
+                            <i class="fas fa-chevron-down text-slate-400" :class="{'rotate-180': accordions.produto}"></i>
+                        </button>
+                        
+                        <div v-show="accordions.produto" class="p-6 space-y-5 fade-in bg-white dark:bg-slate-800 border-l-4 border-indigo-500">
+                            <input type="text" v-model="inputs.nomeProd" @input="salvar" class="input-titan" placeholder="Descrição do Item">
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Compra</label>
+                                    <input type="text" v-model="inputs.custo" @input="syncAll" class="input-titan">
+                                </div>
+                                <div>
+                                    <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1.5 ml-1">Embalagem</label>
+                                    <input type="text" v-model="inputs.embalagem" @input="syncAll" class="input-titan">
+                                </div>
+                            </div>
+                            
+                            <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-2xl border border-indigo-100 dark:border-indigo-800/50">
+                                <label class="block text-[9px] font-black text-indigo-700 dark:text-indigo-400 uppercase mb-2 tracking-widest flex items-center cursor-help" title="Use este campo se não quiser ratear por volume.">
+                                    Adicional Fixo (R$) <i class="fas fa-question-circle ml-2 opacity-50"></i>
+                                </label>
+                                <input type="text" v-model="inputs.custoFixoDireto" @input="syncAll" class="input-titan !bg-white dark:!bg-slate-900 border-indigo-200 dark:border-indigo-700" placeholder="Ex: R$ 10,00">
+                            </div>
+                            
+                            <div class="p-4 bg-slate-900 rounded-xl flex justify-between items-center text-white">
+                                <span class="text-[9px] font-black uppercase tracking-widest">CMV Final:</span>
+                                <span class="font-black text-lg">R$ {{ totalCustoDiretoUnidade.toFixed(2) }}</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-[11px] font-black text-orange-500 uppercase tracking-widest flex items-center">
-                            <i class="fas fa-shield-virus mr-2 text-orange-500"></i> Perdas %
-                        </h2>
-                        <input type="text" v-model="inputs.perdas" @input="syncAll" class="w-24 p-3 border border-orange-100 rounded-xl text-xs text-right font-black bg-orange-50 text-orange-700">
+
+                    <div class="border-b border-slate-100 dark:border-slate-700">
+                        <button @click="toggleAccordion('volume')" class="w-full px-6 py-5 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                            <h2 class="text-[11px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest flex items-center">
+                                <i class="fas fa-chart-pie mr-3 text-amber-500"></i> Despesas Fixas
+                            </h2>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-[9px] font-black bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 px-2 py-1 rounded-lg">
+                                    R$ {{ totalFixas.toFixed(2) }}
+                                </span>
+                                <i class="fas fa-chevron-down text-slate-400" :class="{'rotate-180': accordions.volume}"></i>
+                            </div>
+                        </button>
+                        
+                        <div v-show="accordions.volume" class="p-6 space-y-6 fade-in bg-white dark:bg-slate-800 border-l-4 border-amber-500">
+                            <div class="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-5 border border-amber-100 dark:border-amber-800/50">
+                                <div class="flex justify-between items-end mb-4">
+                                    <label class="text-[10px] font-black text-amber-800 dark:text-amber-400 uppercase tracking-widest cursor-help" title="Quantas peças sua empresa vende por mês.">
+                                        Vendas (Mês) <i class="fas fa-question-circle opacity-50"></i>
+                                    </label>
+                                    <input type="text" v-model="inputs.volume" @input="syncAll" class="w-20 p-2 border-2 border-amber-200 dark:border-amber-700 rounded-xl text-xs text-center font-black bg-white dark:bg-slate-900 dark:text-white outline-none">
+                                </div>
+                                <input type="range" min="1" max="5000" step="10" v-model="inputs.volume" @input="syncAll">
+                                <div class="mt-4 pt-4 border-t border-amber-200/50 dark:border-amber-800/50 flex justify-between items-center">
+                                    <span class="text-[9px] font-black text-amber-700 dark:text-amber-500 uppercase">Rateio:</span>
+                                    <span class="text-lg font-black text-amber-900 dark:text-amber-400">R$ {{ rateio.toFixed(2) }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                                <div v-for="(d, i) in despesas" :key="i" class="flex items-center space-x-2">
+                                    <input type="text" v-model="d.nome" @input="salvar" class="flex-grow p-2.5 text-[10px] border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900 dark:text-white font-bold" placeholder="Conta">
+                                    <input type="text" v-model="d.valor" @input="syncAll" class="w-16 p-2.5 text-[10px] border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900 dark:text-white font-black text-right">
+                                    <button @click="removerDespesa(i)" class="text-slate-400 hover:text-red-500 p-1">
+                                        <i class="fas fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button @click="adicionarDespesa" class="w-full py-2.5 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl text-[9px] font-black text-slate-500 dark:text-slate-400 hover:text-amber-600 uppercase">
+                                + Nova Conta
+                            </button>
+                        </div>
                     </div>
-                    <button @click="salvarNoBanco" class="w-full py-5 bg-slate-900 hover:bg-black text-white rounded-3xl font-black text-[11px] shadow-2xl transition-all active:scale-95 uppercase tracking-[0.2em]">
-                        <i class="fas fa-database mr-3 text-emerald-400"></i> Arquivar no Banco
-                    </button>
+
+                    <div>
+                        <button @click="toggleAccordion('impostos')" class="w-full px-6 py-5 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                            <h2 class="text-[11px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest flex items-center">
+                                <i class="fas fa-landmark mr-3 text-blue-500"></i> Tributos & Perdas
+                            </h2>
+                            <i class="fas fa-chevron-down text-slate-400" :class="{'rotate-180': accordions.impostos}"></i>
+                        </button>
+                        
+                        <div v-show="accordions.impostos" class="p-6 space-y-4 fade-in bg-white dark:bg-slate-800 border-l-4 border-blue-500">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest cursor-help" title="Calculado sobre o faturamento total da venda.">
+                                    Imposto (%) <i class="fas fa-question-circle opacity-50 ml-1"></i>
+                                </h2>
+                                <input type="text" v-model="inputs.imposto" @input="syncAll" class="input-titan !w-20 !text-right">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-[10px] font-black text-orange-500 uppercase tracking-widest cursor-help" title="Margem de segurança para devoluções.">
+                                    Perdas (%) <i class="fas fa-question-circle opacity-50 ml-1"></i>
+                                </h2>
+                                <input type="text" v-model="inputs.perdas" @input="syncAll" class="input-titan !w-20 !text-right !text-orange-600">
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
+                <button @click="salvarNoBanco" class="w-full py-5 bg-slate-900 dark:bg-indigo-600 hover:bg-black dark:hover:bg-indigo-500 text-white rounded-[2rem] font-black text-[11px] shadow-2xl transition-all active:scale-95 uppercase tracking-[0.2em] print:hidden">
+                    <i class="fas fa-save mr-3 text-emerald-400"></i> Arquivar Cenário
+                </button>
             </div>
 
-            <div class="lg:col-span-9 space-y-8">
+            <div class="lg:col-span-9 space-y-6 md:space-y-8">
                 
-                <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
-                    <div class="xl:col-span-8 card-titan p-8 shadow-lg">
-                        <div class="flex justify-between items-center mb-8">
-                            <h2 class="text-[12px] font-black text-slate-400 uppercase tracking-[0.4em] flex items-center">
-                                <i class="fas fa-chart-line mr-4 text-indigo-500 text-xl"></i> Auditoria de Preço Omnichannel
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8">
+                    <div class="xl:col-span-8 card-titan p-6 md:p-8 shadow-lg">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-[11px] md:text-[12px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] flex items-center">
+                                <i class="fas fa-chart-line mr-3 text-indigo-500 text-lg"></i> Monitor Omnichannel
                             </h2>
-                            <span class="text-[10px] font-black bg-indigo-50 text-indigo-600 px-6 py-2 rounded-full uppercase tracking-widest shadow-sm">
-                                Meta: {{sNum(inputs.alvo)}}% de Lucro
-                            </span>
                         </div>
-                        <div class="chart-box"><canvas id="priceChart"></canvas></div>
+                        <div class="chart-box">
+                            <canvas id="priceChart"></canvas>
+                        </div>
                     </div>
 
-                    <div class="xl:col-span-4 card-titan overflow-hidden border border-slate-200">
+                    <div class="xl:col-span-4 card-titan overflow-hidden hidden md:block">
                         <table class="w-full text-left text-[11px] border-collapse">
-                            <thead><tr class="bg-slate-50 text-slate-400 font-black uppercase tracking-widest border-b"><th class="py-5 px-6">Plataforma</th><th class="text-right px-6">Preço Ideal</th></tr></thead>
-                            <tbody class="divide-y divide-slate-50 font-bold">
-                                <tr v-for="mkp in marketplaces" :key="mkp.id" class="hover:bg-slate-50 transition-all group">
-                                    <td class="py-4 px-6" :class="mkp.corTexto">{{ mkp.nome.split(' ')[0] }}</td>
-                                    <td class="text-right px-6 font-black text-slate-900 text-sm">R$ {{ calcPrecoIdeal(mkp).toFixed(2) }}</td>
+                            <thead>
+                                <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 font-black uppercase tracking-widest border-b dark:border-slate-700">
+                                    <th class="py-4 px-6">Plataforma</th>
+                                    <th class="text-right px-6">Preço Ideal</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50 dark:divide-slate-700 font-bold text-slate-600 dark:text-slate-300">
+                                <tr v-for="mkp in marketplaces" :key="mkp.id" class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all">
+                                    <td class="py-3 px-6 flex items-center">
+                                        <i :class="mkp.icon" :style="{color: mkp.corIcone}" class="text-lg mr-3 w-5 text-center"></i> 
+                                        {{ mkp.nome.split(' ')[0] }}
+                                    </td>
+                                    <td class="text-right px-6 font-black">
+                                        R$ {{ calcPrecoIdeal(mkp).toFixed(2) }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                    <div v-for="mkp in marketplaces" :key="mkp.id" class="card-titan relative overflow-hidden flex flex-col group border-slate-200 shadow-md transition-all" :class="{'simulando-ativo': sNum(inputs.precoVenda) > 0}">
+                <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 md:gap-8">
+                    <div v-for="mkp in marketplaces" :key="mkp.id" class="card-titan relative overflow-hidden flex flex-col group transition-all" :class="{'simulando-ativo dark:!border-indigo-500/50 dark:bg-slate-800': sNum(inputs.precoVenda) > 0 && ui.modoManual}">
                         
-                        <div class="absolute left-0 top-0 bottom-0 w-3 transition-all duration-700 shadow-xl" :class="calcLucro(mkp) >= 0 ? 'bg-emerald-500' : 'bg-red-500'"></div>
+                        <div class="absolute left-0 top-0 bottom-0 w-2.5 transition-all duration-700 shadow-xl" :class="calcLucro(mkp) >= 0 ? 'bg-emerald-500' : 'bg-red-500'"></div>
                         
-                        <div class="p-6 px-10 flex justify-between items-center bg-slate-50/50 border-b border-slate-100">
-                            <div class="flex flex-col space-y-1.5">
-                                <h3 class="font-black text-base uppercase tracking-widest leading-none" :class="mkp.corTexto">{{ mkp.nome }}</h3>
-                                <div class="flex flex-wrap gap-1.5">
-                                    <span v-if="mkp.id === 2" class="badge-rule" :class="getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).log === 0 ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700'">
-                                        {{ getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).log === 0 ? 'Taxa Fixa Ativa' : 'Frete Grátis Ativo' }}
-                                    </span>
-                                    <span v-if="mkp.id === 1" class="badge-rule bg-orange-100 text-orange-700 shadow-orange-100/30">
-                                        Taxa Shopee: R$ {{ getSmartFees(mkp, (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp))).fix.toFixed(2) }}
-                                    </span>
-                                </div>
-                            </div>
-                            <button @click="mkp.edit = !mkp.edit" class="text-[10px] font-black bg-white border border-slate-100 px-4 py-2 rounded-xl shadow-sm hover:shadow-lg transition uppercase tracking-tighter">Taxas</button>
+                        <div v-if="mkp.id === bestMarketplaceId" class="absolute top-0 right-8 bg-emerald-500 text-white text-[8px] font-black px-3 py-1 rounded-b-lg shadow-md uppercase tracking-widest flex items-center animate-fade-in">
+                            <i class="fas fa-crown mr-1"></i> Melhor Margem
                         </div>
 
-                        <div v-show="mkp.edit" class="p-10 bg-slate-50 border-b border-slate-100 grid grid-cols-2 gap-6 print:hidden animate-fade-in">
-                            <div class="space-y-1.5"><label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Comissão %</label><input type="text" v-model="mkp.com" @input="syncAll" class="input-titan !p-2.5 shadow-inner"></div>
-                            <div class="space-y-1.5"><label class="text-[10px] font-black text-blue-500 uppercase tracking-widest block">Ads %</label><input type="text" v-model="mkp.ads" @input="syncAll" class="input-titan !p-2.5 !bg-blue-50 shadow-sm"></div>
-                            <div class="space-y-1.5"><label class="text-[10px] font-black text-purple-600 uppercase tracking-widest block">Afiliados %</label><input type="text" v-model="mkp.afi" @input="syncAll" class="input-titan !p-2.5 shadow-sm"></div>
-                            
-                            <div class="space-y-1.5">
-                                <label class="text-[10px] font-black text-amber-600 uppercase tracking-widest block">Antecipação %</label>
-                                <input type="text" v-model="mkp.ant" @input="syncAll" class="input-titan !p-2.5 !bg-amber-50 shadow-sm" title="Calculada sobre o valor líquido a receber da plataforma.">
-                            </div>
-                            
-                            <div v-if="mkp.id === 3" class="col-span-2 p-5 bg-emerald-50 rounded-2xl border-2 border-emerald-100 flex items-center justify-between shadow-inner">
+                        <div class="p-6 px-8 flex justify-between items-center border-b border-slate-100 dark:border-slate-700">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-900 flex items-center justify-center shadow-inner border border-slate-100 dark:border-slate-800">
+                                    <i :class="mkp.icon" :style="{color: mkp.corIcone}" class="text-xl"></i>
+                                </div>
                                 <div class="flex flex-col">
-                                    <label class="text-[10px] font-black text-emerald-800 uppercase tracking-widest flex items-center"><i class="fas fa-truck-fast mr-3"></i> Frete Grátis SFP</label>
-                                    <p class="text-[8px] text-emerald-600 font-bold uppercase mt-1">Custo: 6% | Teto: R$ 50,00</p>
+                                    <h3 class="font-black text-sm uppercase tracking-widest leading-none dark:text-slate-200">
+                                        {{ mkp.nome.split(' ')[0] }}
+                                    </h3>
+                                    <div class="flex flex-wrap gap-1 mt-1.5">
+                                        <span v-if="mkp.id === 2" class="text-[7px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-tighter" :class="getSmartFees(mkp, (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp))).log === 0 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400' : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300'">
+                                            {{ getSmartFees(mkp, (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp))).log === 0 ? 'Taxa Fixa ML' : 'Frete ML' }}
+                                        </span>
+                                        <span v-if="mkp.id === 1" class="text-[7px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-tighter bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-400">
+                                            Fixo: R$ {{ getSmartFees(mkp, (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp))).fix.toFixed(2) }}
+                                        </span>
+                                    </div>
                                 </div>
-                                <input type="checkbox" v-model="mkp.useSFP" @change="syncAll" class="w-6 h-6 rounded text-emerald-600 cursor-pointer shadow-md">
+                            </div>
+                            <button @click="mkp.edit = !mkp.edit" class="text-[9px] font-black bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-3 py-1.5 rounded-lg shadow-sm hover:shadow-md transition uppercase dark:text-slate-300">
+                                <i class="fas fa-cog"></i> Taxas
+                            </button>
+                        </div>
+
+                        <div v-show="mkp.edit" class="p-6 bg-slate-50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-700 grid grid-cols-2 gap-4 animate-fade-in">
+                            <div>
+                                <label class="text-[9px] font-black text-slate-400 uppercase block mb-1">Comissão %</label>
+                                <input type="text" v-model="mkp.com" @input="syncAll" class="input-titan !p-2">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-black text-blue-500 uppercase block mb-1">Ads %</label>
+                                <input type="text" v-model="mkp.ads" @input="syncAll" class="input-titan !p-2 dark:!bg-blue-900/20">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-black text-purple-600 uppercase block mb-1">Afiliados %</label>
+                                <input type="text" v-model="mkp.afi" @input="syncAll" class="input-titan !p-2 dark:!bg-purple-900/20">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-black text-amber-600 uppercase block mb-1 cursor-help" title="Calculada sobre o valor líquido que o marketplace te paga.">
+                                    Antecipação % <i class="fas fa-question-circle opacity-50"></i>
+                                </label>
+                                <input type="text" v-model="mkp.ant" @input="syncAll" class="input-titan !p-2 dark:!bg-amber-900/20">
+                            </div>
+                            
+                            <div v-if="mkp.id === 3" class="col-span-2 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 flex items-center justify-between">
+                                <label class="text-[9px] font-black text-emerald-800 dark:text-emerald-400 uppercase">
+                                    <i class="fas fa-truck-fast mr-2"></i> Frete SFP (+6% | Max 50)
+                                </label>
+                                <input type="checkbox" v-model="mkp.useSFP" @change="syncAll" class="w-5 h-5 rounded text-emerald-600 cursor-pointer">
                             </div>
 
-                            <div class="relative space-y-1.5">
-                                <label class="text-[10px] font-black text-slate-400 uppercase block tracking-widest">Taxa Fixa R$</label>
-                                <input type="text" v-model="mkp.fixo" @input="syncAll" class="input-titan !p-2.5 shadow-inner">
-                                <div v-if="mkp.id === 2 && (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp)) >= 79" class="absolute inset-x-0 bottom-0 top-[26px] bg-slate-100/80 rounded-xl flex items-center justify-center text-[8px] font-black text-slate-500 uppercase cursor-not-allowed">Isento (>79)</div>
+                            <div class="relative">
+                                <label class="text-[9px] font-black text-slate-400 uppercase block mb-1">Taxa Fixa R$</label>
+                                <input type="text" v-model="mkp.fixo" @input="syncAll" class="input-titan !p-2">
+                                <div v-if="mkp.id === 2 && (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp)) >= 79" class="absolute inset-x-0 bottom-0 top-[20px] bg-slate-100/90 dark:bg-slate-800/90 rounded-xl flex items-center justify-center text-[7px] font-black text-slate-500 uppercase">
+                                    Isento (>79)
+                                </div>
                             </div>
-
-                            <div class="relative space-y-1.5">
-                                <label class="text-[10px] font-black text-slate-400 uppercase block tracking-widest">Frete Grátis R$</label>
-                                <input type="text" v-model="mkp.log" @input="syncAll" class="input-titan !p-2.5 shadow-inner">
-                                <div v-if="mkp.id === 2 && (sNum(inputs.precoVenda) || calcPrecoIdeal(mkp)) < 79" class="absolute inset-x-0 bottom-0 top-[26px] bg-slate-100/80 rounded-xl flex items-center justify-center text-[8px] font-black text-slate-500 uppercase cursor-not-allowed">Isento (<79)</div>
+                            <div class="relative">
+                                <label class="text-[9px] font-black text-slate-400 uppercase block mb-1">Frete R$</label>
+                                <input type="text" v-model="mkp.log" @input="syncAll" class="input-titan !p-2">
+                                <div v-if="mkp.id === 2 && (ui.modoManual && sNum(inputs.precoVenda) ? sNum(inputs.precoVenda) : calcPrecoIdeal(mkp)) < 79" class="absolute inset-x-0 bottom-0 top-[20px] bg-slate-100/90 dark:bg-slate-800/90 rounded-xl flex items-center justify-center text-[7px] font-black text-slate-500 uppercase">
+                                    Isento (<79)
+                                </div>
                             </div>
                         </div>
 
-                        <div class="p-10 flex-grow flex flex-col space-y-10">
+                        <div class="p-8 flex-grow flex flex-col space-y-8">
                             
-                            <div class="p-10 border border-slate-100 rounded-[3rem] text-center shadow-inner relative overflow-hidden group/price transition-all" :class="{'bg-emerald-50 border-emerald-100': sNum(inputs.precoVenda) === 0, 'bg-blue-50 border-blue-100': sNum(inputs.precoVenda) > 0}">
-                                <p class="text-[12px] font-black uppercase mb-4 tracking-[0.4em]" :class="sNum(inputs.precoVenda) > 0 ? 'text-blue-600' : 'text-emerald-600'">
-                                    {{ sNum(inputs.precoVenda) > 0 ? 'Resultado p/ Venda de' : 'Preço Ideal Sugerido' }}
+                            <div class="p-8 border border-slate-100 dark:border-slate-700 rounded-[2rem] text-center shadow-inner relative overflow-hidden transition-all" :class="{'bg-emerald-50 dark:bg-emerald-900/20': !ui.modoManual, 'bg-blue-50 dark:bg-blue-900/20': ui.modoManual}">
+                                <p class="text-[11px] font-black uppercase mb-3 tracking-[0.3em]" :class="ui.modoManual ? 'text-blue-600 dark:text-blue-400' : 'text-emerald-600 dark:text-emerald-400'">
+                                    {{ ui.modoManual ? 'Seu Preço Manual' : 'Preço Ideal Sugerido' }}
                                 </p>
-                                <p class="text-7xl font-black tracking-tighter leading-none" :class="sNum(inputs.precoVenda) > 0 ? 'text-blue-900' : 'text-emerald-900'">
-                                    R$ {{ sNum(inputs.precoVenda) > 0 ? sNum(inputs.precoVenda).toFixed(2) : calcPrecoIdeal(mkp).toFixed(2) }}
+                                <p class="text-6xl font-black tracking-tighter leading-none" :class="ui.modoManual ? 'text-blue-900 dark:text-blue-100' : 'text-emerald-900 dark:text-emerald-100'">
+                                    R$ {{ ui.modoManual && sNum(inputs.precoVenda) > 0 ? sNum(inputs.precoVenda).toFixed(2) : calcPrecoIdeal(mkp).toFixed(2) }}
                                 </p>
-                                <div class="mt-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                    {{ sNum(inputs.precoVenda) > 0 ? 'Sugestão p/ Meta: R$ ' + calcPrecoIdeal(mkp).toFixed(2) : 'Garante exatamente ' + sNum(inputs.alvo) + '% lucro' }}
+                                <div class="mt-4 text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                                    {{ ui.modoManual ? 'Ideal p/ Meta: R$ ' + calcPrecoIdeal(mkp).toFixed(2) : 'Atinge exatos ' + sNum(inputs.alvo) + '% lucro' }}
                                 </div>
-                                <div class="absolute -right-8 -bottom-8 opacity-5 text-[150px] transition-all group-hover/price:scale-110"><i class="fas fa-check-double"></i></div>
                             </div>
 
-                            <div class="pt-10 border-t border-slate-100 grid grid-cols-2 gap-10">
-                                <div class="space-y-4">
-                                    <p class="text-[12px] font-black text-slate-400 uppercase tracking-widest flex items-center">
-                                        Lucro <i :class="sNum(inputs.precoVenda) > 0 ? 'fas fa-hand-pointer ml-3 text-blue-500' : 'fas fa-robot ml-3 text-emerald-500'" class="text-base"></i>
+                            <div class="pt-6 border-t border-slate-100 dark:border-slate-700 grid grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center">
+                                        Lucro <i :class="ui.modoManual ? 'fas fa-hand-pointer ml-2 text-blue-500' : 'fas fa-robot ml-2 text-emerald-500'"></i>
                                     </p>
-                                    <p class="text-5xl font-black leading-none tracking-tighter" :class="calcLucro(mkp) >= 0 ? 'text-slate-900' : 'text-red-600'">
+                                    <p class="text-4xl font-black leading-none tracking-tighter" :class="calcLucro(mkp) >= 0 ? 'text-slate-900 dark:text-white' : 'text-red-600 dark:text-red-400'">
                                         R$ {{ calcLucro(mkp).toFixed(2) }}
                                     </p>
                                 </div>
-                                <div class="text-right space-y-4">
-                                    <p class="text-[12px] font-black text-slate-400 uppercase tracking-widest">Margem Final</p>
-                                    <p class="text-4xl font-black leading-none mt-1.5" :class="calcLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-400'">
+                                <div class="text-right space-y-2">
+                                    <p class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Margem Final</p>
+                                    <p class="text-3xl font-black leading-none mt-1" :class="calcLucro(mkp) >= 0 ? 'text-emerald-500' : 'text-red-400'">
                                         {{ calcMargem(mkp).toFixed(1) }}%
                                     </p>
                                 </div>
                             </div>
 
-                            <div class="w-full bg-slate-100 rounded-full h-4 overflow-hidden shadow-inner border-2 border-white">
-                                <div class="h-full transition-all duration-1000 rounded-full shadow-lg shadow-emerald-500/10" 
+                            <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3 overflow-hidden shadow-inner">
+                                <div class="h-full transition-all duration-1000 rounded-full" 
                                      :class="calcMargem(mkp) >= sNum(inputs.alvo) ? 'bg-emerald-500' : (calcMargem(mkp) > 0 ? 'bg-amber-400' : 'bg-red-500')" 
                                      :style="{ width: Math.min(Math.max((calcMargem(mkp)/sNum(inputs.alvo))*100, 0), 100) + '%' }">
                                 </div>
@@ -303,27 +437,28 @@
                     </div>
                 </div>
 
-                <div v-if="banco.length > 0" class="bg-slate-900 rounded-[5rem] p-20 shadow-2xl mt-20 border border-slate-800 animate-fade print:hidden">
-                    <h2 class="text-[15px] font-black text-emerald-400 uppercase tracking-[0.9em] mb-16 flex items-center">
-                        <i class="fas fa-database mr-8 text-5xl text-emerald-500"></i> Banco de Precificações
+                <div v-if="banco.length > 0" class="bg-slate-900 dark:bg-slate-800 rounded-[3rem] p-10 md:p-14 shadow-2xl mt-12 border border-slate-800 dark:border-slate-700 print:hidden">
+                    <h2 class="text-[12px] font-black text-emerald-400 uppercase tracking-[0.6em] mb-8 flex items-center">
+                        <i class="fas fa-database mr-4 text-2xl"></i> Banco de Cenários Salvos
                     </h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        <div v-for="(b, i) in banco" :key="i" class="flex flex-col lg:flex-row items-center justify-between p-12 bg-white/5 rounded-[3.5rem] border border-white/5 hover:bg-white/10 transition-all group shadow-2xl">
-                            <div class="mb-10 lg:mb-0">
-                                <h4 class="text-white font-extrabold text-3xl tracking-tight uppercase leading-none">{{ b.nome }}</h4>
-                                <div class="flex flex-wrap gap-12 mt-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div v-for="(b, i) in banco" :key="i" class="flex flex-col sm:flex-row items-center justify-between p-6 bg-white/5 rounded-[2rem] border border-white/5 hover:bg-white/10 transition-all">
+                            <div class="mb-4 sm:mb-0 text-center sm:text-left">
+                                <h4 class="text-white font-extrabold text-xl uppercase">{{ b.nome }}</h4>
+                                <div class="flex gap-6 mt-3 justify-center sm:justify-start">
                                     <div class="flex flex-col">
-                                        <span class="text-[12px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 mb-3">Preço Sugerido</span>
-                                        <span class="text-3xl font-black text-emerald-400 leading-none">R$ {{ b.venda }}</span>
+                                        <span class="text-[9px] text-slate-500 uppercase tracking-widest border-b border-slate-700 pb-1 mb-1">Preço Sugerido</span>
+                                        <span class="text-lg font-black text-emerald-400">R$ {{ b.venda }}</span>
                                     </div>
-                                    <div class="flex flex-col border-l border-slate-800 pl-12">
-                                        <span class="text-[12px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 mb-3">Meta Lucro</span>
-                                        <span class="text-3xl font-black text-slate-200 leading-none">{{ b.alvo }}%</span>
+                                    <div class="flex flex-col border-l border-slate-700 pl-6">
+                                        <span class="text-[9px] text-slate-500 uppercase tracking-widest border-b border-slate-700 pb-1 mb-1">Meta</span>
+                                        <span class="text-lg font-black text-slate-200">{{ b.alvo }}%</span>
                                     </div>
                                 </div>
                             </div>
-                            <button @click="removerProduto(i)" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-16 py-6 rounded-[2.5rem] text-[13px] font-black uppercase shadow-2xl transition-all">Excluir</button>
+                            <button @click="removerProduto(i)" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-6 py-3 rounded-xl text-[10px] font-black uppercase transition-all w-full sm:w-auto">
+                                Excluir
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -334,125 +469,300 @@
 
     <script>
         const { createApp } = Vue
+        
         createApp({
             data() {
                 return {
-                    // CONFIGURAÇÃO TÉCNICA V37.0 SOVEREIGN ERP
-                    inputs: { nomeProd: '', precoVenda: '0,00', custo: '45,00', embalagem: '1,00', custoFixoDireto: '0,00', perdas: '1,0', volume: '3000', imposto: '10,0', alvo: '15,0' },
-                    despesas: [{ nome: 'Aluguel / Escritório', valor: '1200' }, { nome: 'Sistemas ERP', valor: '450' }, { nome: 'Folha Pagamento', valor: '1300' }, { nome: 'Internet / Energia', valor: '300' }],
-                    marketplaces: [
-                        { id: 1, nome: 'Shopee (Regulatory 2026)', com: '14', ads: '0', afi: '0', ant: '0', fixo: '4', log: '0', corTexto: 'text-orange-600', edit: false },
-                        { id: 2, nome: 'Mercado Livre (Smart Tiers)', com: '19', ads: '0', afi: '0', ant: '0', fixo: '6.75', log: '18,50', corTexto: 'text-yellow-600', edit: false },
-                        { id: 3, nome: 'TikTok Shop (SFP & Creators)', com: '6', ads: '5', afi: '10', ant: '0', fixo: '4', log: '0', corTexto: 'text-slate-900', edit: false, useSFP: true },
-                        { id: 4, nome: 'Amazon (FBA / DBA)', com: '14', ads: '0', afi: '0', ant: '0', fixo: '0', log: '11,95', corTexto: 'text-sky-700', edit: false },
-                        { id: 5, nome: 'Shein Brasil (Standard)', com: '16', ads: '0', afi: '0', ant: '0', fixo: '0', log: '0', corTexto: 'text-zinc-800', edit: false },
-                        { id: 6, nome: 'Magazine Luiza (Magalu)', com: '16', ads: '0', afi: '0', ant: '0', fixo: '3', log: '0', corTexto: 'text-blue-600', edit: false },
-                        { id: 7, nome: 'Netshoes (Fitness Pro)', com: '18', ads: '0', afi: '0', ant: '0', fixo: '5', log: '0', corTexto: 'text-purple-700', edit: false },
-                        { id: 8, nome: 'Temu (Direct Local)', com: '15', ads: '0', afi: '0', ant: '0', fixo: '0', log: '0', corTexto: 'text-red-600', edit: false }
+                    // Estados da Interface
+                    isDarkMode: false,
+                    accordions: { produto: true, volume: false, impostos: false },
+                    ui: { modoManual: false },
+                    
+                    // Configurações do Negócio
+                    inputs: { 
+                        nomeProd: '', 
+                        precoVenda: '0,00', 
+                        custo: '45,00', 
+                        embalagem: '1,00', 
+                        custoFixoDireto: '0,00', 
+                        perdas: '1,0', 
+                        volume: '3000', 
+                        imposto: '10,0', 
+                        alvo: '15,0' 
+                    },
+                    
+                    despesas: [
+                        { nome: 'Aluguel', valor: '1200' }, 
+                        { nome: 'Sistemas', valor: '450' }, 
+                        { nome: 'Folha', valor: '1300' }, 
+                        { nome: 'Energia', valor: '300' }
                     ],
-                    banco: [], chart: null
+                    
+                    // Estrutura Marketplaces com Ícones e Cores de Branding
+                    marketplaces: [
+                        { id: 1, nome: 'Shopee Brasil', icon: 'fa-solid fa-bag-shopping', corIcone: '#f97316', com: '14', ads: '0', afi: '0', ant: '0', fixo: '4', log: '0', edit: false },
+                        { id: 2, nome: 'Mercado Livre', icon: 'fa-solid fa-handshake', corIcone: '#eab308', com: '19', ads: '0', afi: '0', ant: '0', fixo: '6.75', log: '18,50', edit: false },
+                        { id: 3, nome: 'TikTok Shop', icon: 'fa-brands fa-tiktok', corIcone: '#0f172a', com: '6', ads: '5', afi: '10', ant: '0', fixo: '4', log: '0', edit: false, useSFP: true },
+                        { id: 4, nome: 'Amazon BR', icon: 'fa-brands fa-amazon', corIcone: '#0ea5e9', com: '14', ads: '0', afi: '0', ant: '0', fixo: '0', log: '11,95', edit: false },
+                        { id: 5, nome: 'Shein Brasil', icon: 'fa-solid fa-shirt', corIcone: '#1e293b', com: '16', ads: '0', afi: '0', ant: '0', fixo: '0', log: '0', edit: false },
+                        { id: 6, nome: 'Magalu', icon: 'fa-solid fa-cart-shopping', corIcone: '#3b82f6', com: '16', ads: '0', afi: '0', ant: '0', fixo: '3', log: '0', edit: false },
+                        { id: 7, nome: 'Netshoes', icon: 'fa-solid fa-person-running', corIcone: '#8b5cf6', com: '18', ads: '0', afi: '0', ant: '0', fixo: '5', log: '0', edit: false },
+                        { id: 8, nome: 'Temu', icon: 'fa-solid fa-box', corIcone: '#ef4444', com: '15', ads: '0', afi: '0', ant: '0', fixo: '0', log: '0', edit: false }
+                    ],
+                    banco: [], 
+                    chart: null
                 }
             },
+            
             computed: {
-                totalFixas() { return this.despesas.reduce((acc, cur) => acc + this.sNum(cur.valor), 0); },
-                rateio() { const v = this.sNum(this.inputs.volume); return v > 0 ? this.totalFixas / v : 0; },
-                totalCustoDiretoUnidade() { return this.sNum(this.inputs.custo) + this.sNum(this.inputs.embalagem) + this.sNum(this.inputs.custoFixoDireto); }
+                totalFixas() { 
+                    return this.despesas.reduce((acc, cur) => acc + this.sNum(cur.valor), 0); 
+                },
+                rateio() { 
+                    const v = this.sNum(this.inputs.volume); 
+                    return v > 0 ? this.totalFixas / v : 0; 
+                },
+                totalCustoDiretoUnidade() { 
+                    return this.sNum(this.inputs.custo) + this.sNum(this.inputs.embalagem) + this.sNum(this.inputs.custoFixoDireto); 
+                },
+                bestMarketplaceId() {
+                    // Identifica qual marketplace está dando a maior margem percentual para exibir a coroa
+                    let maxLucro = -999999;
+                    let bestId = null;
+                    this.marketplaces.forEach(mkp => {
+                        let lucro = this.calcMargem(mkp);
+                        if (lucro > maxLucro) { 
+                            maxLucro = lucro; 
+                            bestId = mkp.id; 
+                        }
+                    });
+                    return bestId;
+                }
             },
+            
+            watch: {
+                isDarkMode(newVal) { 
+                    localStorage.setItem('v41_darkmode', newVal); 
+                    this.updateChart(); // Atualiza as cores do gráfico quando muda o tema
+                }
+            },
+            
             methods: {
-                sNum(v) { if (!v) return 0; const clean = v.toString().replace(',', '.').replace(/[^\d.-]/g, ''); return parseFloat(clean) || 0; },
-                syncAll() { this.salvar(); this.updateChart(); },
-                adicionarDespesa() { this.despesas.push({ nome: '', valor: '' }); this.salvar(); },
-                removerDespesa(i) { this.despesas.splice(i, 1); this.syncAll(); },
-                salvar() { localStorage.setItem('v37_inputs', JSON.stringify(this.inputs)); localStorage.setItem('v37_despesas', JSON.stringify(this.despesas)); localStorage.setItem('v37_marketplaces', JSON.stringify(this.marketplaces)); },
+                // Controles de UI
+                toggleDarkMode() { 
+                    this.isDarkMode = !this.isDarkMode; 
+                },
+                toggleAccordion(section) { 
+                    this.accordions[section] = !this.accordions[section]; 
+                },
+                toggleModoManual() { 
+                    if(!this.ui.modoManual) {
+                        this.inputs.precoVenda = '0,00'; 
+                    }
+                    this.syncAll(); 
+                },
                 
-                // --- MOTOR DE AUDITORIA V37: REATIVIDADE MARÇO/2026 ---
+                // Utilitários Numéricos
+                sNum(v) { 
+                    if (!v) return 0; 
+                    const clean = v.toString().replace(',', '.').replace(/[^\d.-]/g, ''); 
+                    return parseFloat(clean) || 0; 
+                },
+                
+                // Funções de Banco de Dados Local
+                syncAll() { 
+                    this.salvar(); 
+                    this.updateChart(); 
+                },
+                adicionarDespesa() { 
+                    this.despesas.push({ nome: '', valor: '' }); 
+                    this.salvar(); 
+                },
+                removerDespesa(i) { 
+                    this.despesas.splice(i, 1); 
+                    this.syncAll(); 
+                },
+                salvar() { 
+                    localStorage.setItem('v41_inputs', JSON.stringify(this.inputs)); 
+                    localStorage.setItem('v41_despesas', JSON.stringify(this.despesas)); 
+                    localStorage.setItem('v41_marketplaces', JSON.stringify(this.marketplaces)); 
+                    localStorage.setItem('v41_ui', JSON.stringify(this.ui)); 
+                },
+                
+                // --- MOTOR DE AUDITORIA: REATIVIDADE DE GATILHOS (MARÇO/2026) ---
                 getSmartFees(mkp, precoRef) {
                     let com = this.sNum(mkp.com); 
                     let fix = this.sNum(mkp.fixo); 
                     let log = this.sNum(mkp.log);
                     
-                    // REGRAS MERCADO LIVRE: CONTROLE DE SOBRESCRITA DE GATILHO
-                    if (mkp.id === 2) {
+                    // AUDITORIA DO MERCADO LIVRE (Gatilho de R$ 79,00)
+                    if (mkp.id === 2) { 
                         if (precoRef < 79.00) { 
-                            log = 0; // ANULA FRETE GRÁTIS
-                            if (precoRef >= 50.00) fix = 6.75; 
-                            else if (precoRef >= 29.00) fix = 6.50; 
-                            else fix = 6.25;
-                        } else { 
-                            fix = 0; // ANULA TAXA FIXA
-                            if (log === 0) log = 18.50; // RESTAURA LOGÍSTICA PADRÃO
+                            log = 0; // Abaixo de 79: Isenta o frete obrigatoriamente
+                            if (precoRef >= 50.00) { fix = 6.75; }
+                            else if (precoRef >= 29.00) { fix = 6.50; }
+                            else { fix = 6.25; }
+                        } 
+                        else { 
+                            fix = 0; // Acima de 79: Isenta a taxa fixa
+                            if (log === 0) { log = 18.50; } // Restaura frete se usuário tiver zerado
                         } 
                     }
                     
-                    // REGRAS SHOPEE: COMISSÃO 14% E TIERS FIXOS
-                    if (mkp.id === 1) {
+                    // AUDITORIA DA SHOPEE (Comissão unificada 14% e Tiers Fixos)
+                    if (mkp.id === 1) { 
                         com = 14; 
-                        if (precoRef < 8.00) fix = precoRef / 2;
-                        else if (precoRef < 80.00) fix = 4.00;
-                        else if (precoRef < 200.00) fix = 20.00;
-                        else fix = 26.00;
+                        if (precoRef < 8.00) { fix = precoRef / 2; } // Regra dos 50% para baratinhos
+                        else if (precoRef < 80.00) { fix = 4.00; }
+                        else if (precoRef < 200.00) { fix = 20.00; }
+                        else { fix = 26.00; }
                     }
+                    
                     return { com, fix, log };
                 },
 
+                // --- MOTOR DE PRECIFICAÇÃO (MARKUP REVERSO E ANTECIPAÇÃO) ---
                 calcPrecoIdeal(mkp) {
                     let resultPrice = 100;
-                    // Tripla iteração para precisão contábil e thresholds
+                    
+                    // Loop de precisão: Roda 3 vezes para garantir que ao trocar a faixa de frete, o cálculo estabilize
                     for (let i = 0; i < 3; i++) {
                         let fees = this.getSmartFees(mkp, resultPrice);
                         
-                        // CÁLCULO DE ANTECIPAÇÃO SOBRE LÍQUIDO (BANCÁRIO REAL)
-                        // Lógica: Antecipação custa (%Ant/100) * Repasse
-                        // Repasse = Venda - (Venda * Comissão%) - Taxas Fixas
-                        
+                        // Passo 1: Impostos e despesas baseados no Faturamento Bruto
                         let percGross = (fees.com + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(this.inputs.imposto) + this.sNum(this.inputs.perdas) + this.sNum(this.inputs.alvo)) / 100;
+                        
+                        // Passo 2: A taxa de Antecipação Bancária incide APENAS sobre o líquido que sobra após a comissão
                         let percAntEffective = (this.sNum(mkp.ant) / 100) * (1 - (fees.com / 100));
                         
                         let totalPercRetenção = percGross + percAntEffective;
+                        
+                        // Passo 3: Adicionar custos fixos ao numerador da fórmula e descontar antecipação das taxas fixas da plataforma
                         let extraMoney = (fees.fix + fees.log) * (1 - (this.sNum(mkp.ant) / 100));
 
-                        // TIKTOK SFP ESPECIAL (COM TRAVA R$ 50)
+                        // Passo Especial: Trava TIKTOK SFP Limitada a R$ 50
                         if(mkp.id === 3 && mkp.useSFP) {
                             const precoProvisorio = (this.totalCustoDiretoUnidade + this.rateio + extraMoney) / (1 - totalPercRetenção - 0.06);
-                            if(precoProvisorio * 0.06 > 50) extraMoney += 50; else totalPercRetenção += 0.06;
+                            if(precoProvisorio * 0.06 > 50) {
+                                extraMoney += 50; 
+                            } else {
+                                totalPercRetenção += 0.06;
+                            }
                         }
-
+                        
+                        // Previne erro matemático de divisão por zero (margens impossíveis)
                         if (totalPercRetenção >= 1) return 0;
+                        
+                        // Fórmula Final: Preço = Custos Totais / (1 - Porcentagem Total de Retenção)
                         resultPrice = (this.totalCustoDiretoUnidade + this.rateio + extraMoney) / (1 - totalPercRetenção);
                     }
                     return resultPrice;
                 },
 
+                // --- CÁLCULO DE LUCRO REAL (AUDITORIA BANCÁRIA) ---
                 calcLucro(mkp) {
-                    const preco = this.sNum(this.inputs.precoVenda) > 0 ? this.sNum(this.inputs.precoVenda) : this.calcPrecoIdeal(mkp);
+                    // Pega o valor manual se a chave estiver ativada, caso contrário, usa o ideal
+                    const preco = this.ui.modoManual && this.sNum(this.inputs.precoVenda) > 0 ? this.sNum(this.inputs.precoVenda) : this.calcPrecoIdeal(mkp);
                     const f = this.getSmartFees(mkp, preco);
                     
-                    // Cálculo de Repasse Líquido Bancário
+                    // Cálculo do Repasse Real da Plataforma para base de Antecipação
                     const repasseSemAntecipacao = preco - (preco * (f.com / 100)) - f.fix - f.log;
                     const custoAntecipacao = repasseSemAntecipacao * (this.sNum(mkp.ant) / 100);
                     
                     let tiktokFeeSFP = (mkp.id === 3 && mkp.useSFP) ? Math.min(preco * 0.06, 50) : 0;
+                    
+                    // Impostos do Simples Nacional + Marketing (Sobre Faturamento Bruto)
                     const impostosEMarketing = (this.sNum(this.inputs.imposto) + this.sNum(mkp.ads) + this.sNum(mkp.afi) + this.sNum(this.inputs.perdas)) / 100;
                     
                     return preco - (preco * impostosEMarketing) - tiktokFeeSFP - (preco * (f.com / 100)) - f.fix - f.log - custoAntecipacao - this.totalCustoDiretoUnidade - this.rateio;
                 },
 
-                calcMargem(mkp) { const preco = this.sNum(this.inputs.precoVenda) > 0 ? this.sNum(this.inputs.precoVenda) : this.calcPrecoIdeal(mkp); return preco > 0 ? (this.calcLucro(mkp) / preco) * 100 : 0; },
+                calcMargem(mkp) { 
+                    const preco = this.ui.modoManual && this.sNum(this.inputs.precoVenda) > 0 ? this.sNum(this.inputs.precoVenda) : this.calcPrecoIdeal(mkp); 
+                    return preco > 0 ? (this.calcLucro(mkp) / preco) * 100 : 0; 
+                },
 
+                // --- GESTÃO ANALYTICS (GRÁFICOS) ---
                 initChart() {
                     const ctx = document.getElementById('priceChart').getContext('2d');
-                    this.chart = new Chart(ctx, { type: 'bar', data: { labels: this.marketplaces.map(m => m.nome.split(' ')[0]), datasets: [{ label: 'Preço Ideal (R$)', data: this.marketplaces.map(m => this.calcPrecoIdeal(m)), backgroundColor: '#6366f1', borderRadius: 15, barThickness: 45 }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 } } }, x: { grid: { display: false }, ticks: { font: { size: 10, weight: '900' } } } } } });
+                    this.chart = new Chart(ctx, { 
+                        type: 'bar', 
+                        data: { 
+                            labels: this.marketplaces.map(m => m.nome.split(' ')[0]), 
+                            datasets: [{ 
+                                label: 'Preço Ideal (R$)', 
+                                data: this.marketplaces.map(m => this.calcPrecoIdeal(m)), 
+                                backgroundColor: '#6366f1', 
+                                borderRadius: 8, 
+                                barThickness: 30 
+                            }] 
+                        }, 
+                        options: { 
+                            maintainAspectRatio: false, 
+                            plugins: { legend: { display: false } }, 
+                            scales: { 
+                                y: { 
+                                    beginAtZero: true, 
+                                    grid: { color: this.isDarkMode ? '#334155' : '#f1f5f9' }, 
+                                    ticks: { color: this.isDarkMode ? '#94a3b8' : '#64748b' } 
+                                }, 
+                                x: { 
+                                    grid: { display: false }, 
+                                    ticks: { font: { weight: 'bold' }, color: this.isDarkMode ? '#94a3b8' : '#64748b' } 
+                                } 
+                            } 
+                        } 
+                    });
                 },
-                updateChart() { if(this.chart) { this.chart.data.datasets[0].data = this.marketplaces.map(m => this.calcPrecoIdeal(m)); this.chart.update(); } },
-                salvarNoBanco() { if(!this.inputs.nomeProd) { alert('Informe o nome!'); return; } this.banco.unshift({ nome: this.inputs.nomeProd, venda: this.calcPrecoIdeal(this.marketplaces[0]).toFixed(2), alvo: this.inputs.alvo }); localStorage.setItem('v37_banco', JSON.stringify(this.banco)); },
-                removerProduto(i) { this.banco.splice(i, 1); localStorage.setItem('v37_banco', JSON.stringify(this.banco)); },
-                resetarTudo() { if(confirm('⚠️ AUDITORIA: Deseja zerar todo o sistema?')) { localStorage.clear(); location.reload(); }}
+                updateChart() { 
+                    if(this.chart) { 
+                        this.chart.data.datasets[0].data = this.marketplaces.map(m => this.calcPrecoIdeal(m)); 
+                        // Atualiza as cores do gráfico para acompanhar o Dark Mode
+                        this.chart.options.scales.y.grid.color = this.isDarkMode ? '#334155' : '#f1f5f9';
+                        this.chart.options.scales.y.ticks.color = this.isDarkMode ? '#94a3b8' : '#64748b';
+                        this.chart.options.scales.x.ticks.color = this.isDarkMode ? '#94a3b8' : '#64748b';
+                        this.chart.update(); 
+                    } 
+                },
+                
+                // --- GESTÃO DE ARQUIVAMENTO ---
+                salvarNoBanco() { 
+                    if(!this.inputs.nomeProd) { alert('Informe o nome do produto!'); return; } 
+                    this.banco.unshift({ 
+                        nome: this.inputs.nomeProd, 
+                        venda: this.calcPrecoIdeal(this.marketplaces[0]).toFixed(2), 
+                        alvo: this.inputs.alvo 
+                    }); 
+                    localStorage.setItem('v41_banco', JSON.stringify(this.banco)); 
+                },
+                removerProduto(i) { 
+                    this.banco.splice(i, 1); 
+                    localStorage.setItem('v41_banco', JSON.stringify(this.banco)); 
+                },
+                resetarTudo() { 
+                    if(confirm('Atenção: Isso vai apagar todas as configurações e o histórico salvo. Deseja continuar?')) { 
+                        localStorage.clear(); 
+                        location.reload(); 
+                    }
+                }
             },
+            
             mounted() {
-                const i = localStorage.getItem('v37_inputs'); if (i) this.inputs = JSON.parse(i);
-                const d = localStorage.getItem('v37_despesas'); if (d) this.despesas = JSON.parse(d);
-                const m = localStorage.getItem('v37_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
-                const b = localStorage.getItem('v37_banco'); if (b) this.banco = JSON.parse(b);
+                // Inicializa o sistema recuperando os dados do navegador
+                const i = localStorage.getItem('v41_inputs'); if (i) this.inputs = JSON.parse(i);
+                const d = localStorage.getItem('v41_despesas'); if (d) this.despesas = JSON.parse(d);
+                const m = localStorage.getItem('v41_marketplaces'); if (m) this.marketplaces = JSON.parse(m);
+                const b = localStorage.getItem('v41_banco'); if (b) this.banco = JSON.parse(b);
+                const ui = localStorage.getItem('v41_ui'); if (ui) this.ui = JSON.parse(ui);
+                const dm = localStorage.getItem('v41_darkmode'); if (dm !== null) this.isDarkMode = JSON.parse(dm);
+                
+                // Tratamento de segurança: Se o usuário estiver atualizando de uma versão velha (sem ícones), reseta os marketplaces
+                if(!this.marketplaces[0].icon) { 
+                    localStorage.removeItem('v41_marketplaces'); 
+                    location.reload(); 
+                }
+                
+                // Renderiza o Gráfico Analítico
                 this.initChart();
             }
         }).mount('#app')
